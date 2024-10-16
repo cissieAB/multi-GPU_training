@@ -1,0 +1,532 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31251676
+SLURM_TASK_PID=766231
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/yifan_sun
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1729099087
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1729113487
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=31251676
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31251676/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_MEM_PER_CPU=8000
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31251676/.cache/run
+SLURM_JOB_ID=31251676
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=2-node_gpt
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ echo =============================================================
+=============================================================
++ nodes=($( scontrol show hostnames $SLURM_JOB_NODELIST ))
+++ scontrol show hostnames 'sciml[2301-2302]'
++ nodes_array=($nodes)
++ head_node=sciml2301
+++ srun --nodes=1 --ntasks=1 -w sciml2301 hostname --ip-address
++ head_node_ip=129.57.139.120
++ echo sciml2301
+sciml2301
++ echo
+
++ echo HEAD Node IP: 129.57.139.120
+HEAD Node IP: 129.57.139.120
++ export PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ export LOGLEVEL=INFO
++ LOGLEVEL=INFO
++ srun torchrun --nnodes 2 --nproc-per-node 2 --rdzv-id 17234 --rdzv-backend c10d --rdzv-endpoint 129.57.139.120:60010 transformer_ddp.py 1
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+[2024-10-16 13:18:08,982] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-16 13:18:08,982] torch.distributed.run: [WARNING] 
+[2024-10-16 13:18:08,982] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 13:18:08,982] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-16 13:18:08,982] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 2
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   run_id           : 17234
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : 129.57.139.120:60010
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-16 13:18:08,982] torch.distributed.launcher.api: [INFO] 
+[2024-10-16 13:18:09,055] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-16 13:18:09,056] torch.distributed.run: [WARNING] 
+[2024-10-16 13:18:09,056] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 13:18:09,056] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-16 13:18:09,056] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 2
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   run_id           : 17234
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : 129.57.139.120:60010
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-16 13:18:09,056] torch.distributed.launcher.api: [INFO] 
+[2024-10-16 13:18:09,072] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31251676/.cache/tmp/torchelastic_5s9eby2l/17234_csw2g9tc
+[2024-10-16 13:18:09,072] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-16 13:18:09,072] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-16 13:18:10,068] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31251676/.cache/tmp/torchelastic_bgsvby39/17234_3cu4ag65
+[2024-10-16 13:18:10,068] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-16 13:18:10,068] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   master_port=56531
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=0
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[0, 1]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[0, 1]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[4, 4]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[4, 4]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   master_port=56531
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=1
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[2, 3]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[2, 3]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[4, 4]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31251676/.cache/tmp/torchelastic_5s9eby2l/17234_csw2g9tc/attempt_0/0/error.json
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[4, 4]
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-16 13:18:10,573] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-16 13:18:10,573] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31251676/.cache/tmp/torchelastic_5s9eby2l/17234_csw2g9tc/attempt_0/1/error.json
+[2024-10-16 13:18:10,574] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-16 13:18:10,574] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31251676/.cache/tmp/torchelastic_bgsvby39/17234_3cu4ag65/attempt_0/0/error.json
+[2024-10-16 13:18:10,574] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31251676/.cache/tmp/torchelastic_bgsvby39/17234_3cu4ag65/attempt_0/1/error.json
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+Local Rank: 1, Global Rank: 3
+Local Rank: 0, Global Rank: 2
+Local Rank: 1, Global Rank: 1
+Local Rank: 0, Global Rank: 0
+Generating test split:   0%|          | 0/4358 [00:00<?, ? examples/s]Generating test split:  23%|██▎       | 1000/4358 [00:00<00:03, 1047.44 examples/s]Generating test split: 100%|██████████| 4358/4358 [00:00<00:00, 4522.28 examples/s]
+Generating train split:   0%|          | 0/36718 [00:00<?, ? examples/s]Generating train split: 100%|██████████| 36718/36718 [00:00<00:00, 485172.78 examples/s]
+Generating validation split:   0%|          | 0/3760 [00:00<?, ? examples/s]Generating validation split: 100%|██████████| 3760/3760 [00:00<00:00, 423144.17 examples/s]
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:05, 6947.94 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:05, 7058.93 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:05, 6618.64 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:05, 6636.79 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:04, 6908.23 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5545.74 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 6043.34 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5597.79 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:04, 6578.74 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 6266.40 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 6914.59 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 6658.76 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:04, 6656.04 examples/s]Map:  19Dataset loaded.
+Dataset loaded.
+training model now: gpt2training model now:
+ gpt2
+%|█▉        | 7000/36718 [00:01<00:04, 6466.68 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6711.79 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6571.44 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 6805.59 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 6683.10 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:03, 6883.06 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:03, 6782.51 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:03, 6856.25 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:03, 6767.47 examples/s]Map:  33%|███▎      | 12000/36718 [00:01<00:03, 6875.26 examples/s]Map:  33%|███▎      | 12000/36718 [00:01<00:03, 6837.13 examples/s]Map:  35%|███▌      | 13000/36718 [00:01<00:03, 6842.78 examples/s]Map:  35%|███▌      | 13000/36718 [00:01<00:03, 6794.30 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 6994.64 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 6938.72 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 7069.75 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 7009.25 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 6857.85 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 6798.64 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:02, 6869.60 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:02, 6822.08 examples/s]Map:  49%|████▉     | 18000/36718 [00:02<00:02, 6929.66 examples/s]Map:  49%|████▉     | 18000/36718 [00:02<00:02, 6837.21 examples/s]Map:  52%|█████▏    | 19000/36718 [00:02<00:02, 7096.26 examples/s]Map:  52%|█████▏    | 19000/36718 [00:02<00:02, 7003.42 examples/s]Map:  54%|█████▍    | 20000/36718 [00:02<00:02, 7119.51 examples/s]Map:  54%|█████▍    | 20000/36718 [00:02<00:02, 7058.02 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 7003.47 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 6928.35 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 6925.91 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 6865.00 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:01, 7053.31 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:02, 6053.73 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:01, 7276.97 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:01, 6501.62 examples/s]Map:  68%|██████▊   | 25000/36718 [00:03<00:01, 6241.15 examples/s]Map:  68%|██████▊   | 25000/36718 [00:03<00:01, 6793.96 examples/s]Map:  71%|███████   | 26000/36718 [00:03<00:01, 6421.60 examples/s]Map:  71%|███████   | 26000/36718 [00:03<00:01, 6854.64 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6403.80 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6644.48 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 6426.77 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 6605.21 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 6742.09 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 6863.64 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:00, 6815.76 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:00, 6878.52 examples/s]Map:  84%|████████▍ | 31000/36718 [00:04<00:00, 6583.58 examples/s]Map:  84%|████████▍ | 31000/36718 [00:04<00:00, 6602.16 examples/s]Map:  87%|████████▋ | 32000/36718 [00:04<00:00, 6630.97 examples/s]Map:  87%|████████▋ | 32000/36718 [00:04<00:00, 6599.93 examples/s]Map:  90%|████████▉ | 33000/36718 [00:04<00:00, 6502.61 examples/s]Map:  90%|████████▉ | 33000/36718 [00:04<00:00, 6564.50 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 6609.39 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 6612.66 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 6730.24 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 6773.50 examples/s]Map:  98%|█████████▊| 36000/36718 [00:05<00:00, 6657.98 examples/s]Map:  98%|█████████▊| 36000/36718 [00:05<00:00, 6643.55 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6641.66 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6706.84 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6467.94 examples/s]
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+Map: 100%|██████████| 36718/36718 [00:05<00:00, 6474.55 examples/s]
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+gpt2 gpu time 2 899.1109008789062
+gpt2 gpu time 2 899.198974609375
+gpt2 gpu time 2 899.0904541015625
+gpt2 gpu time 2 899.1968994140625
+gpt2 gpu time 2 906.166259765625
+gpt2 gpu time 2 905.9430541992188
+gpt2 gpu time 2 906.0311279296875
+gpt2 gpu time 2 906.2000732421875
+gpt2 gpu time 2 gpt2 901.5316772460938gpu time 2
+ 901.5009155273438
+gpt2 gpt2gpu time 2  gpu time 2 901.7477416992188901.7589721679688
+
+gpt2 gpu time 2 898.197509765625
+gpt2 gpu time 2 898.2466430664062
+gpt2 gpu time 2 899.6935424804688
+gpt2 gpu time 2 899.7427368164062
+gpt2gpt2  gpu time 2gpu time 2  895.4326782226562895.5084838867188
+gpt2 gpu time 2 897.0239868164062
+gpt2 gpu time 2 897.0916137695312
+
+gpt2 gpu time 2 gpt2 900.6182250976562gpu time 2
+ 900.6336059570312
+gpt2 gpu time 2 900.5363159179688
+gpt2 gpu time 2 900.6448364257812
+gpt2gpt2 gpu time 2 900.6162109375
+gpt2 gpu time 2gpt2  gpu time 2900.6233520507812 
+900.6704711914062
+ gpu time 2 900.6305541992188
+gpt2 gpu time 2 898.0858764648438
+gpt2 gpu time 2 898.1852416992188
+gpt2 gpu time 2 898.20263671875
+gpt2 gpu time 2 898.1810913085938
+gpt2 gpu time 2 903.4926147460938
+gpt2 gpu time 2 903.59912109375
+gpt2 gpu time 2 903.8253784179688
+gpt2 gpu time 2 903.8131103515625
+gpt2gpt2  gpu time 2gpu time 2  899.4826049804688899.4866943359375
+
+gpt2 gpu time 2 899.7335205078125
+gpt2 gpu time 2 899.7324829101562
+STAGE:2024-10-16 13:22:25 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-16 13:22:25 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-10-16 13:22:25 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-16 13:22:25 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-10-16 13:22:27 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:27 473468:473468 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:27 766276:766276 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:27 473467:473467 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:27 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:27 766276:766276 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:27 473468:473468 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:27 473467:473467 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 1764.7127685546875
+STAGE:2024-10-16 13:22:28 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1764.6693115234375
+STAGE:2024-10-16 13:22:28 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1764.629638671875
+STAGE:2024-10-16 13:22:28 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1764.7305908203125
+STAGE:2024-10-16 13:22:28 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 13:22:29 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:29 766276:766276 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:29 473467:473467 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:29 473468:473468 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:29 766276:766276 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:29 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:29 473468:473468 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:29 473467:473467 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 902.3355102539062
+STAGE:2024-10-16 13:22:29 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 960.9755249023438
+STAGE:2024-10-16 13:22:29 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 960.574462890625
+STAGE:2024-10-16 13:22:29 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 975.0042724609375
+STAGE:2024-10-16 13:22:29 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 13:22:30 766276:766276 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-10-16 13:22:30 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-10-16 13:22:30 473467:473467 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:30 473468:473468 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:30 766276:766276 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:30 473467:473467 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:30 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:30 473468:473468 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 996.0430297851562
+STAGE:2024-10-16 13:22:31 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 949.9650268554688
+STAGE:2024-10-16 13:22:31 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 898.8035278320312
+STAGE:2024-10-16 13:22:31 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 949.0316772460938
+STAGE:2024-10-16 13:22:31 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 13:22:32 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:32 766276:766276 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:32 473467:473467 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:32 473468:473468 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:32 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:32 766276:766276 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:32 473467:473467 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:32 473468:473468 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 904.0452880859375
+STAGE:2024-10-16 13:22:33 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 961.1702270507812
+STAGE:2024-10-16 13:22:33 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 964.306396484375
+STAGE:2024-10-16 13:22:33 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1018.3428955078125
+STAGE:2024-10-16 13:22:33 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 13:22:34 473468:473468 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:34 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:34 473467:473467 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:34 473468:473468 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:34 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:34 473467:473467 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 13:22:34 766276:766276 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:34 766276:766276 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 901.0758056640625
+STAGE:2024-10-16 13:22:35 473468:473468 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 976.0936889648438
+STAGE:2024-10-16 13:22:35 766276:766276 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1041.6868896484375
+STAGE:2024-10-16 13:22:35 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 992.251708984375
+STAGE:2024-10-16 13:22:35 473467:473467 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 13:22:36 766277:766277 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 13:22:36 766277:766277 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 913.3355712890625
+STAGE:2024-10-16 13:22:37 766277:766277 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+---error stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: gpt2-medium
+---error stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: gpt2-medium
+---error stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: gpt2-medium
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:05, 7086.10 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:05, 6615.60 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:07, 4612.04 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 5262.95 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5945.19 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:04, 6369.94 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:04, 6207.73 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6301.70 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 6413.56 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 6527.38 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:03, 6487.95 examples/s]Map:  33%|███▎      | 12000/36718 [00:01<00:03, 6557.71 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:03, 6517.42 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 6635.22 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 6680.48 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 6464.49 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:03, 6493.29 examples/s]Map:  49%|████▉     | 18000/36718 [00:02<00:02, 6556.21 examples/s]Map:  52%|█████▏    | 19000/36718 [00:02<00:02, 6723.53 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 6748.48 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 6624.36 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 6559.03 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:02, 6629.82 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:01, 6805.23 examples/s]Map:  68%|██████▊   | 25000/36718 [00:03<00:01, 6913.83 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6810.90 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6573.24 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 6482.00 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 5835.00 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:01, 6057.44 examples/s]Map:  84%|████████▍ | 31000/36718 [00:04<00:00, 5976.58 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 6079.16 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 6106.27 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 6186.92 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 6327.93 examples/s]Map:  98%|█████████▊| 36000/36718 [00:05<00:00, 6241.88 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6280.66 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6208.00 examples/s]
+[E ProcessGroupNCCL.cpp:474] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=701, OpType=BROADCAST, NumelIn=12582912, NumelOut=12582912, Timeout(ms)=1800000) ran for 1800162 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:915] [Rank 1] NCCL watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=701, OpType=BROADCAST, NumelIn=12582912, NumelOut=12582912, Timeout(ms)=1800000) ran for 1800162 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 1] NCCL watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=701, OpType=BROADCAST, NumelIn=12582912, NumelOut=12582912, Timeout(ms)=1800000) ran for 1800162 milliseconds before timing out.
+[2024-10-16 13:53:01,706] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 766276 closing signal SIGTERM
+[2024-10-16 13:53:02,071] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: -6) local_rank: 1 (pid: 766277) of binary: /w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/python3.10
+[2024-10-16 13:53:02,094] torch.distributed.elastic.multiprocessing.errors: [INFO] ('local_rank %s FAILED with no error file. Decorate your entrypoint fn with @record for traceback info. See: https://pytorch.org/docs/stable/elastic/errors.html', 1)
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=======================================================
+transformer_ddp.py FAILED
+-------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+-------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-10-16_13:53:01
+  host      : sciml2301.jlab.org
+  rank      : 1 (local_rank: 1)
+  exitcode  : -6 (pid: 766277)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 766277
+=======================================================
+srun: error: sciml2301: task 0: Exited with exit code 1
+[2024-10-16 13:53:06,832] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_473458_0' has failed to send a keep-alive heartbeat to the rendezvous '17234' due to an error of type RendezvousConnectionError.
+[2024-10-16 13:53:06,835] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 473467 closing signal SIGTERM
+[2024-10-16 13:53:06,835] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 473468 closing signal SIGTERM
+[2024-10-16 13:53:07,675] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_473458_0' has failed to shutdown the rendezvous '17234' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 113, in _call_store
+    return getattr(self._store, store_op)(*args, **kwargs)
+RuntimeError: Broken pipe
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 255, in launch_agent
+    result = agent.run()
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 124, in wrapper
+    result = f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 736, in run
+    result = self._invoke_run(role)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 909, in _invoke_run
+    num_nodes_waiting = rdzv_handler.num_nodes_waiting()
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 1083, in num_nodes_waiting
+    self._state_holder.sync()
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 409, in sync
+    get_response = self._backend.get_state()
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 73, in get_state
+    base64_state: bytes = self._call_store("get", self._key)
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 115, in _call_store
+    raise RendezvousConnectionError(
+torch.distributed.elastic.rendezvous.api.RendezvousConnectionError: The connection to the C10d store has failed. See inner exception for details.
+srun: error: sciml2302: task 1: Exited with exit code 1

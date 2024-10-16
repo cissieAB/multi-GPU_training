@@ -1,0 +1,643 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31256278
+SLURM_TASK_PID=778388
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/yifan_sun
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1729104355
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1729118755
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=31256278
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31256278/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_MEM_PER_CPU=8000
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31256278/.cache/run
+SLURM_JOB_ID=31256278
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=2-node_gpt
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ echo =============================================================
+=============================================================
++ nodes=($( scontrol show hostnames $SLURM_JOB_NODELIST ))
+++ scontrol show hostnames 'sciml[2301-2302]'
++ nodes_array=($nodes)
++ head_node=sciml2301
+++ srun --nodes=1 --ntasks=1 -w sciml2301 hostname --ip-address
++ head_node_ip=129.57.139.120
++ echo sciml2301
+sciml2301
++ echo
+
++ echo HEAD Node IP: 129.57.139.120
+HEAD Node IP: 129.57.139.120
++ export PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ export LOGLEVEL=INFO
++ LOGLEVEL=INFO
++ srun torchrun --nnodes 2 --nproc-per-node 2 --rdzv-id 21723 --rdzv-backend c10d --rdzv-endpoint 129.57.139.120:60010 transformer_ddp.py 2
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+[2024-10-16 14:45:56,985] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-16 14:45:56,985] torch.distributed.run: [WARNING] 
+[2024-10-16 14:45:56,985] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 14:45:56,985] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-16 14:45:56,985] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 2
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   run_id           : 21723
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : 129.57.139.120:60010
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-16 14:45:56,985] torch.distributed.launcher.api: [INFO] 
+[2024-10-16 14:45:56,996] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31256278/.cache/tmp/torchelastic_lmmdra9p/21723_sqvdyk_u
+[2024-10-16 14:45:56,996] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-16 14:45:56,996] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-16 14:45:57,109] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-16 14:45:57,109] torch.distributed.run: [WARNING] 
+[2024-10-16 14:45:57,109] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 14:45:57,109] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-16 14:45:57,109] torch.distributed.run: [WARNING] *****************************************
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 2
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   run_id           : 21723
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : 129.57.139.120:60010
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-16 14:45:57,109] torch.distributed.launcher.api: [INFO] 
+[2024-10-16 14:45:57,120] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31256278/.cache/tmp/torchelastic_h2oc6pm1/21723_vrp2ek5y
+[2024-10-16 14:45:57,120] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-16 14:45:57,120] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   master_port=37413
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=0
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1]
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[0, 1]
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[0, 1]
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[4, 4]
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[4, 4]
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-16 14:45:58,030] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-16 14:45:58,030] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31256278/.cache/tmp/torchelastic_lmmdra9p/21723_sqvdyk_u/attempt_0/0/error.json
+[2024-10-16 14:45:58,030] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31256278/.cache/tmp/torchelastic_lmmdra9p/21723_sqvdyk_u/attempt_0/1/error.json
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   master_port=37413
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=1
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1]
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[2, 3]
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[2, 3]
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[4, 4]
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[4, 4]
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-16 14:45:58,031] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-16 14:45:58,032] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-16 14:45:58,032] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31256278/.cache/tmp/torchelastic_h2oc6pm1/21723_vrp2ek5y/attempt_0/0/error.json
+[2024-10-16 14:45:58,032] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31256278/.cache/tmp/torchelastic_h2oc6pm1/21723_vrp2ek5y/attempt_0/1/error.json
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 3, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+Local Rank: 0, Global Rank: 0
+Local Rank: 1, Global Rank: 1
+Local Rank: 0, Global Rank: 2
+Local Rank: 1, Global Rank: 3
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/utils/data/dataloader.py:557: UserWarning: This DataLoader will create 8 worker processes in total. Our suggested max number of worker in current system is 4, which is smaller than what this DataLoader is going to create. Please be aware that excessive worker creation might get DataLoader running slow or even freeze, lower the worker number to avoid potential slowness/freeze if necessary.
+  warnings.warn(_create_warning_msg(
+gpt2gpt2  gpu time 2gpu time 2  895.688720703125
+895.6405639648438
+gpt2 gpu time 2 894.4107666015625
+gpt2 gpu time 2 894.424072265625
+gpt2gpt2 gpu time 2  gpu time 2 900.5086669921875900.5178833007812
+
+gpt2 gpu time 2 900.5015258789062
+gpt2 gpu time 2 900.4891967773438
+gpt2 gpu time 2 904.99072265625
+gpt2 gpu time 2 904.9948120117188
+gpt2 gpu time 2 904.9917602539062
+gpt2 gpu time 2 904.9784545898438
+gpt2 gpu time 2gpt2  900.3305053710938gpu time 2
+ 900.347900390625
+gpt2 gpu time 2 900.4349365234375
+gpt2 gpu time 2 900.495361328125
+gpt2gpt2  gpu time 2gpu time 2  902.0088500976562901.9771118164062
+
+gpt2 gpt2gpu time 2  gpu time 2 901.7733154296875
+901.8582763671875
+gpt2 gpu time 2 895.6109008789062
+gpt2 gpu time 2 895.6077880859375
+gpt2 gpu time 2 896.8468627929688
+gpt2 gpu time 2 896.8888549804688
+gpt2 gpu time 2 885.7272338867188
+gpt2 gpu time 2 887.2171630859375
+gpt2 gpu time 2 887.2069091796875
+gpt2 gpu time 2 885.7835693359375
+gpt2 gpu time 2 gpt2898.7689208984375
+ gpu time 2 898.798583984375
+gpt2 gpu time 2 899.0084838867188
+gpt2 gpu time 2 899.0392456054688
+gpt2gpt2  gpu time 2gpu time 2  901.6258544921875901.6043701171875
+
+gpt2gpt2  gpu time 2gpu time 2  902.8187866210938902.7266845703125
+
+gpt2 gpu time 2 883.9290771484375
+gpt2 gpu time 2 883.9547119140625
+[E execution_trace_observer.cpp:252] Failed to open './transformer_ddp_profiler/graph_gpt2.json'
+[E execution_trace_observer.cpp:252] Failed to open './transformer_ddp_profiler/graph_gpt2.json'
+[W execution_trace_observer.cpp:312] Failed to open output file: ./transformer_ddp_profiler/graph_gpt2.json
+[W execution_trace_observer.cpp:312] Failed to open output file: ./transformer_ddp_profiler/graph_gpt2.json
+gpt2gpt2  gpu time 2gpu time 2  884.0233154296875884.0242919921875
+
+[E execution_trace_observer.cpp:252] Failed to open './transformer_ddp_profiler/graph_gpt2.json'
+[E execution_trace_observer.cpp:252] Failed to open './transformer_ddp_profiler/graph_gpt2.json'
+[W execution_trace_observer.cpp:312] Failed to open output file: ./transformer_ddp_profiler/graph_gpt2.json
+[W execution_trace_observer.cpp:312] Failed to open output file: ./transformer_ddp_profiler/graph_gpt2.json
+STAGE:2024-10-16 14:46:44 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:44 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:44 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:44 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:45 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:45 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:45 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:45 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:45 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:45 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:45 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:45 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 906.9636840820312
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:46 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 916.8571166992188
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:46 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 895.5882568359375
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:46 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 915.0274658203125
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:46 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:47 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:47 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:47 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:47 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:47 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:47 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:47 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:47 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 899.4578247070312
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:48 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 899.9906616210938
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:48 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 900.5310668945312
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:48 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 900.413330078125
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:48 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:49 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:49 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:49 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:49 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:49 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:49 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:49 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:49 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 919.3698120117188
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:49 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 904.1893920898438
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:49 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 981.2802734375
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:49 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 977.5208129882812
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:50 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:50 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:50 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:50 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:50 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:50 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:50 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:50 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:50 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 900.2129516601562
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:51 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 912.66943359375
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:51 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 961.6438598632812
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:51 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 914.8007202148438
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:51 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:52 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:52 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:52 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:52 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:52 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:52 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:52 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:52 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 901.3096313476562
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:53 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 980.4678344726562
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:53 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1021.9601440429688
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:53 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1044.18212890625
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:53 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:54 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:54 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:54 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:54 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:54 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:54 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:54 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:54 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 902.4318237304688
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:55 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1010.6641845703125
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:55 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1093.111328125
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:55 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 926.5694580078125
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:55 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:56 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:56 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:56 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:56 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:56 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:56 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:56 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:56 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 926.275146484375
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:57 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 902.103271484375
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:57 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 901.0846557617188
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:57 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 926.8690795898438
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:57 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:46:58 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:58 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:58 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:58 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:58 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:58 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:46:58 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:46:58 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 903.5433959960938
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:58 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 990.5470581054688
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:58 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 1076.948974609375
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:59 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1073.8861083984375
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:46:59 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:47:00 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:00 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:00 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:00 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:00 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:00 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:00 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:00 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+gpt2 gpu time 922.342041015625
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:47:00 778434:778434 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+gpt2 gpu time 901.0493774414062
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:47:00 484898:484898 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1011.6892700195312
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:47:00 484899:484899 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 1051.0760498046875
+[W record_function.cpp:242] Requested callback is not found
+STAGE:2024-10-16 14:47:00 778435:778435 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-16 14:47:01 778435:778435 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:01 778434:778434 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:01 484899:484899 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:01 778435:778435 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:01 484898:484898 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-16 14:47:01 484899:484899 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:01 778434:778434 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-16 14:47:01 484898:484898 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 903.1048583984375
+avg profiler Total time1: 942.5788879394531
+avg Total time2: 897.0686462402343
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 991.9938354492188
+avg profiler Total time1: 947.8445251464843
+avg Total time2: 897.0640380859375
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+gpt2 gpu time 918.8170166015625
+avg profiler Total time1: 947.9102600097656
+avg Total time2: 897.0604614257812
+gpt2 gpu time 1008.8967895507812
+[W record_function.cpp:242] Requested callback is not found
+[W execution_trace_observer.cpp:672] Execution trace observer was not registered.
+avg profiler Total time1: 961.4103393554688
+avg Total time2: 897.06435546875
+[2024-10-16 14:47:08,102] torch.distributed.elastic.agent.server.api: [INFO] [default] worker group successfully finished. Waiting 300 seconds for other agents to finish.
+[2024-10-16 14:47:08,102] torch.distributed.elastic.agent.server.api: [INFO] Local worker group finished (WorkerState.SUCCEEDED). Waiting 300 seconds for other agents to finish
+[2024-10-16 14:47:08,103] torch.distributed.elastic.agent.server.api: [INFO] [default] worker group successfully finished. Waiting 300 seconds for other agents to finish.
+[2024-10-16 14:47:08,104] torch.distributed.elastic.agent.server.api: [INFO] Local worker group finished (WorkerState.SUCCEEDED). Waiting 300 seconds for other agents to finish
+[2024-10-16 14:47:08,104] torch.distributed.elastic.agent.server.api: [INFO] Done waiting for other agents. Elapsed: 0.0007436275482177734 seconds
+[2024-10-16 14:47:08,104] torch.distributed.elastic.agent.server.api: [INFO] Done waiting for other agents. Elapsed: 0.0022728443145751953 seconds
