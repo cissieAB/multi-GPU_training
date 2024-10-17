@@ -5,34 +5,50 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem-per-cpu=8000   # MB
 
-##  Command to launch this script on JLab ifarm: salloc -p gpu 
+## Example command to launch this script on JLab ifarm: salloc -p gpu --gres gpu:A100:4 sbatch_run_n2_g4.sh 
 
-set -euxo pipefail
+set -x
 
-## Print Slurm info
+## Print info
 env | grep -i slurm
-echo "============================================================="
+env | grep -i rank
+env | grep -i cuda
+env | grep -i nccl
+echo -e "=============================================================\n\n"
 
-## Get head node IP
-nodes=( $( scontrol show hostnames $SLURM_JOB_NODELIST ))
-nodes_array=($nodes)
-head_node=${nodes_array[0]}
-head_node_ip=$(srun --nodes=1 --ntasks=1 -w "$head_node" hostname --ip-address)
+## Host info
+srun --job-name hostname --nodes 2 --ntasks-per-node 1 hostname
 
-echo $nodes
-echo
-echo HEAD Node IP: $head_node_ip
+## HEAD node info
+export MASTER_ADDR=$(scontrol show hostnames $SLURM_NODELIST | head -n 1)
+export MASTER_PORT=32800
+echo Head Node: $MASTER_ADDR:$MASTER_PORT
+echo -e "=============================================================\n\n"
 
 ## Torchrun
 export PATH=$PATH:/work/epsci/xmei/projects/yifan_sun/py-torch/bin  # add torchrun into PATH
 export LOGLEVEL=INFO
+export NCCL_DEBUG=INFO
+export TORCH_DISTRIBUTED_DEBUG=INFO
+export NCCL_DEBUG_SUBSYS=ALL
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 
-## --nproc-per-node means GPUs per node
-## For ifarm, use TCP ports 32768-60999
-srun torchrun \
-	--nnodes 2 \
-	--nproc-per-node 4 \
+## NCCL
+export PYTHON_DIST_JOB_ARGS="-m torch.distributed.run --nproc_per_node=$SLURM_GPUS_ON_NODE --nnodes=$SLURM_NNODES --master-addr $head_node_ip --master-port $PORT_NUM"
+# srun --job-name nccl-test python $PYTHON_DIST_JOB_ARGS nccl_test.py
+
+srun --job-name print-cuda --nodes 2 --ntasks-per-node 1 echo $(hostname) ${CUDA_VISIBLE_DEVICES}
+echo -e "=============================================================\n\n"
+
+
+## Torchrun
+### --nproc-per-node means GPUs per node
+### For ifarm, use TCP ports 32768-60999
+# --nproc_per_node=4 means 4 ranks per node. Each node has 4 GPUs.
+srun torchrun --nproc_per_node=4 \
+	--rdzv_backend=c10d \
+        --rdzv_endpoint=$MASTER_ADDR.jlab.org:$MASTER_PORT \
+  	--nnodes=2 \
 	--rdzv-id $RANDOM \
-	--rdzv-backend c10d \
-	--rdzv-endpoint $head_node_ip:60010 \
 	transformer_ddp.py 2
+

@@ -1,4 +1,5 @@
 import sys
+import socket
 import os
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, AdamW
@@ -24,8 +25,18 @@ local_rank = int(os.environ["LOCAL_RANK"])
 global_rank = int(os.environ["RANK"])
 rank = dist.get_rank()
 world_size = dist.get_world_size()
-    
-print(f"Local Rank: {local_rank}, Global Rank: {global_rank}")
+hostname = socket.gethostname()
+
+# Check GPU availability and set device
+try:
+    num_gpus = torch.cuda.device_count()
+    print(f"Hostname: {hostname}, Rank: {rank}, Local Rank: {local_rank}, Global Rank: {global_rank}, NUM_GPS: {num_gpus}")
+    torch.cuda.set_device(local_rank)
+    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: CUDA device set to {local_rank}")
+    torch.cuda.empty_cache()
+except Exception as e:
+    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: Error setting CUDA device: {e}")
+    sys.exit(1)  # Exit if there's a critical failure in setting the device
 
 # Load a dataset
 dataset = load_dataset("wikitext", "wikitext-2-raw-v1")
@@ -61,10 +72,11 @@ for batch_size in bslist:
             tokenized_datasets.set_format(type='torch', columns=['input_ids', 'attention_mask'])
             first_batch_subset = Subset(tokenized_datasets, list(range(batch_size)))
             sampler = DistributedSampler(first_batch_subset, shuffle=False)
-            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, sampler=sampler, shuffle=False,num_workers=8)
+            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, sampler=sampler, shuffle=False,num_workers=4)
             
             torch.cuda.set_device(local_rank)
             torch.cuda.empty_cache()
+            torch.cuda.synchronize()
             optimizer = optim.AdamW(model.parameters(), lr=5e-5)
             model = model.to('cuda:' + str(local_rank))
             model = DDP(model, device_ids=[local_rank])
@@ -76,7 +88,7 @@ for batch_size in bslist:
                     total_time1 = 0
                     total_time2 = 0
                     for i in range(num_iters):
-                        if 40<i<=41:
+                        if 40<i<=50:
                             eg = ExecutionTraceObserver()
                             eg.register_callback("./graph_"+name.replace("/","-")+".json")
                             # eg.register_callback("./transformer_ddp_profiler/graph_"+name.replace("/","-")+".json")
