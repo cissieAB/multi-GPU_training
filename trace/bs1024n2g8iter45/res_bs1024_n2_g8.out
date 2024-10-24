@@ -1,0 +1,902 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31596423
+SLURM_TASK_PID=1723097
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/yifan_sun
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1729743082
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1729757482
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=31596423
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31596423/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_MEM_PER_CPU=8000
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31596423/.cache/run
+SLURM_JOB_ID=31596423
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=2-node_gpt
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0,1,2,3
++ env
++ grep -i nccl
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name hostname --nodes 2 --ntasks-per-node 1 hostname
+sciml2301.jlab.org
+sciml2302.jlab.org
+++ head -n 1
+++ scontrol show hostnames 'sciml[2301-2302]'
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/yifan_sun/py-torch/bin
++ export LOGLEVEL=INFO
++ LOGLEVEL=INFO
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export TORCH_DISTRIBUTED_DEBUG=INFO
++ TORCH_DISTRIBUTED_DEBUG=INFO
++ export CUDA_VISIBLE_DEVICES=0,1,2,3
++ CUDA_VISIBLE_DEVICES=0,1,2,3
++ export 'PYTHON_DIST_JOB_ARGS=-m torch.distributed.run --nproc_per_node=4 --nnodes=2 --master-addr  --master-port '
++ PYTHON_DIST_JOB_ARGS='-m torch.distributed.run --nproc_per_node=4 --nnodes=2 --master-addr  --master-port '
+++ hostname
++ srun --job-name print-cuda --nodes 2 --ntasks-per-node 1 echo sciml2301.jlab.org CUDA_DEV:0,1,2,3
+sciml2301.jlab.org CUDA_DEV:0,1,2,3
+sciml2301.jlab.org CUDA_DEV:0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=sciml2301.jlab.org:32800 --nnodes=2 --rdzv-id 5209 transformer_ddp.py 1024
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+[2024-10-24 00:11:24,357] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-24 00:11:24,357] torch.distributed.run: [WARNING] 
+[2024-10-24 00:11:24,357] torch.distributed.run: [WARNING] *****************************************
+[2024-10-24 00:11:24,357] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-24 00:11:24,357] torch.distributed.run: [WARNING] *****************************************
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 4
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   run_id           : 5209
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : sciml2301.jlab.org:32800
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-24 00:11:24,357] torch.distributed.launcher.api: [INFO] 
+[2024-10-24 00:11:24,359] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-10-24 00:11:24,359] torch.distributed.run: [WARNING] 
+[2024-10-24 00:11:24,359] torch.distributed.run: [WARNING] *****************************************
+[2024-10-24 00:11:24,359] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-10-24 00:11:24,359] torch.distributed.run: [WARNING] *****************************************
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO] Starting elastic_operator with launch configs:
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   entrypoint       : transformer_ddp.py
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   min_nodes        : 2
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   max_nodes        : 2
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   nproc_per_node   : 4
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   run_id           : 5209
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   rdzv_backend     : c10d
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   rdzv_endpoint    : sciml2301.jlab.org:32800
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   rdzv_configs     : {'timeout': 900}
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   max_restarts     : 0
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   monitor_interval : 5
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   log_dir          : None
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO]   metrics_cfg      : {}
+[2024-10-24 00:11:24,359] torch.distributed.launcher.api: [INFO] 
+[2024-10-24 00:11:24,376] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31596423/.cache/tmp/torchelastic_tfbhntdm/5209_3j_alu6s
+[2024-10-24 00:11:24,376] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-24 00:11:24,376] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-24 00:11:24,380] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] log directory set to: /scratch/slurm/31596423/.cache/tmp/torchelastic_skaf41lm/5209_4_iwze2_
+[2024-10-24 00:11:24,380] torch.distributed.elastic.agent.server.api: [INFO] [default] starting workers for entrypoint: python3.10
+[2024-10-24 00:11:24,380] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous'ing worker group
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   master_port=54337
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=0
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1, 2, 3]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[0, 1, 2, 3]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[0, 1, 2, 3]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[8, 8, 8, 8]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[8, 8, 8, 8]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] [default] Rendezvous complete for workers. Result:
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   restart_count=0
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   master_addr=sciml2301.jlab.org
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   master_port=54337
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   group_rank=1
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   group_world_size=2
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   local_ranks=[0, 1, 2, 3]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   role_ranks=[4, 5, 6, 7]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   global_ranks=[4, 5, 6, 7]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_tfbhntdm/5209_3j_alu6s/attempt_0/0/error.json
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   role_world_sizes=[8, 8, 8, 8]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO]   global_world_sizes=[8, 8, 8, 8]
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] 
+[2024-10-24 00:11:25,459] torch.distributed.elastic.agent.server.api: [INFO] [default] Starting worker group
+[2024-10-24 00:11:25,459] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_tfbhntdm/5209_3j_alu6s/attempt_0/1/error.json
+[2024-10-24 00:11:25,459] torch.distributed.elastic.multiprocessing: [INFO] Setting worker2 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_tfbhntdm/5209_3j_alu6s/attempt_0/2/error.json
+[2024-10-24 00:11:25,459] torch.distributed.elastic.multiprocessing: [INFO] Setting worker3 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_tfbhntdm/5209_3j_alu6s/attempt_0/3/error.json
+[2024-10-24 00:11:25,460] torch.distributed.elastic.agent.server.local_elastic_agent: [INFO] Environment variable 'TORCHELASTIC_ENABLE_FILE_TIMER' not found. Do not start FileTimerServer.
+[2024-10-24 00:11:25,460] torch.distributed.elastic.multiprocessing: [INFO] Setting worker0 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_skaf41lm/5209_4_iwze2_/attempt_0/0/error.json
+[2024-10-24 00:11:25,460] torch.distributed.elastic.multiprocessing: [INFO] Setting worker1 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_skaf41lm/5209_4_iwze2_/attempt_0/1/error.json
+[2024-10-24 00:11:25,460] torch.distributed.elastic.multiprocessing: [INFO] Setting worker2 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_skaf41lm/5209_4_iwze2_/attempt_0/2/error.json
+[2024-10-24 00:11:25,460] torch.distributed.elastic.multiprocessing: [INFO] Setting worker3 reply file to: /scratch/slurm/31596423/.cache/tmp/torchelastic_skaf41lm/5209_4_iwze2_/attempt_0/3/error.json
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+Hostname: sciml2301.jlab.org, Rank: 2, Local Rank: 2, Global Rank: 2, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 3, Local Rank: 3, Global Rank: 3, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 1, Local Rank: 1, Global Rank: 1, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 0, Local Rank: 0, Global Rank: 0, NUM_GPS: 4
+[sciml2301.jlab.org] Rank 0, Local Rank 0: CUDA device set to 0
+[sciml2301.jlab.org] Rank 1, Local Rank 1: CUDA device set to 1
+[sciml2301.jlab.org] Rank 3, Local Rank 3: CUDA device set to 3
+[sciml2301.jlab.org] Rank 2, Local Rank 2: CUDA device set to 2
+Hostname: sciml2302.jlab.org, Rank: 6, Local Rank: 2, Global Rank: 6, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 5, Local Rank: 1, Global Rank: 5, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 7, Local Rank: 3, Global Rank: 7, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 4, Local Rank: 0, Global Rank: 4, NUM_GPS: 4
+[sciml2302.jlab.org] Rank 4, Local Rank 0: CUDA device set to 0
+Dataset loaded.
+training model now: gpt2
+[sciml2302.jlab.org] Rank 5, Local Rank 1: CUDA device set to 1
+[sciml2302.jlab.org] Rank 6, Local Rank 2: CUDA device set to 2
+[sciml2302.jlab.org] Rank 7, Local Rank 3: CUDA device set to 3
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+sciml2301:1723172:1723172 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1723172:1723172 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:1723172:1723172 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:1723172:1723172 [0] NCCL INFO cudaDriverVersion 12060
+NCCL version 2.18.1+cuda12.1
+sciml2301:1723175:1723175 [3] NCCL INFO cudaDriverVersion 12060
+sciml2301:1723175:1723175 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1723173:1723173 [1] NCCL INFO cudaDriverVersion 12060
+sciml2301:1723175:1723175 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:1723175:1723175 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:1723173:1723173 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1723173:1723173 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:1723173:1723173 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:1723174:1723174 [2] NCCL INFO cudaDriverVersion 12060
+sciml2301:1723174:1723174 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1723174:1723174 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:1723174:1723174 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+Dataset loaded.
+training model now: gpt2
+sciml2301:1723174:1723262 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1723175:1723260 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1723175:1723260 [3] NCCL INFO Using network IB
+sciml2301:1723175:1723260 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2301:1723174:1723262 [2] NCCL INFO Using network IB
+sciml2301:1723174:1723262 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2301:1723173:1723261 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1723173:1723261 [1] NCCL INFO Using network IB
+sciml2301:1723173:1723261 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2301:1723172:1723259 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1723172:1723259 [0] NCCL INFO Using network IB
+sciml2301:1723172:1723259 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2302:1383785:1383785 [1] NCCL INFO cudaDriverVersion 12060
+sciml2302:1383785:1383785 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1383785:1383785 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1383785:1383785 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1383787:1383787 [3] NCCL INFO cudaDriverVersion 12060
+sciml2302:1383787:1383787 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1383787:1383787 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1383787:1383787 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1383784:1383784 [0] NCCL INFO cudaDriverVersion 12060
+sciml2302:1383784:1383784 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1383784:1383784 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1383784:1383784 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1383787:1383866 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1383787:1383866 [3] NCCL INFO Using network IB
+sciml2302:1383787:1383866 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2302:1383785:1383865 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1383785:1383865 [1] NCCL INFO Using network IB
+sciml2302:1383785:1383865 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2302:1383784:1383867 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1383784:1383867 [0] NCCL INFO Using network IB
+sciml2302:1383784:1383867 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2302:1383786:1383786 [2] NCCL INFO cudaDriverVersion 12060
+sciml2302:1383786:1383786 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1383786:1383786 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1383786:1383786 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1383786:1383871 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1383786:1383871 [2] NCCL INFO Using network IB
+sciml2302:1383786:1383871 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2301:1723175:1723260 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2302:1383786:1383871 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2302:1383785:1383865 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2302:1383784:1383867 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2302:1383787:1383866 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2301:1723173:1723261 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2301:1723174:1723262 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2301:1723172:1723259 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2301:1723175:1723260 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2
+sciml2301:1723175:1723260 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1723174:1723262 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+sciml2301:1723174:1723262 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1383787:1383866 [3] NCCL INFO Trees [0] -1/-1/-1->7->6 [1] -1/-1/-1->7->6
+sciml2302:1383787:1383866 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 00/02 :    0   1   2   3   4   5   6   7
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 01/02 :    0   1   2   3   4   5   6   7
+sciml2301:1723172:1723259 [0] NCCL INFO Trees [0] 1/4/-1->0->-1 [1] 1/-1/-1->0->4
+sciml2301:1723172:1723259 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1723173:1723261 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+sciml2301:1723173:1723261 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1383786:1383871 [2] NCCL INFO Trees [0] 7/-1/-1->6->5 [1] 7/-1/-1->6->5
+sciml2302:1383786:1383871 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1383784:1383867 [0] NCCL INFO Trees [0] 5/-1/-1->4->0 [1] 5/0/-1->4->-1
+sciml2302:1383784:1383867 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1383785:1383865 [1] NCCL INFO Trees [0] 6/-1/-1->5->4 [1] 6/-1/-1->5->4
+sciml2302:1383785:1383865 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:1383786:1383871 [2] NCCL INFO Channel 00/0 : 6[c3000] -> 7[c4000] via P2P/IPC/read
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 00/0 : 0[83000] -> 1[84000] via P2P/IPC/read
+sciml2301:1723174:1723262 [2] NCCL INFO Channel 00/0 : 2[c3000] -> 3[c4000] via P2P/IPC/read
+sciml2302:1383785:1383865 [1] NCCL INFO Channel 00/0 : 5[84000] -> 6[c3000] via P2P/IPC
+sciml2301:1723173:1723261 [1] NCCL INFO Channel 00/0 : 1[84000] -> 2[c3000] via P2P/IPC
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 00/0 : 4[83000] -> 5[84000] via P2P/IPC/read
+sciml2302:1383786:1383871 [2] NCCL INFO Channel 01/0 : 6[c3000] -> 7[c4000] via P2P/IPC/read
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 01/0 : 0[83000] -> 1[84000] via P2P/IPC/read
+sciml2301:1723174:1723262 [2] NCCL INFO Channel 01/0 : 2[c3000] -> 3[c4000] via P2P/IPC/read
+sciml2302:1383785:1383865 [1] NCCL INFO Channel 01/0 : 5[84000] -> 6[c3000] via P2P/IPC
+sciml2301:1723173:1723261 [1] NCCL INFO Channel 01/0 : 1[84000] -> 2[c3000] via P2P/IPC
+sciml2301:1723175:1723260 [3] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 01/0 : 4[83000] -> 5[84000] via P2P/IPC/read
+sciml2302:1383787:1383866 [3] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2301:1723173:1723261 [1] NCCL INFO Connected all rings
+sciml2301:1723175:1723260 [3] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2301:1723174:1723262 [2] NCCL INFO Connected all rings
+sciml2302:1383785:1383865 [1] NCCL INFO Connected all rings
+sciml2302:1383787:1383866 [3] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2302:1383786:1383871 [2] NCCL INFO Connected all rings
+sciml2301:1723175:1723260 [3] NCCL INFO Connected all rings
+sciml2301:1723175:1723260 [3] NCCL INFO Channel 00/0 : 3[c4000] -> 2[c3000] via P2P/IPC/read
+sciml2302:1383784:1383867 [0] NCCL INFO Connected all rings
+sciml2302:1383787:1383866 [3] NCCL INFO Connected all rings
+sciml2302:1383787:1383866 [3] NCCL INFO Channel 00/0 : 7[c4000] -> 6[c3000] via P2P/IPC/read
+sciml2301:1723172:1723259 [0] NCCL INFO Connected all rings
+sciml2301:1723175:1723260 [3] NCCL INFO Channel 01/0 : 3[c4000] -> 2[c3000] via P2P/IPC/read
+sciml2302:1383787:1383866 [3] NCCL INFO Channel 01/0 : 7[c4000] -> 6[c3000] via P2P/IPC/read
+sciml2302:1383786:1383871 [2] NCCL INFO Channel 00/0 : 6[c3000] -> 5[84000] via P2P/IPC
+sciml2301:1723173:1723261 [1] NCCL INFO Channel 00/0 : 1[84000] -> 0[83000] via P2P/IPC/read
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2301:1723174:1723262 [2] NCCL INFO Channel 00/0 : 2[c3000] -> 1[84000] via P2P/IPC
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2302:1383785:1383865 [1] NCCL INFO Channel 00/0 : 5[84000] -> 4[83000] via P2P/IPC/read
+sciml2302:1383786:1383871 [2] NCCL INFO Channel 01/0 : 6[c3000] -> 5[84000] via P2P/IPC
+sciml2301:1723173:1723261 [1] NCCL INFO Channel 01/0 : 1[84000] -> 0[83000] via P2P/IPC/read
+sciml2301:1723174:1723262 [2] NCCL INFO Channel 01/0 : 2[c3000] -> 1[84000] via P2P/IPC
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2302:1383785:1383865 [1] NCCL INFO Channel 01/0 : 5[84000] -> 4[83000] via P2P/IPC/read
+sciml2302:1383787:1383866 [3] NCCL INFO Connected all trees
+sciml2302:1383787:1383866 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1383787:1383866 [3] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:1723175:1723260 [3] NCCL INFO Connected all trees
+sciml2301:1723175:1723260 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1723175:1723260 [3] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:1723174:1723262 [2] NCCL INFO Connected all trees
+sciml2301:1723174:1723262 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1723174:1723262 [2] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2302:1383786:1383871 [2] NCCL INFO Connected all trees
+sciml2302:1383786:1383871 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1383786:1383871 [2] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1383784:1383867 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2301:1723172:1723259 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2302:1383785:1383865 [1] NCCL INFO Connected all trees
+sciml2302:1383785:1383865 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1383785:1383865 [1] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:1723173:1723261 [1] NCCL INFO Connected all trees
+sciml2301:1723173:1723261 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1723173:1723261 [1] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:1723172:1723259 [0] NCCL INFO Connected all trees
+sciml2301:1723172:1723259 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1723172:1723259 [0] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1383784:1383867 [0] NCCL INFO Connected all trees
+sciml2302:1383784:1383867 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1383784:1383867 [0] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1383787:1383866 [3] NCCL INFO comm 0x10058880 rank 7 nranks 8 cudaDev 3 busId c4000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2302:1383786:1383871 [2] NCCL INFO comm 0x10c12870 rank 6 nranks 8 cudaDev 2 busId c3000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2302:1383785:1383865 [1] NCCL INFO comm 0xf7869d0 rank 5 nranks 8 cudaDev 1 busId 84000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2302:1383784:1383867 [0] NCCL INFO comm 0x14b98760 rank 4 nranks 8 cudaDev 0 busId 83000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2301:1723172:1723259 [0] NCCL INFO comm 0x1217f7d0 rank 0 nranks 8 cudaDev 0 busId 83000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2301:1723174:1723262 [2] NCCL INFO comm 0xf0972b0 rank 2 nranks 8 cudaDev 2 busId c3000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2301:1723175:1723260 [3] NCCL INFO comm 0xfad4400 rank 3 nranks 8 cudaDev 3 busId c4000 commId 0x7bafc03d830f3aab - Init COMPLETE
+sciml2301:1723173:1723261 [1] NCCL INFO comm 0xed9f0d0 rank 1 nranks 8 cudaDev 1 busId 84000 commId 0x7bafc03d830f3aab - Init COMPLETE
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2050.197509765625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2055.149658203125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2063.350830078125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2063.73779296875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2064.26318359375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2060.47021484375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2060.758056640625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2065.013671875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2080.49755859375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2081.42431640625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2080.232421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2081.75927734375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2080.296875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2080.9482421875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2082.109375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2082.493408203125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2095.342529296875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2095.072265625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2100.547607421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2100.8720703125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2104.393798828125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2104.10302734375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2104.258544921875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2104.397705078125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2075.707275390625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2075.890625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2085.169189453125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2085.726318359375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2076.297119140625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2081.10888671875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2076.514404296875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2077.673583984375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2061.029296875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2061.66845703125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2061.896728515625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2062.060546875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2061.96337890625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2061.983642578125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2061.982666015625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2069.230712890625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2066.783203125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2069.411865234375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2071.454833984375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2064.238525390625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2070.82177734375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2078.0625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2077.371337890625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2077.53515625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2121.195556640625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2121.398193359375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2134.01904296875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2136.8740234375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2137.7158203125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2133.529541015625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2133.645263671875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2128.43115234375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2075.051025390625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2067.67626953125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2075.236328125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2075.47998046875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2076.3310546875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2081.33740234375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2076.518310546875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2076.749755859375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2070.24853515625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2064.98095703125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2077.885498046875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2077.83837890625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2076.76513671875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2076.72021484375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2076.685302734375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2076.72412109375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2055.933837890625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2067.8359375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2061.26806640625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2061.0673828125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2065.02099609375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2072.73974609375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2071.258056640625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2071.3994140625
+STAGE:2024-10-24 00:13:02 1383784:1383784 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1383787:1383787 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1723172:1723172 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1723174:1723174 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1723173:1723173 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1723175:1723175 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1383785:1383785 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:02 1383786:1383786 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:04 1383787:1383787 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1723173:1723173 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1723172:1723172 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1723174:1723174 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1383787:1383787 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:04 1723173:1723173 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:04 1723174:1723174 ActivityProfilerController.cpp:322] Completed Stage: Post ProcessingSTAGE:2024-10-24 00:13:04 1723172:1723172 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+
+STAGE:2024-10-24 00:13:04 1383786:1383786 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1383784:1383784 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1723175:1723175 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1383785:1383785 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:04 1383786:1383786 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:04 1383785:1383785 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:04 1723175:1723175 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:04 1383784:1383784 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1717.1710205078125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1717.362548828125
+STAGE:2024-10-24 00:13:05 1723173:1723173 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:05 1723172:1723172 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1724.6678466796875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1719.2376708984375
+STAGE:2024-10-24 00:13:05 1723175:1723175 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:05 1723174:1723174 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1713.73046875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1722.2054443359375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1736.797607421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1724.69921875
+STAGE:2024-10-24 00:13:05 1383786:1383786 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-24 00:13:05 1383784:1383784 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-10-24 00:13:05 1383785:1383785 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:05 1383787:1383787 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:07 1723173:1723173 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:07 1723174:1723174 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-10-24 00:13:07 1723172:1723172 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-10-24 00:13:07 1723175:1723175 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:07 1383784:1383784 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-10-24 00:13:07 1383787:1383787 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-10-24 00:13:07 1383785:1383785 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:07 1383786:1383786 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:07 1723173:1723173 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:07 1723174:1723174 ActivityProfilerController.cpp:322] Completed Stage: Post ProcessingSTAGE:2024-10-24 00:13:07 1723172:1723172 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+
+STAGE:2024-10-24 00:13:07 1383784:1383784 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:07 1723175:1723175 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:07 1383785:1383785 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:07 1383787:1383787 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:07 1383786:1383786 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1779.694091796875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1748.3701171875[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1748.67578125
+
+STAGE:2024-10-24 00:13:08 1383785:1383785 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:08 1383786:1383786 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:08 1723172:1723172 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1779.422119140625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1778.69873046875
+STAGE:2024-10-24 00:13:08 1723173:1723173 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:08 1723174:1723174 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1779.4747314453125
+STAGE:2024-10-24 00:13:08 1723175:1723175 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1749.115234375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1748.2191162109375
+STAGE:2024-10-24 00:13:08 1383784:1383784 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:08 1383787:1383787 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:09 1723173:1723173 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1723175:1723175 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1723174:1723174 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1383785:1383785 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1383784:1383784 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1723172:1723172 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1383787:1383787 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1383786:1383786 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:09 1723175:1723175 ActivityProfilerController.cpp:322] Completed Stage: Post ProcessingSTAGE:2024-10-24 00:13:09 1723174:1723174 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+
+STAGE:2024-10-24 00:13:09 1383784:1383784 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:09 1723173:1723173 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:09 1723172:1723172 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:09 1383785:1383785 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:09 1383787:1383787 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:09 1383786:1383786 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1691.547119140625[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1691.228759765625
+
+STAGE:2024-10-24 00:13:10 1383787:1383787 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-24 00:13:10 1383784:1383784 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1729.5069580078125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1715.2005615234375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1712.1861572265625
+STAGE:2024-10-24 00:13:10 1723172:1723172 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-24 00:13:10 1723175:1723175 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-10-24 00:13:10 1723173:1723173 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1713.817626953125
+STAGE:2024-10-24 00:13:10 1723174:1723174 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1756.5791015625
+STAGE:2024-10-24 00:13:10 1383786:1383786 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1756.07177734375
+STAGE:2024-10-24 00:13:10 1383785:1383785 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:12 1383784:1383784 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1723174:1723174 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1723172:1723172 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1383785:1383785 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1723173:1723173 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1383787:1383787 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1383786:1383786 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1723172:1723172 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1383784:1383784 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1723174:1723174 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1723173:1723173 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1383785:1383785 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1723175:1723175 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:12 1383787:1383787 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1383786:1383786 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:12 1723175:1723175 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1688.4365234375
+STAGE:2024-10-24 00:13:13 1383785:1383785 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1712.6956787109375
+STAGE:2024-10-24 00:13:13 1383786:1383786 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1757.4417724609375[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1757.1151123046875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1755.6583251953125
+
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1755.3192138671875
+STAGE:2024-10-24 00:13:13 1723172:1723172 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-24 00:13:13 1723173:1723173 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-10-24 00:13:13 1723174:1723174 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-10-24 00:13:13 1723175:1723175 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1791.7498779296875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1793.1199951171875
+STAGE:2024-10-24 00:13:13 1383784:1383784 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:13 1383787:1383787 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-24 00:13:15 1723175:1723175 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:15 1723174:1723174 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:15 1723172:1723172 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:15 1723173:1723173 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-24 00:13:15 1723175:1723175 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:15 1723174:1723174 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:15 1723172:1723172 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-24 00:13:15 1723173:1723173 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+---first error
+[sciml2302.jlab.org] Rank 4, Local Rank 0
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+---first error
+[sciml2302.jlab.org] Rank 7, Local Rank 3
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+---first error
+[sciml2302.jlab.org] Rank 5, Local Rank 1
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+---first error
+[sciml2302.jlab.org] Rank 6, Local Rank 2
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+sciml2302:1383784:1383874 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+sciml2302:1383785:1383875 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+sciml2302:1383786:1383876 [2] NCCL INFO [Service thread] Connection closed by localRank 2
+sciml2302:1383787:1383873 [3] NCCL INFO [Service thread] Connection closed by localRank 3
+sciml2302:1383785:1383785 [1] NCCL INFO comm 0xf7869d0 rank 5 nranks 8 cudaDev 1 busId 84000 - Abort COMPLETE
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7f164c3c6050>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+sciml2302:1383784:1383784 [0] NCCL INFO comm 0x14b98760 rank 4 nranks 8 cudaDev 0 busId 83000 - Abort COMPLETE
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7ff2b63c6050>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+sciml2302:1383786:1383786 [2] NCCL INFO comm 0x10c12870 rank 6 nranks 8 cudaDev 2 busId c3000 - Abort COMPLETE
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7fb0ec8be050>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+sciml2302:1383787:1383787 [3] NCCL INFO comm 0x10058880 rank 7 nranks 8 cudaDev 3 busId c4000 - Abort COMPLETE
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7fa95538e050>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/yifan_sun/py-torch/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1725.04248046875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 1741.8095703125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 4159.693408203125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1722.67578125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 1738.932568359375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 4159.508837890625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1724.8779296875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 1738.7573486328124
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 4160.52734375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1723.82177734375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 1738.17900390625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 4161.16962890625
+sciml2301:1723172:1723268 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+sciml2301:1723175:1723267 [3] NCCL INFO [Service thread] Connection closed by localRank 3
+sciml2301:1723173:1723270 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+sciml2301:1723174:1723269 [2] NCCL INFO [Service thread] Connection closed by localRank 2
+sciml2301:1723172:1723172 [0] NCCL INFO comm 0x1217f7d0 rank 0 nranks 8 cudaDev 0 busId 83000 - Abort COMPLETE
+sciml2301:1723175:1723175 [3] NCCL INFO comm 0xfad4400 rank 3 nranks 8 cudaDev 3 busId c4000 - Abort COMPLETE
+sciml2301:1723173:1723173 [1] NCCL INFO comm 0xed9f0d0 rank 1 nranks 8 cudaDev 1 busId 84000 - Abort COMPLETE
+sciml2301:1723174:1723174 [2] NCCL INFO comm 0xf0972b0 rank 2 nranks 8 cudaDev 2 busId c3000 - Abort COMPLETE
+[2024-10-24 00:13:20,578] torch.distributed.elastic.agent.server.api: [INFO] [default] worker group successfully finished. Waiting 300 seconds for other agents to finish.
+[2024-10-24 00:13:20,578] torch.distributed.elastic.agent.server.api: [INFO] Local worker group finished (WorkerState.SUCCEEDED). Waiting 300 seconds for other agents to finish
+[2024-10-24 00:13:20,579] torch.distributed.elastic.agent.server.api: [INFO] [default] worker group successfully finished. Waiting 300 seconds for other agents to finish.
+[2024-10-24 00:13:20,579] torch.distributed.elastic.agent.server.api: [INFO] Local worker group finished (WorkerState.SUCCEEDED). Waiting 300 seconds for other agents to finish
+[2024-10-24 00:13:20,580] torch.distributed.elastic.agent.server.api: [INFO] Done waiting for other agents. Elapsed: 0.0009543895721435547 seconds
+[2024-10-24 00:13:20,580] torch.distributed.elastic.agent.server.api: [INFO] Done waiting for other agents. Elapsed: 0.001440286636352539 seconds
