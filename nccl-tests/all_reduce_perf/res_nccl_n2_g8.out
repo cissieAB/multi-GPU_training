@@ -1,0 +1,346 @@
++ module load mpi/openmpi-x86_64
+/var/spool/slurm/d/job31604975/slurm_script: line 11: module: command not found
++ env
++ grep SLURM
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=4(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31604975
+SLURM_TASK_PID=1734212
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/yifan_sun
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1729758754
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1729760554
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=31604975
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+SLURM_NTASKS=8
+SLURM_TOPOLOGY_ADDR=sciml2301
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=409600
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NPROCS=8
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+SLURM_JOB_ID=31604975
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=nccl-test
+SLURM_NTASKS_PER_NODE=4
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
++ export NCCL_HOME=/home/xmei/projects/nccl/build
++ NCCL_HOME=/home/xmei/projects/nccl/build
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export NCCL_IB_DISABLE=0
++ NCCL_IB_DISABLE=0
++ export NCCL_NET_GDR_LEVEL=2
++ NCCL_NET_GDR_LEVEL=2
++ echo -e '\nNCCL env var'
+
+NCCL env var
++ grep NCCL
++ env
+NCCL_NET_GDR_LEVEL=2
+NCCL_HOME=/home/xmei/projects/nccl/build
+NCCL_DEBUG=INFO
+NCCL_IB_DISABLE=0
++ echo -e '\nMPI env var'
+
+MPI env var
++ grep MPI
++ env
+MPI_LIB=/usr/lib64/openmpi/lib
+MPI_COMPILER=openmpi-x86_64
+MPI_INCLUDE=/usr/include/openmpi-x86_64
+I_MPI_HYDRA_BOOTSTRAP_EXEC_EXTRA_ARGS=--external-launcher
+MPI_FORTRAN_MOD_DIR=/usr/lib64/gfortran/modules/openmpi
+MPI_HOME=/usr/lib64/openmpi
+MPI_SYSCONFIG=/etc/openmpi-x86_64
+MPI_SUFFIX=_openmpi
+MPI_BIN=/usr/lib64/openmpi/bin
+MPI_PYTHON3_SITEARCH=/usr/lib64/python3.9/site-packages/openmpi
+MPI_MAN=/usr/share/man/openmpi-x86_64
+OMPI_MCA_plm_slurm_args=--external-launcher
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/home/xmei/projects/nccl/build/lib:/usr/lib64/openmpi/lib
++ LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/home/xmei/projects/nccl/build/lib:/usr/lib64/openmpi/lib
++ export WKDIR=/home/xmei/projects/nccl-tests
++ WKDIR=/home/xmei/projects/nccl-tests
++ mpirun -np 8 /home/xmei/projects/nccl-tests/build/all_reduce_perf -b 128M -e 2G -f 2 -g 1
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   sciml2301
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+# nThread 1 nGpus 1 minBytes 134217728 maxBytes 2147483648 step: 2(factor) warmup iters: 5 iters: 20 agg iters: 1 validation: 1 graph: 0
+#
+# Using devices
+#  Rank  0 Group  0 Pid 1734232 on  sciml2301 device  0 [0x83] NVIDIA A100 80GB PCIe
+#  Rank  1 Group  0 Pid 1734233 on  sciml2301 device  1 [0x84] NVIDIA A100 80GB PCIe
+#  Rank  2 Group  0 Pid 1734234 on  sciml2301 device  2 [0xc3] NVIDIA A100 80GB PCIe
+#  Rank  3 Group  0 Pid 1734235 on  sciml2301 device  3 [0xc4] NVIDIA A100 80GB PCIe
+#  Rank  4 Group  0 Pid 1402120 on  sciml2302 device  0 [0x83] NVIDIA A100 80GB PCIe
+#  Rank  5 Group  0 Pid 1402121 on  sciml2302 device  1 [0x84] NVIDIA A100 80GB PCIe
+#  Rank  6 Group  0 Pid 1402122 on  sciml2302 device  2 [0xc3] NVIDIA A100 80GB PCIe
+#  Rank  7 Group  0 Pid 1402123 on  sciml2302 device  3 [0xc4] NVIDIA A100 80GB PCIe
+sciml2301:1734232:1734232 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1734232:1734232 [0] NCCL INFO cudaDriverVersion 12060
+sciml2301:1734232:1734232 [0] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2301:1734234:1734234 [2] NCCL INFO cudaDriverVersion 12060
+sciml2302:1402122:1402122 [2] NCCL INFO cudaDriverVersion 12060
+sciml2301:1734235:1734235 [3] NCCL INFO cudaDriverVersion 12060
+sciml2302:1402123:1402123 [3] NCCL INFO cudaDriverVersion 12060
+sciml2301:1734233:1734233 [1] NCCL INFO cudaDriverVersion 12060
+sciml2302:1402121:1402121 [1] NCCL INFO cudaDriverVersion 12060
+sciml2302:1402120:1402120 [0] NCCL INFO cudaDriverVersion 12060
+sciml2301:1734235:1734235 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1734235:1734235 [3] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2301:1734233:1734233 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1734233:1734233 [1] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2301:1734234:1734234 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:1734234:1734234 [2] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2302:1402122:1402122 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1402122:1402122 [2] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2302:1402123:1402123 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1402123:1402123 [3] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2302:1402120:1402120 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1402120:1402120 [0] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2302:1402121:1402121 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1402121:1402121 [1] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2301:1734232:1734273 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2301:1734232:1734273 [0] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:1734235:1734274 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2301:1734235:1734274 [3] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:1734233:1734275 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2301:1734233:1734275 [1] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:1734234:1734276 [2] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2301:1734234:1734276 [2] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2302:1402122:1402160 [2] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2302:1402122:1402160 [2] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:1734235:1734274 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1734233:1734275 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1734235:1734274 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2301:1734235:1734274 [3] NCCL INFO Using network IB
+sciml2301:1734233:1734275 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2301:1734233:1734275 [1] NCCL INFO Using network IB
+sciml2301:1734232:1734273 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:1734234:1734276 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2302:1402121:1402163 [1] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2302:1402121:1402163 [1] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:1734234:1734276 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2301:1734234:1734276 [2] NCCL INFO Using network IB
+sciml2301:1734232:1734273 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2301:1734232:1734273 [0] NCCL INFO Using network IB
+sciml2302:1402123:1402161 [3] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2302:1402123:1402161 [3] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2302:1402120:1402162 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2302:1402120:1402162 [0] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2302:1402123:1402161 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1402120:1402162 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1402123:1402161 [3] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2302:1402123:1402161 [3] NCCL INFO Using network IB
+sciml2302:1402120:1402162 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2302:1402120:1402162 [0] NCCL INFO Using network IB
+sciml2302:1402122:1402160 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1402122:1402160 [2] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2302:1402122:1402160 [2] NCCL INFO Using network IB
+sciml2302:1402121:1402163 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1402121:1402163 [1] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2302:1402121:1402163 [1] NCCL INFO Using network IB
+sciml2301:1734235:1734274 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2301:1734235:1734274 [3] NCCL INFO ncclCommInitRank comm 0x3e38600 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c4000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2302:1402120:1402162 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2302:1402120:1402162 [0] NCCL INFO ncclCommInitRank comm 0x2747df0 rank 4 nranks 8 cudaDev 0 nvmlDev 0 busId 83000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2301:1734234:1734276 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2301:1734234:1734276 [2] NCCL INFO ncclCommInitRank comm 0x41034b0 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c3000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2302:1402123:1402161 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2302:1402123:1402161 [3] NCCL INFO ncclCommInitRank comm 0x33c71d0 rank 7 nranks 8 cudaDev 3 nvmlDev 3 busId c4000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2301:1734233:1734275 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2301:1734233:1734275 [1] NCCL INFO ncclCommInitRank comm 0x2d0a6e0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 84000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2301:1734232:1734273 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2301:1734232:1734273 [0] NCCL INFO ncclCommInitRank comm 0x267cf60 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 83000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2302:1402121:1402163 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2302:1402121:1402163 [1] NCCL INFO ncclCommInitRank comm 0x37d38f0 rank 5 nranks 8 cudaDev 1 nvmlDev 1 busId 84000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2302:1402122:1402160 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2302:1402122:1402160 [2] NCCL INFO ncclCommInitRank comm 0x381e830 rank 6 nranks 8 cudaDev 2 nvmlDev 2 busId c3000 commId 0x8d2646ba90fdb5d4 - Init START
+sciml2301:1734234:1734276 [2] NCCL INFO Bootstrap timings total 0.019489 (create 0.000062, send 0.000248, recv 0.000415, ring 0.017313, delay 0.000001)
+sciml2301:1734233:1734275 [1] NCCL INFO Bootstrap timings total 0.017807 (create 0.000039, send 0.000116, recv 0.000141, ring 0.013943, delay 0.000000)
+sciml2301:1734235:1734274 [3] NCCL INFO Bootstrap timings total 0.021312 (create 0.000060, send 0.001022, recv 0.001254, ring 0.014567, delay 0.000000)
+sciml2301:1734232:1734273 [0] NCCL INFO Bootstrap timings total 0.015122 (create 0.000091, send 0.000294, recv 0.000441, ring 0.013704, delay 0.000000)
+sciml2302:1402122:1402160 [2] NCCL INFO Bootstrap timings total 0.001511 (create 0.000040, send 0.000293, recv 0.000451, ring 0.000411, delay 0.000001)
+sciml2302:1402123:1402161 [3] NCCL INFO Bootstrap timings total 0.018596 (create 0.000107, send 0.000273, recv 0.003933, ring 0.000407, delay 0.000001)
+sciml2302:1402121:1402163 [1] NCCL INFO Bootstrap timings total 0.012680 (create 0.000048, send 0.000234, recv 0.011429, ring 0.000758, delay 0.000001)
+sciml2302:1402120:1402162 [0] NCCL INFO Bootstrap timings total 0.019960 (create 0.000093, send 0.000440, recv 0.007297, ring 0.011798, delay 0.000001)
+sciml2301:1734232:1734273 [0] NCCL INFO Setting affinity for GPU 0 to 11110000
+sciml2301:1734232:1734273 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2301:1734235:1734274 [3] NCCL INFO Setting affinity for GPU 3 to 11110000
+sciml2301:1734235:1734274 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2301:1734234:1734276 [2] NCCL INFO Setting affinity for GPU 2 to 11110000
+sciml2301:1734234:1734276 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2301:1734233:1734275 [1] NCCL INFO Setting affinity for GPU 1 to 11110000
+sciml2301:1734233:1734275 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2302:1402121:1402163 [1] NCCL INFO Setting affinity for GPU 1 to 11110000
+sciml2302:1402121:1402163 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2302:1402123:1402161 [3] NCCL INFO Setting affinity for GPU 3 to 11110000
+sciml2302:1402123:1402161 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2302:1402122:1402160 [2] NCCL INFO Setting affinity for GPU 2 to 11110000
+sciml2302:1402122:1402160 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2302:1402120:1402162 [0] NCCL INFO Setting affinity for GPU 0 to 11110000
+sciml2302:1402120:1402162 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2302:1402121:1402163 [1] NCCL INFO comm 0x37d38f0 rank 5 nRanks 8 nNodes 2 localRanks 4 localRank 1 MNNVL 0
+sciml2302:1402121:1402163 [1] NCCL INFO Trees [0] 6/-1/-1->5->4 [1] 6/-1/-1->5->4
+sciml2302:1402121:1402163 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1402121:1402176 [1] NCCL INFO [Proxy Service] Device 1 CPU core 20
+sciml2302:1402121:1402177 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 20
+sciml2301:1734232:1734273 [0] NCCL INFO comm 0x267cf60 rank 0 nRanks 8 nNodes 2 localRanks 4 localRank 0 MNNVL 0
+sciml2301:1734232:1734273 [0] NCCL INFO Channel 00/02 : 0 1 2 3 4 5 6 7
+sciml2301:1734232:1734273 [0] NCCL INFO Channel 01/02 : 0 1 2 3 4 5 6 7
+sciml2301:1734232:1734273 [0] NCCL INFO Trees [0] 1/4/-1->0->-1 [1] 1/-1/-1->0->4
+sciml2301:1734232:1734273 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1734235:1734274 [3] NCCL INFO comm 0x3e38600 rank 3 nRanks 8 nNodes 2 localRanks 4 localRank 3 MNNVL 0
+sciml2301:1734235:1734274 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2
+sciml2301:1734235:1734274 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1734234:1734276 [2] NCCL INFO comm 0x41034b0 rank 2 nRanks 8 nNodes 2 localRanks 4 localRank 2 MNNVL 0
+sciml2301:1734234:1734276 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+sciml2301:1734234:1734276 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1734233:1734275 [1] NCCL INFO comm 0x2d0a6e0 rank 1 nRanks 8 nNodes 2 localRanks 4 localRank 1 MNNVL 0
+sciml2302:1402122:1402160 [2] NCCL INFO comm 0x381e830 rank 6 nRanks 8 nNodes 2 localRanks 4 localRank 2 MNNVL 0
+sciml2302:1402123:1402161 [3] NCCL INFO comm 0x33c71d0 rank 7 nRanks 8 nNodes 2 localRanks 4 localRank 3 MNNVL 0
+sciml2302:1402123:1402161 [3] NCCL INFO Trees [0] -1/-1/-1->7->6 [1] -1/-1/-1->7->6
+sciml2302:1402123:1402161 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1402122:1402160 [2] NCCL INFO Trees [0] 7/-1/-1->6->5 [1] 7/-1/-1->6->5
+sciml2302:1402122:1402160 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1734233:1734275 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+sciml2301:1734233:1734275 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1402123:1402178 [3] NCCL INFO [Proxy Service] Device 3 CPU core 20
+sciml2302:1402120:1402162 [0] NCCL INFO comm 0x2747df0 rank 4 nRanks 8 nNodes 2 localRanks 4 localRank 0 MNNVL 0
+sciml2302:1402122:1402180 [2] NCCL INFO [Proxy Service] Device 2 CPU core 20
+sciml2302:1402120:1402162 [0] NCCL INFO Trees [0] 5/-1/-1->4->0 [1] 5/0/-1->4->-1
+sciml2302:1402122:1402181 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 20
+sciml2302:1402120:1402162 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:1734232:1734294 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 16
+sciml2301:1734232:1734289 [0] NCCL INFO [Proxy Service] Device 0 CPU core 16
+sciml2301:1734235:1734293 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 24
+sciml2301:1734235:1734290 [3] NCCL INFO [Proxy Service] Device 3 CPU core 24
+sciml2301:1734234:1734291 [2] NCCL INFO [Proxy Service] Device 2 CPU core 20
+sciml2301:1734233:1734295 [1] NCCL INFO [Proxy Service] Device 1 CPU core 24
+sciml2301:1734233:1734296 [1] NCCL INFO [Proxy Service UDS] Device 1 CPU core 24
+sciml2301:1734234:1734292 [2] NCCL INFO [Proxy Service UDS] Device 2 CPU core 20
+sciml2302:1402121:1402163 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1402121:1402163 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2302:1402120:1402182 [0] NCCL INFO [Proxy Service] Device 0 CPU core 20
+sciml2302:1402123:1402161 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1402123:1402161 [3] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2302:1402122:1402160 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1402122:1402160 [2] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2301:1734234:1734276 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1734234:1734276 [2] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2301:1734233:1734275 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1734233:1734275 [1] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2301:1734235:1734274 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1734235:1734274 [3] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2301:1734232:1734273 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:1734232:1734273 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2301:1734232:1734273 [0] NCCL INFO CC Off, Multi-GPU CC Off, workFifoBytes 1048576
+sciml2301:1734234:1734276 [2] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2301:1734234:1734276 [2] NCCL INFO ncclCommInitRank comm 0x41034b0 rank 2 nranks 8 cudaDev 2 nvmlDev 2 busId c3000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2301:1734234:1734276 [2] NCCL INFO Init timings - ncclCommInitRank: rank 2 nranks 8 total 0.33 (kernels 0.12, alloc 0.05, bootstrap 0.02, allgathers 0.07, topo 0.07, graphs 0.00, connections 0.00, rest 0.00)
+sciml2301:1734232:1734273 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2301:1734232:1734273 [0] NCCL INFO ncclCommInitRank comm 0x267cf60 rank 0 nranks 8 cudaDev 0 nvmlDev 0 busId 83000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2301:1734232:1734273 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 8 total 0.35 (kernels 0.12, alloc 0.07, bootstrap 0.02, allgathers 0.07, topo 0.07, graphs 0.00, connections 0.00, rest 0.00)
+sciml2301:1734235:1734274 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2301:1734235:1734274 [3] NCCL INFO ncclCommInitRank comm 0x3e38600 rank 3 nranks 8 cudaDev 3 nvmlDev 3 busId c4000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2301:1734235:1734274 [3] NCCL INFO Init timings - ncclCommInitRank: rank 3 nranks 8 total 0.33 (kernels 0.12, alloc 0.05, bootstrap 0.02, allgathers 0.07, topo 0.07, graphs 0.00, connections 0.00, rest 0.00)
+#
+#                                                              out-of-place                       in-place          
+#       size         count      type   redop    root     time   algbw   busbw #wrong     time   algbw   busbw #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)            (us)  (GB/s)  (GB/s)       
+sciml2302:1402120:1402162 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1402120:1402162 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 1 p2p channels per peer
+sciml2302:1402122:1402160 [2] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2302:1402122:1402160 [2] NCCL INFO ncclCommInitRank comm 0x381e830 rank 6 nranks 8 cudaDev 2 nvmlDev 2 busId c3000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2302:1402122:1402160 [2] NCCL INFO Init timings - ncclCommInitRank: rank 6 nranks 8 total 0.33 (kernels 0.12, alloc 0.06, bootstrap 0.00, allgathers 0.01, topo 0.11, graphs 0.01, connections 0.00, rest 0.00)
+sciml2302:1402120:1402162 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2302:1402120:1402162 [0] NCCL INFO ncclCommInitRank comm 0x2747df0 rank 4 nranks 8 cudaDev 0 nvmlDev 0 busId 83000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2302:1402120:1402162 [0] NCCL INFO Init timings - ncclCommInitRank: rank 4 nranks 8 total 0.33 (kernels 0.12, alloc 0.04, bootstrap 0.02, allgathers 0.03, topo 0.11, graphs 0.00, connections 0.00, rest 0.00)
+sciml2302:1402120:1402183 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 24
+sciml2302:1402121:1402163 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2302:1402121:1402163 [1] NCCL INFO ncclCommInitRank comm 0x37d38f0 rank 5 nranks 8 cudaDev 1 nvmlDev 1 busId 84000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2302:1402121:1402163 [1] NCCL INFO Init timings - ncclCommInitRank: rank 5 nranks 8 total 0.33 (kernels 0.12, alloc 0.05, bootstrap 0.01, allgathers 0.03, topo 0.11, graphs 0.00, connections 0.00, rest 0.01)
+sciml2302:1402123:1402161 [3] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2302:1402123:1402161 [3] NCCL INFO ncclCommInitRank comm 0x33c71d0 rank 7 nranks 8 cudaDev 3 nvmlDev 3 busId c4000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2302:1402123:1402161 [3] NCCL INFO Init timings - ncclCommInitRank: rank 7 nranks 8 total 0.33 (kernels 0.12, alloc 0.04, bootstrap 0.02, allgathers 0.03, topo 0.11, graphs 0.00, connections 0.00, rest 0.00)
+sciml2302:1402123:1402179 [3] NCCL INFO [Proxy Service UDS] Device 3 CPU core 24
+sciml2301:1734233:1734275 [1] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2301:1734233:1734275 [1] NCCL INFO ncclCommInitRank comm 0x2d0a6e0 rank 1 nranks 8 cudaDev 1 nvmlDev 1 busId 84000 commId 0x8d2646ba90fdb5d4 - Init COMPLETE
+sciml2301:1734233:1734275 [1] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 8 total 0.35 (kernels 0.12, alloc 0.05, bootstrap 0.02, allgathers 0.07, topo 0.07, graphs 0.00, connections 0.00, rest 0.01)
+sciml2301:1734232:1734299 [0] NCCL INFO NCCL_NET_GDR_LEVEL set by environment to PXB
+sciml2302:1402120:1402186 [0] NCCL INFO NCCL_NET_GDR_LEVEL set by environment to PXB
+sciml2302:1402123:1402185 [3] NCCL INFO NCCL_NET_GDR_LEVEL set by environment to PXB
+sciml2302:1402123:1402185 [3] NCCL INFO Channel 00/0 : 7[3] -> 0[0] [send] via NET/IB/0
+sciml2302:1402123:1402185 [3] NCCL INFO Channel 01/0 : 7[3] -> 0[0] [send] via NET/IB/0
+sciml2302:1402120:1402189 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 24
+sciml2302:1402123:1402188 [3] NCCL INFO [Proxy Progress] Device 3 CPU core 24
+sciml2302:1402120:1402186 [0] NCCL INFO Channel 00/0 : 3[3] -> 4[0] [receive] via NET/IB/0
+sciml2302:1402120:1402186 [0] NCCL INFO Channel 01/0 : 3[3] -> 4[0] [receive] via NET/IB/0
+sciml2302:1402120:1402186 [0] NCCL INFO Channel 00/0 : 4[0] -> 5[1] via P2P/CUMEM/read
+sciml2302:1402120:1402186 [0] NCCL INFO Channel 01/0 : 4[0] -> 5[1] via P2P/CUMEM/read
+sciml2302:1402121:1402184 [1] NCCL INFO Channel 00 : 5[1] -> 6[2] via SHM/direct/direct
+sciml2301:1734233:1734297 [1] NCCL INFO Channel 00 : 1[1] -> 2[2] via SHM/direct/direct
+sciml2301:1734232:1734299 [0] NCCL INFO Channel 00/0 : 7[3] -> 0[0] [receive] via NET/IB/0
+sciml2301:1734232:1734299 [0] NCCL INFO Channel 01/0 : 7[3] -> 0[0] [receive] via NET/IB/0
+sciml2301:1734232:1734299 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[1] via P2P/CUMEM/read
+sciml2301:1734232:1734299 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[1] via P2P/CUMEM/read
+sciml2301:1734232:1734301 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 24
+sciml2301:1734235:1734298 [3] NCCL INFO NCCL_NET_GDR_LEVEL set by environment to PXB
+sciml2301:1734233:1734297 [1] NCCL INFO Channel 01 : 1[1] -> 2[2] via SHM/direct/direct
+sciml2301:1734234:1734300 [2] NCCL INFO Channel 00/0 : 2[2] -> 3[3] via P2P/CUMEM/read
+sciml2302:1402121:1402184 [1] NCCL INFO Channel 01 : 5[1] -> 6[2] via SHM/direct/direct
+sciml2301:1734235:1734302 [3] NCCL INFO [Proxy Progress] Device 3 CPU core 24
+sciml2301:1734234:1734300 [2] NCCL INFO Channel 01/0 : 2[2] -> 3[3] via P2P/CUMEM/read
+sciml2301:1734235:1734298 [3] NCCL INFO Channel 00/0 : 3[3] -> 4[0] [send] via NET/IB/0
+sciml2301:1734235:1734298 [3] NCCL INFO Channel 01/0 : 3[3] -> 4[0] [send] via NET/IB/0
+sciml2302:1402122:1402187 [2] NCCL INFO Channel 00/0 : 6[2] -> 7[3] via P2P/CUMEM/read
+sciml2302:1402122:1402187 [2] NCCL INFO Channel 01/0 : 6[2] -> 7[3] via P2P/CUMEM/read
+sciml2301:1734234:1734300 [2] NCCL INFO Connected all rings
+sciml2301:1734235:1734298 [3] NCCL INFO Connected all rings
+sciml2302:1402120:1402186 [0] NCCL INFO Connected all rings
+sciml2302:1402121:1402184 [1] NCCL INFO Connected all rings
+sciml2301:1734233:1734297 [1] NCCL INFO Connected all rings
+sciml2301:1734232:1734299 [0] NCCL INFO Connected all rings
+sciml2302:1402123:1402185 [3] NCCL INFO Connected all rings
+sciml2302:1402122:1402187 [2] NCCL INFO Connected all rings
+[sciml2301.jlab.org:1734222] 7 more processes have sent help message help-mpi-btl-openib.txt / error in device init
+[sciml2301.jlab.org:1734222] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+   134217728      33554432     float     sum      -1    60911    2.20    3.86      0    60838    2.21    3.86      0
+   268435456      67108864     float     sum      -1   122187    2.20    3.84      0   122285    2.20    3.84      0
+   536870912     134217728     float     sum      -1   243580    2.20    3.86      0   243772    2.20    3.85      0
+  1073741824     268435456     float     sum      -1   488147    2.20    3.85      0   487985    2.20    3.85      0
+  2147483648     536870912     float     sum      -1   980115    2.19    3.83      0   980576    2.19    3.83      0
+sciml2301:1734233:1734233 [1] NCCL INFO comm 0x2d0a6e0 rank 1 nranks 8 cudaDev 1 busId 84000 - Destroy COMPLETE
+sciml2301:1734235:1734235 [3] NCCL INFO comm 0x3e38600 rank 3 nranks 8 cudaDev 3 busId c4000 - Destroy COMPLETE
+sciml2301:1734234:1734234 [2] NCCL INFO comm 0x41034b0 rank 2 nranks 8 cudaDev 2 busId c3000 - Destroy COMPLETE
+sciml2302:1402121:1402121 [1] NCCL INFO comm 0x37d38f0 rank 5 nranks 8 cudaDev 1 busId 84000 - Destroy COMPLETE
+sciml2301:1734232:1734232 [0] NCCL INFO comm 0x267cf60 rank 0 nranks 8 cudaDev 0 busId 83000 - Destroy COMPLETE
+# Out of bounds values : 0 OK
+# Avg bus bandwidth    : 3.84811 
+#
+sciml2302:1402122:1402122 [2] NCCL INFO comm 0x381e830 rank 6 nranks 8 cudaDev 2 busId c3000 - Destroy COMPLETE
+sciml2302:1402120:1402120 [0] NCCL INFO comm 0x2747df0 rank 4 nranks 8 cudaDev 0 busId 83000 - Destroy COMPLETE
+sciml2302:1402123:1402123 [3] NCCL INFO comm 0x33c71d0 rank 7 nranks 8 cudaDev 3 busId c4000 - Destroy COMPLETE
+
