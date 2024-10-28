@@ -13,6 +13,8 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.distributed as dist
 from torch.utils.data.distributed import DistributedSampler
 
+# A program will run on multiple processes. Each with its own GPU.
+
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 bsinput=int(sys.argv[1])
 num_epochs = 1
@@ -88,9 +90,9 @@ for batch_size in bslist:
                     total_time1 = 0
                     total_time2 = 0
                     for i in range(num_iters):
-                        if 40<i<=45:
+                        if 40<i<=45:  # <==== Updated to 46 because large iters caused stack overflow when tracing 
                             eg = ExecutionTraceObserver()
-                            eg.register_callback("./graph_"+name.replace("/","-")+".json")
+                            eg.register_callback("./graph_"+name.replace("/","-")+".json")  # <==== TODO: add host+rank name to guarentee each process has its own trace
                             # eg.register_callback("./transformer_ddp_profiler/graph_"+name.replace("/","-")+".json")
                             eg.start()
                             with profile(activities=[ProfilerActivity.CPU,ProfilerActivity.CUDA],record_shapes=True,with_stack=True,profile_memory=True,
@@ -137,8 +139,8 @@ for batch_size in bslist:
                             loss.backward()
                             optimizer.step()
                             optimizer.zero_grad()
-                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")
-                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/5)
+                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")  # NOTE: Updated here to see which rank.
+                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/5)  # NOTE: Also changed the dividing numbers
         except Exception as e:
             print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}\n",e)
             # pass
