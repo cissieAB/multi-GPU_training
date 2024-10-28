@@ -16,7 +16,7 @@ from torch.utils.data.distributed import DistributedSampler
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 bsinput=int(sys.argv[1])
 num_epochs = 1
-num_iters = 51
+num_iters = 46
 listmodel=[]
 bslist=[bsinput]
 
@@ -88,7 +88,7 @@ for batch_size in bslist:
                     total_time1 = 0
                     total_time2 = 0
                     for i in range(num_iters):
-                        if 40<i<=50:
+                        if 40<i<=45:
                             eg = ExecutionTraceObserver()
                             eg.register_callback("./graph_"+name.replace("/","-")+".json")
                             # eg.register_callback("./transformer_ddp_profiler/graph_"+name.replace("/","-")+".json")
@@ -114,7 +114,7 @@ for batch_size in bslist:
                             eg.stop()
                             eg.unregister_callback()
                             # print("Save Exeution Trace")
-                            print(name,"gpu time",curr_time)
+                            print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time: {curr_time}")
                         elif 30<i<=40:
                             torch.cuda.synchronize()
                             starter = torch.cuda.Event(enable_timing=True)
@@ -130,17 +130,17 @@ for batch_size in bslist:
                             torch.cuda.synchronize()
                             curr_time = starter.elapsed_time(ender)
                             total_time2 += curr_time
-                            print(name, "gpu time 2", curr_time)
+                            print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time 2: {curr_time}")
                         else:
                             outputs = model(input_ids=batch['input_ids'], attention_mask=batch['attention_mask'], labels=batch['input_ids'])
                             loss = outputs.loss
                             loss.backward()
                             optimizer.step()
                             optimizer.zero_grad()
-                    print("avg profiler Total time1:", total_time1/10)
-                    print("avg Total time2:", total_time2/10)
+                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")
+                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/5)
         except Exception as e:
-            print("---error",e)
+            print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}\n",e)
             # pass
 dist.destroy_process_group()
 
