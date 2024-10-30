@@ -1,0 +1,11 @@
+mkdir imageclass_ddp_profiler
+mkdir imageclass_profiler
+mkdir transformer_ddp_profiler
+mkdir transformer_profiler
+
+load ILSVRC2012_img_val to ./
+
+python imageclass.py 128
+python transformer.py 128
+
+execute imageclass_ddp.py and transformer_ddp.py on 8 GPUs
