@@ -1,3 +1,7 @@
+imageclass.py and transformer.py: run on a single GPU to collect trace and print time information.
+imageclass_ddp.py and transformer_ddp.py: run on multi-GPUs to collect trace and print time information.
+
+
 mkdir imageclass_ddp_profiler
 mkdir imageclass_profiler
 mkdir transformer_ddp_profiler
@@ -8,4 +12,4 @@ load ILSVRC2012_img_val to ./
 python imageclass.py 128
 python transformer.py 128
 
-execute imageclass_ddp.py and transformer_ddp.py on 8 GPUs
+execute imageclass_ddp.py and transformer_ddp.py on 8 GPUs; batch size set: 8 times of batch size on single GPU, which is 1024
