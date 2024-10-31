@@ -1,0 +1,535 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31848621
+SLURM_TASK_PID=2257894
+SLURM_JOB_GPUS=0
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1730344619
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1730359019
+SLURM_CPUS_ON_NODE=8
+SLURM_JOB_CPUS_PER_NODE=8
+SLURM_GPUS_ON_NODE=1
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:8
+SLURM_JOB_NUM_NODES=1
+SLURM_JOBID=31848621
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31848621/.cache/tmp
+SLURM_CPUS_PER_TASK=8
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_MEM_PER_CPU=8192
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_NODELIST=sciml2301
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=1
+SLURM_SUBMIT_HOST=ifarm2402.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31848621/.cache/run
+SLURM_JOB_ID=31848621
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=1-node_gpt
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml2301
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0
++ env
++ grep -i nccl
+NCCL_HOME=/home/xmei/projects/nccl/build
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name hostname --nodes 1 --ntasks-per-node 1 hostname
+sciml2301.jlab.org
+++ scontrol show hostnames sciml2301
+++ head -n 1
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export NCCL_DEBUG_SUBSYS=NET
++ NCCL_DEBUG_SUBSYS=NET
++ srun --nodes 1 --gpus-per-node=1 python3 imageclass.py 128
+1
+NVIDIA A100 80GB PCIe
+0
+Batch Size: 128, Epochs: 1, Workers: 8, Network: vgg11
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:17:47 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:47 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:47 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:48 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:13<00:00, 13.80s/it]100%|██████████| 1/1 [00:13<00:00, 13.84s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+vgg11 gpu time 2 121.75154876708984
+vgg11 gpu time 2 121.06956481933594
+vgg11 gpu time 2 121.12076568603516
+vgg11 gpu time 2 121.2231674194336
+vgg11 gpu time 2 121.0992660522461
+vgg11 gpu time 2 121.09107208251953
+vgg11 gpu time 2 121.39622497558594
+vgg11 gpu time 2 121.10540771484375
+vgg11 gpu time 2 120.99890899658203
+vgg11 gpu time 2 121.09004974365234
+vgg11 gpu time 159.00790405273438
+vgg11 gpu time 120.38179016113281
+vgg11 gpu time 119.66703796386719
+vgg11 gpu time 120.20073699951172
+vgg11 gpu time 120.78355407714844
+avg profiler Total time1: 128.0082046508789
+avg Total time2: 121.19459762573243
+Batch Size: 128, Epochs: 1, Workers: 8, Network: vgg13
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:57 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:17:58 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:09<00:00,  9.84s/it]100%|██████████| 1/1 [00:09<00:00,  9.89s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+vgg13 gpu time 2 182.15699768066406
+vgg13 gpu time 2 181.9481658935547
+vgg13 gpu time 2 181.61602783203125
+vgg13 gpu time 2 182.08677673339844
+vgg13 gpu time 2 182.57369995117188
+vgg13 gpu time 2 181.74444580078125
+vgg13 gpu time 2 181.67881774902344
+vgg13 gpu time 2 182.0826873779297
+vgg13 gpu time 2 185.41110229492188
+vgg13 gpu time 2 181.88815307617188
+vgg13 gpu time 184.59280395507812
+vgg13 gpu time 182.6339874267578
+vgg13 gpu time 182.7156219482422
+vgg13 gpu time 182.58714294433594
+vgg13 gpu time 182.31689453125
+avg profiler Total time1: 182.96929016113282
+avg Total time2: 182.31868743896484
+Batch Size: 128, Epochs: 1, Workers: 8, Network: vgg16
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:08 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:08 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:08 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:09 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:10 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:10 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:11<00:00, 11.56s/it]100%|██████████| 1/1 [00:11<00:00, 11.62s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+vgg16 gpu time 2 217.326171875
+vgg16 gpu time 2 216.8145294189453
+vgg16 gpu time 2 217.56288146972656
+vgg16 gpu time 2 217.33290100097656
+vgg16 gpu time 2 217.8936309814453
+vgg16 gpu time 2 216.9776611328125
+vgg16 gpu time 2 217.67312622070312
+vgg16 gpu time 2 218.17315673828125
+vgg16 gpu time 2 218.63023376464844
+vgg16 gpu time 2 218.79788208007812
+vgg16 gpu time 219.8744659423828
+vgg16 gpu time 218.2857208251953
+vgg16 gpu time 218.53369140625
+vgg16 gpu time 218.54547119140625
+vgg16 gpu time 218.6630096435547
+avg profiler Total time1: 218.7804718017578
+avg Total time2: 217.7182174682617
+Batch Size: 128, Epochs: 1, Workers: 8, Network: vgg19
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:21 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:22 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:23 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:23 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:23 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:23 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:23 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:13<00:00, 13.21s/it]100%|██████████| 1/1 [00:13<00:00, 13.27s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+vgg19 gpu time 2 253.52345275878906
+vgg19 gpu time 2 252.92518615722656
+vgg19 gpu time 2 253.08204650878906
+vgg19 gpu time 2 253.34457397460938
+vgg19 gpu time 2 253.0004425048828
+vgg19 gpu time 2 253.58499145507812
+vgg19 gpu time 2 252.9971160888672
+vgg19 gpu time 2 253.14259338378906
+vgg19 gpu time 2 253.1098175048828
+vgg19 gpu time 2 252.44003295898438
+vgg19 gpu time 255.45126342773438
+vgg19 gpu time 253.7171173095703
+vgg19 gpu time 253.37554931640625
+vgg19 gpu time 253.5812530517578
+vgg19 gpu time 253.52505493164062
+avg profiler Total time1: 253.93004760742187
+avg Total time2: 253.11502532958986
+Batch Size: 128, Epochs: 1, Workers: 8, Network: resnet18
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:27 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:27 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:27 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:28 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:05<00:00,  5.19s/it]100%|██████████| 1/1 [00:05<00:00,  5.26s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+resnet18 gpu time 2 46.7691535949707
+resnet18 gpu time 2 46.88345718383789
+resnet18 gpu time 2 46.784385681152344
+resnet18 gpu time 2 46.65225601196289
+resnet18 gpu time 2 46.710689544677734
+resnet18 gpu time 2 46.73212814331055
+resnet18 gpu time 2 46.47407913208008
+resnet18 gpu time 2 46.705440521240234
+resnet18 gpu time 2 46.8678092956543
+resnet18 gpu time 2 46.8656005859375
+resnet18 gpu time 125.98467254638672
+resnet18 gpu time 47.2077751159668
+resnet18 gpu time 47.089630126953125
+resnet18 gpu time 47.18204879760742
+resnet18 gpu time 47.19664001464844
+avg profiler Total time1: 62.9321533203125
+avg Total time2: 46.74449996948242
+Batch Size: 128, Epochs: 1, Workers: 8, Network: resnet34
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:33 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:34 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:06<00:00,  6.01s/it]100%|██████████| 1/1 [00:06<00:00,  6.06s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+resnet34 gpu time 2 74.85478210449219
+resnet34 gpu time 2 75.21469116210938
+resnet34 gpu time 2 74.95807647705078
+resnet34 gpu time 2 75.098876953125
+resnet34 gpu time 2 74.82473754882812
+resnet34 gpu time 2 74.78278350830078
+resnet34 gpu time 2 74.92880249023438
+resnet34 gpu time 2 75.12556457519531
+resnet34 gpu time 2 74.95590209960938
+resnet34 gpu time 2 74.89984130859375
+resnet34 gpu time 77.75555419921875
+resnet34 gpu time 75.78921508789062
+resnet34 gpu time 75.5785903930664
+resnet34 gpu time 76.28886413574219
+resnet34 gpu time 75.91363525390625
+avg profiler Total time1: 76.26517181396484
+avg Total time2: 74.9644058227539
+Batch Size: 128, Epochs: 1, Workers: 8, Network: resnet50
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:41 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:41 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:41 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:42 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:42 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:42 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:43 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:44 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:44 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:44 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:09<00:00,  9.64s/it]100%|██████████| 1/1 [00:09<00:00,  9.70s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+resnet50 gpu time 2 130.24073791503906
+resnet50 gpu time 2 130.05136108398438
+resnet50 gpu time 2 130.40765380859375
+resnet50 gpu time 2 130.01055908203125
+resnet50 gpu time 2 130.17987060546875
+resnet50 gpu time 2 130.1534423828125
+resnet50 gpu time 2 130.11590576171875
+resnet50 gpu time 2 130.074951171875
+resnet50 gpu time 2 130.21200561523438
+resnet50 gpu time 2 130.09007263183594
+resnet50 gpu time 132.87017822265625
+resnet50 gpu time 132.87107849121094
+resnet50 gpu time 131.05027770996094
+resnet50 gpu time 130.99209594726562
+resnet50 gpu time 131.06863403320312
+avg profiler Total time1: 131.77045288085938
+avg Total time2: 130.15365600585938
+Batch Size: 128, Epochs: 1, Workers: 8, Network: resnet101
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:18:54 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:54 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:54 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:55 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:55 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:55 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:56 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:56 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:56 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:57 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:58 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:58 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:18:58 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:18:59 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:18:59 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:15<00:00, 15.09s/it]100%|██████████| 1/1 [00:15<00:00, 15.14s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+resnet101 gpu time 2 203.14678955078125
+resnet101 gpu time 2 203.01068115234375
+resnet101 gpu time 2 202.94601440429688
+resnet101 gpu time 2 203.1892547607422
+resnet101 gpu time 2 203.2657928466797
+resnet101 gpu time 2 203.45957946777344
+resnet101 gpu time 2 203.33290100097656
+resnet101 gpu time 2 203.56396484375
+resnet101 gpu time 2 203.27967834472656
+resnet101 gpu time 2 203.21852111816406
+resnet101 gpu time 206.77894592285156
+resnet101 gpu time 204.74240112304688
+resnet101 gpu time 205.0404510498047
+resnet101 gpu time 204.98748779296875
+resnet101 gpu time 205.13229370117188
+avg profiler Total time1: 205.33631591796876
+avg Total time2: 203.24131774902344
+Batch Size: 128, Epochs: 1, Workers: 8, Network: resnet152
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:19:12 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:13 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:13 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:14 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:15 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:15 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:16 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:16 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:16 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:18 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:18 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:18 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:19 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:20 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:20 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:21<00:00, 21.63s/it]100%|██████████| 1/1 [00:21<00:00, 21.69s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+resnet152 gpu time 2 290.5534362792969
+resnet152 gpu time 2 290.4915771484375
+resnet152 gpu time 2 290.0027770996094
+resnet152 gpu time 2 290.3144226074219
+resnet152 gpu time 2 290.6467590332031
+resnet152 gpu time 2 290.3852844238281
+resnet152 gpu time 2 290.5761413574219
+resnet152 gpu time 2 290.3518981933594
+resnet152 gpu time 2 290.9755554199219
+resnet152 gpu time 2 290.6236572265625
+resnet152 gpu time 294.0205078125
+resnet152 gpu time 292.2633361816406
+resnet152 gpu time 291.87939453125
+resnet152 gpu time 292.3174133300781
+resnet152 gpu time 291.650634765625
+avg profiler Total time1: 292.42625732421874
+avg Total time2: 290.4921508789063
+Batch Size: 128, Epochs: 1, Workers: 8, Network: densenet161
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:19:37 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:38 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:38 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:40 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:40 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:40 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:42 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:43 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:43 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:45 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:45 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:45 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:19:47 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:19:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:19:48 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:28<00:00, 28.37s/it]100%|██████████| 1/1 [00:28<00:00, 28.43s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+densenet161 gpu time 2 354.9986267089844
+densenet161 gpu time 2 354.90887451171875
+densenet161 gpu time 2 355.0362548828125
+densenet161 gpu time 2 354.8899230957031
+densenet161 gpu time 2 354.7389221191406
+densenet161 gpu time 2 354.89544677734375
+densenet161 gpu time 2 355.46875
+densenet161 gpu time 2 354.2432556152344
+densenet161 gpu time 2 354.8529968261719
+densenet161 gpu time 2 355.9440612792969
+densenet161 gpu time 374.40948486328125
+densenet161 gpu time 378.49053955078125
+densenet161 gpu time 376.3096618652344
+densenet161 gpu time 378.4744873046875
+densenet161 gpu time 375.467529296875
+avg profiler Total time1: 376.6303405761719
+avg Total time2: 354.9977111816406
+Batch Size: 128, Epochs: 1, Workers: 8, Network: densenet169
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:20:01 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:01 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:01 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:03 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:04 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:04 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:06 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:06 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:06 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:09 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:09 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:09 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:11 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:12 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:12 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:23<00:00, 23.86s/it]100%|██████████| 1/1 [00:23<00:00, 23.93s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+densenet169 gpu time 2 233.1058807373047
+densenet169 gpu time 2 233.04698181152344
+densenet169 gpu time 2 232.9772186279297
+densenet169 gpu time 2 233.05075073242188
+densenet169 gpu time 2 233.17840576171875
+densenet169 gpu time 2 233.3230743408203
+densenet169 gpu time 2 233.94061279296875
+densenet169 gpu time 2 233.33641052246094
+densenet169 gpu time 2 233.4111328125
+densenet169 gpu time 2 232.82339477539062
+densenet169 gpu time 399.8948669433594
+densenet169 gpu time 397.1307067871094
+densenet169 gpu time 395.275390625
+densenet169 gpu time 395.1824951171875
+densenet169 gpu time 396.62664794921875
+avg profiler Total time1: 396.822021484375
+avg Total time2: 233.2193862915039
+Batch Size: 128, Epochs: 1, Workers: 8, Network: densenet121
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:20:23 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:23 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:23 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:24 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:25 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:25 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:26 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:26 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:26 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:28 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:28 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:28 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:30 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:30 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:30 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:17<00:00, 17.46s/it]100%|██████████| 1/1 [00:17<00:00, 17.53s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+densenet121 gpu time 2 188.7938232421875
+densenet121 gpu time 2 188.84524536132812
+densenet121 gpu time 2 189.39804077148438
+densenet121 gpu time 2 189.32669067382812
+densenet121 gpu time 2 189.05255126953125
+densenet121 gpu time 2 189.19638061523438
+densenet121 gpu time 2 188.581787109375
+densenet121 gpu time 2 189.65245056152344
+densenet121 gpu time 2 189.18601989746094
+densenet121 gpu time 2 188.82135009765625
+densenet121 gpu time 274.51104736328125
+densenet121 gpu time 266.4663391113281
+densenet121 gpu time 265.9300842285156
+densenet121 gpu time 269.2555847167969
+densenet121 gpu time 267.5189208984375
+avg profiler Total time1: 268.73639526367185
+avg Total time2: 189.08543395996094
+Batch Size: 128, Epochs: 1, Workers: 8, Network: densenet201
+  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-10-30 23:20:45 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:45 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:45 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:48 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:48 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:49 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:51 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:52 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:52 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:55 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:55 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:55 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:20:58 2257938:2257938 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:20:58 2257938:2257938 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:20:59 2257938:2257938 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [00:29<00:00, 29.84s/it]100%|██████████| 1/1 [00:29<00:00, 29.92s/it]
+Batchsize: torch.Size([128, 3, 224, 224])
+densenet201 gpu time 2 292.9432373046875
+densenet201 gpu time 2 292.4481201171875
+densenet201 gpu time 2 293.29595947265625
+densenet201 gpu time 2 294.7591247558594
+densenet201 gpu time 2 293.205322265625
+densenet201 gpu time 2 292.84027099609375
+densenet201 gpu time 2 292.8114929199219
+densenet201 gpu time 2 292.9259948730469
+densenet201 gpu time 2 292.9965515136719
+densenet201 gpu time 2 293.0636291503906
+densenet201 gpu time 503.69207763671875
+densenet201 gpu time 504.7862548828125
+densenet201 gpu time 495.60931396484375
+densenet201 gpu time 495.25543212890625
+densenet201 gpu time 493.91943359375
+avg profiler Total time1: 498.6525024414062
+avg Total time2: 293.12897033691405
