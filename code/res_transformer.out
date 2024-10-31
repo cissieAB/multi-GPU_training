@@ -1,0 +1,236 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31849210
+SLURM_TASK_PID=2261596
+SLURM_JOB_GPUS=0
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1730345138
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1730359538
+SLURM_CPUS_ON_NODE=8
+SLURM_JOB_CPUS_PER_NODE=8
+SLURM_GPUS_ON_NODE=1
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:8
+SLURM_JOB_NUM_NODES=1
+SLURM_JOBID=31849210
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31849210/.cache/tmp
+SLURM_CPUS_PER_TASK=8
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_MEM_PER_CPU=8192
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_NODELIST=sciml2301
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=1
+SLURM_SUBMIT_HOST=ifarm2402.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31849210/.cache/run
+SLURM_JOB_ID=31849210
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=1-node_trace
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml2301
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0
++ env
++ grep -i nccl
+NCCL_HOME=/home/xmei/projects/nccl/build
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name hostname --nodes 1 --ntasks-per-node 1 hostname
+sciml2301.jlab.org
+++ scontrol show hostnames sciml2301
+++ head -n 1
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export NCCL_DEBUG_SUBSYS=NET
++ NCCL_DEBUG_SUBSYS=NET
++ srun --nodes 1 --gpus-per-node=1 python3 transformer.py 128
+Starting on rank 0.
+Dataset loaded.
+training model now: gpt2
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:11, 3039.43 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4462.05 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5522.24 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 6107.43 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:04, 6764.14 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 7167.99 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:04, 6909.48 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6964.62 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:03, 7087.16 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:03, 7179.42 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:03, 7113.66 examples/s]Map:  33%|███▎      | 12000/36718 [00:01<00:03, 7205.33 examples/s]Map:  35%|███▌      | 13000/36718 [00:01<00:03, 7153.92 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 7315.24 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:02, 7416.43 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:02, 7177.01 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:02, 7184.54 examples/s]Map:  49%|████▉     | 18000/36718 [00:02<00:02, 7194.54 examples/s]Map:  52%|█████▏    | 19000/36718 [00:02<00:02, 7380.24 examples/s]Map:  54%|█████▍    | 20000/36718 [00:02<00:02, 7401.49 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 7263.59 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 7184.56 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:01, 7318.44 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:01, 7538.20 examples/s]Map:  68%|██████▊   | 25000/36718 [00:03<00:01, 7689.45 examples/s]Map:  71%|███████   | 26000/36718 [00:03<00:01, 7613.48 examples/s]Map:  74%|███████▎  | 27000/36718 [00:03<00:01, 7261.32 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 7135.10 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 7350.68 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:00, 7347.43 examples/s]Map:  84%|████████▍ | 31000/36718 [00:04<00:00, 6985.37 examples/s]Map:  87%|████████▋ | 32000/36718 [00:04<00:00, 6896.87 examples/s]Map:  90%|████████▉ | 33000/36718 [00:04<00:00, 6876.33 examples/s]Map:  93%|█████████▎| 34000/36718 [00:04<00:00, 6923.63 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 7098.77 examples/s]Map:  98%|█████████▊| 36000/36718 [00:05<00:00, 6994.88 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 5909.41 examples/s]Map: 100%|██████████| 36718/36718 [00:05<00:00, 6806.43 examples/s]
+STAGE:2024-10-30 23:26:45 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:26:46 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:26:46 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:26:47 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:26:47 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:26:47 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:26:48 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:26:49 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:26:49 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:26:50 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:26:50 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:26:50 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:26:51 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:26:52 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:26:52 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+gpt2 gpu time 2 867.7703857421875
+gpt2 gpu time 2 868.875244140625
+gpt2 gpu time 2 867.3085327148438
+gpt2 gpu time 2 867.4805908203125
+gpt2 gpu time 2 868.6735229492188
+gpt2 gpu time 2 867.7652587890625
+gpt2 gpu time 2 868.8865356445312
+gpt2 gpu time 2 868.8936767578125
+gpt2 gpu time 2 868.8578491210938
+gpt2 gpu time 2 869.0995483398438
+Save Exeution Trace
+gpt2 gpu time 871.2844848632812
+Save Exeution Trace
+gpt2 gpu time 869.0867919921875
+Save Exeution Trace
+gpt2 gpu time 870.4306030273438
+Save Exeution Trace
+gpt2 gpu time 870.9100341796875
+Save Exeution Trace
+gpt2 gpu time 871.1796875
+avg profiler Total time1: 870.5783203125
+avg Total time2: 868.3611145019531
+training model now: bert-base-uncased
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:06, 5443.08 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:06, 5548.65 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:05, 5924.06 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 6022.67 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:04, 6368.46 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 6529.56 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:04, 6146.91 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6087.05 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 6136.17 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 6185.93 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:04, 6136.74 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5211.79 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5416.61 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 5701.18 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5907.83 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5841.66 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:03, 5921.60 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5984.85 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 6115.94 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 6191.61 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 6105.36 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 6049.34 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:02, 6167.82 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:01, 6387.05 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 6514.91 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6425.55 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6175.89 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 6047.27 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 6219.66 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:01, 6223.75 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:00, 5954.87 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5942.73 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5892.23 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 4951.72 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 5318.53 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5466.84 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5613.49 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5775.08 examples/s]
+STAGE:2024-10-30 23:27:36 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:27:37 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:27:37 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:27:38 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:27:38 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:27:38 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:27:39 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:27:40 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:27:40 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:27:40 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:27:41 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:27:41 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:27:42 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:27:43 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:27:43 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+bert-base-uncased gpu time 2 725.325927734375
+bert-base-uncased gpu time 2 725.3593139648438
+bert-base-uncased gpu time 2 724.406494140625
+bert-base-uncased gpu time 2 726.7659912109375
+bert-base-uncased gpu time 2 726.1937255859375
+bert-base-uncased gpu time 2 725.2620239257812
+bert-base-uncased gpu time 2 726.709228515625
+bert-base-uncased gpu time 2 726.3253173828125
+bert-base-uncased gpu time 2 726.05419921875
+bert-base-uncased gpu time 2 727.1074829101562
+Save Exeution Trace
+bert-base-uncased gpu time 730.5426025390625
+Save Exeution Trace
+bert-base-uncased gpu time 727.10009765625
+Save Exeution Trace
+bert-base-uncased gpu time 727.4461059570312
+Save Exeution Trace
+bert-base-uncased gpu time 726.4939575195312
+Save Exeution Trace
+bert-base-uncased gpu time 727.526123046875
+avg profiler Total time1: 727.82177734375
+avg Total time2: 725.9509704589843
+training model now: google-t5/t5-small
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:06, 5600.32 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:06, 5280.20 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5551.96 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5557.15 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5867.43 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5967.43 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5555.86 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5524.28 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 5547.18 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5592.06 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:04, 5535.09 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5571.48 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5503.97 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:04, 5630.09 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5693.83 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5518.57 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:03, 5482.07 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5520.05 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:03, 5666.46 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 5695.22 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5579.68 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 5509.63 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5625.50 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 5825.90 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 5945.60 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5839.90 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 5624.87 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5460.33 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5648.25 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5626.44 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5361.06 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5339.24 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5296.79 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5323.54 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5461.02 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5354.26 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5395.56 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5448.01 examples/s]
+STAGE:2024-10-30 23:28:14 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:14 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:14 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:15 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:16 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:16 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:17 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:17 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:17 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:18 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:19 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:19 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:20 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:20 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:20 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+google-t5/t5-small gpu time 2 449.8937072753906
+google-t5/t5-small gpu time 2 448.8310852050781
+google-t5/t5-small gpu time 2 449.98858642578125
+google-t5/t5-small gpu time 2 450.1729431152344
+google-t5/t5-small gpu time 2 449.417724609375
+google-t5/t5-small gpu time 2 450.25958251953125
+google-t5/t5-small gpu time 2 449.9364013671875
+google-t5/t5-small gpu time 2 449.3507080078125
+google-t5/t5-small gpu time 2 448.5057373046875
+google-t5/t5-small gpu time 2 450.6767578125
+Save Exeution Trace
+google-t5/t5-small gpu time 453.6552734375
+Save Exeution Trace
+google-t5/t5-small gpu time 452.50396728515625
+Save Exeution Trace
+google-t5/t5-small gpu time 452.21209716796875
+Save Exeution Trace
+google-t5/t5-small gpu time 451.7883605957031
+Save Exeution Trace
+google-t5/t5-small gpu time 452.499755859375
+avg profiler Total time1: 452.5318908691406
+avg Total time2: 449.7033233642578
+training model now: google/flan-t5-small
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:05, 5967.96 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:05, 5811.93 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:05, 6133.65 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 6171.98 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:04, 6498.45 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 6616.24 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:04, 6199.73 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 6168.78 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 6201.95 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 6230.78 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:04, 6186.37 examples/s]Map:  33%|███▎      | 12000/36718 [00:01<00:03, 6235.35 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:03, 6168.26 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 6311.46 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 6372.81 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 6160.73 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:03, 6169.94 examples/s]Map:  49%|████▉     | 18000/36718 [00:02<00:03, 6209.60 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 6353.02 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 6359.87 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 6236.17 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 5060.04 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:02, 5436.42 examples/s]Map:  65%|██████▌   | 24000/36718 [00:03<00:02, 5832.59 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 6110.95 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6152.20 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6022.55 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5977.71 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 6205.08 examples/s]Map:  82%|████████▏ | 30000/36718 [00:04<00:01, 6215.55 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:00, 5952.28 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5936.82 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5904.76 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 5890.76 examples/s]Map:  95%|█████████▌| 35000/36718 [00:05<00:00, 6047.41 examples/s]Map:  98%|█████████▊| 36000/36718 [00:05<00:00, 5944.86 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5989.51 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5949.86 examples/s]
+STAGE:2024-10-30 23:28:54 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:54 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:54 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:56 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:56 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:56 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:28:58 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:28:58 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:28:58 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:29:00 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:29:00 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:29:00 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-10-30 23:29:01 2261641:2261641 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-10-30 23:29:02 2261641:2261641 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-10-30 23:29:02 2261641:2261641 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+google/flan-t5-small gpu time 2 501.0308532714844
+google/flan-t5-small gpu time 2 501.3147277832031
+google/flan-t5-small gpu time 2 501.2402648925781
+google/flan-t5-small gpu time 2 500.9169006347656
+google/flan-t5-small gpu time 2 500.9593811035156
+google/flan-t5-small gpu time 2 501.36834716796875
+google/flan-t5-small gpu time 2 501.10614013671875
+google/flan-t5-small gpu time 2 501.3243713378906
+google/flan-t5-small gpu time 2 502.0235595703125
+google/flan-t5-small gpu time 2 502.3132629394531
+Save Exeution Trace
+google/flan-t5-small gpu time 505.9385986328125
+Save Exeution Trace
+google/flan-t5-small gpu time 503.3759765625
+Save Exeution Trace
+google/flan-t5-small gpu time 504.2957763671875
+Save Exeution Trace
+google/flan-t5-small gpu time 504.1764831542969
+Save Exeution Trace
+google/flan-t5-small gpu time 503.85479736328125
+avg profiler Total time1: 504.3283264160156
+avg Total time2: 501.3597808837891
