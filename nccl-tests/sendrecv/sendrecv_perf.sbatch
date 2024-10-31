@@ -16,7 +16,7 @@ env | grep SLURM
 
 # NCCL config
 export NCCL_HOME=${HOME}/projects/nccl/build
-#export NCCL_DEBUG=INFO
+export NCCL_DEBUG=INFO
 export NCCL_IB_DISABLE=0
 #export NCCL_NET_GDR_LEVEL=2
 echo -e "\nNCCL env var"
