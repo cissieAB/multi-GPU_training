@@ -31,6 +31,6 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${NCCL_HOME}/lib:${MPI_LIB}
 
 export WKDIR=${HOME}/projects/nccl-tests
 
-mpirun -np ${SLURM_NPROCS} ${WKDIR}/build/all_reduce_perf -b 128M -e 2G -f 2 -g 1
+mpirun -np ${SLURM_NPROCS} ${WKDIR}/build/all_reduce_perf -b 8 -e 2G -f 2 -g 1
 # ${WKDIR}/build/all_reduce_perf -b 128M -e 8G -f 2 -g 4   # Run on 1 node only
 
