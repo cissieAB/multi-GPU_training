@@ -1,0 +1,1163 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,31958247
+SLURM_TASK_PID=2409400
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1730481361
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1730495761
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=31958247
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/31958247/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=409600
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2402.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/31958247/.cache/run
+SLURM_JOB_ID=31958247
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=g8_profile
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0,1,2,3
++ env
++ grep -i nccl
+NCCL_HOME=/home/xmei/projects/nccl/build
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
+++ head -n 1
+++ scontrol show hostnames 'sciml[2301-2302]'
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export NCCL_DEBUG_SUBSYS=NET
++ NCCL_DEBUG_SUBSYS=NET
++ srun --job-name print-cudevice --nodes 2 --ntasks-per-node 1 bash -c '$(hostname); echo "CUDA_DEV: ${CUDA_VISIBLE_DEVICES}"'
+/usr/bin/bash: line 1: sciml2301.jlab.org: command not found
+CUDA_DEV: 0,1,2,3
+/usr/bin/bash: line 1: sciml2302.jlab.org: command not found
+CUDA_DEV: 0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=sciml2301.jlab.org:32800 --nnodes=2 --rdzv-id 8988 transformer_ddp.py 1024
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 5, in <module>
+    from torch.distributed.run import main
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+[2024-11-01 13:16:03,125] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-01 13:16:03,126] torch.distributed.run: [WARNING] 
+[2024-11-01 13:16:03,126] torch.distributed.run: [WARNING] *****************************************
+[2024-11-01 13:16:03,126] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-01 13:16:03,126] torch.distributed.run: [WARNING] *****************************************
+[2024-11-01 13:16:03,145] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-01 13:16:03,145] torch.distributed.run: [WARNING] 
+[2024-11-01 13:16:03,145] torch.distributed.run: [WARNING] *****************************************
+[2024-11-01 13:16:03,145] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-01 13:16:03,145] torch.distributed.run: [WARNING] *****************************************
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.1.2 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code/transformer_ddp.py", line 4, in <module>
+    import torch
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/__init__.py", line 1382, in <module>
+    from .functional import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/functional.py", line 7, in <module>
+    import torch.nn.functional as F
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/__init__.py", line 1, in <module>
+    from .modules import *  # noqa: F403
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/__init__.py", line 35, in <module>
+    from .transformer import TransformerEncoder, TransformerDecoder, \
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py", line 20, in <module>
+    device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/nn/modules/transformer.py:20: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:84.)
+  device: torch.device = torch.device(torch._C._get_default_device()),  # torch.device('cpu'),
+Hostname: sciml2301.jlab.org, Rank: 2, Local Rank: 2, Global Rank: 2, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 3, Local Rank: 3, Global Rank: 3, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 1, Local Rank: 1, Global Rank: 1, NUM_GPS: 4
+[sciml2301.jlab.org] Rank 2, Local Rank 2: CUDA device set to 2
+[sciml2301.jlab.org] Rank 3, Local Rank 3: CUDA device set to 3
+[sciml2301.jlab.org] Rank 1, Local Rank 1: CUDA device set to 1
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Hostname: sciml2301.jlab.org, Rank: 0, Local Rank: 0, Global Rank: 0, NUM_GPS: 4
+[sciml2301.jlab.org] Rank 0, Local Rank 0: CUDA device set to 0
+Dataset loaded.
+training model now: gpt2
+Hostname: sciml2302.jlab.org, Rank: 7, Local Rank: 3, Global Rank: 7, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 4, Local Rank: 0, Global Rank: 4, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 5, Local Rank: 1, Global Rank: 5, NUM_GPS: 4
+[sciml2302.jlab.org] Rank 4, Local Rank 0: CUDA device set to 0
+Hostname: sciml2302.jlab.org, Rank: 6, Local Rank: 2, Global Rank: 6, NUM_GPS: 4
+[sciml2302.jlab.org] Rank 7, Local Rank 3: CUDA device set to 3
+[sciml2302.jlab.org] Rank 5, Local Rank 1: CUDA device set to 1
+[sciml2302.jlab.org] Rank 6, Local Rank 2: CUDA device set to 2
+sciml2301:2409458:2409458 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : �@
+sciml2301:2409458:2409458 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+NCCL version 2.18.1+cuda12.1
+sciml2301:2409461:2409461 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:2409461:2409461 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:2409460:2409460 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:2409460:2409460 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:2409459:2409459 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:2409459:2409459 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:2409460:2409543 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:2409461:2409542 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:2409458:2409541 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:2409459:2409544 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+sciml2302:111919:111919 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:111919:111919 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:111920:111920 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:111920:111920 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:111918:111918 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:111918:111918 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:111921:111921 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:111921:111921 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:111920:112404 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:111918:112405 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:111921:112406 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:111919:112403 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:111919:112403 [1] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2302:111920:112404 [2] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2302:111921:112406 [3] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112403 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111920:112404 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2301:2409461:2409542 [3] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2301:2409460:2409543 [2] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO NET/IB : GPU Direct RDMA Enabled for HCA 0 'mlx5_0'
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409543 [2] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU 84000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c3000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy recv connection 0 from local rank 3, transport 0
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600004f30
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 0 from local rank 0, transport 2
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc004f30
+sciml2302:111919:112421 [1] NCCL INFO New proxy recv connection 0 from local rank 1, transport 0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64004f30
+sciml2302:111920:112420 [2] NCCL INFO New proxy recv connection 0 from local rank 2, transport 0
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00004f30
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy recv connection 0 from local rank 2, transport 0
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690004f30
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 0 from local rank 0, transport 2
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88004f30
+sciml2302:111921:112418 [3] NCCL INFO New proxy recv connection 0 from local rank 3, transport 0
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64004f30
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy recv connection 0 from local rank 1, transport 0
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90004f30
+sciml2302:111918:112405 [0] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 1 from local rank 0, transport 2
+sciml2302:111919:112421 [1] NCCL INFO New proxy recv connection 1 from local rank 1, transport 0
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy recv connection 1 from local rank 3, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy recv connection 1 from local rank 2, transport 0
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 1 from local rank 0, transport 2
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy recv connection 1 from local rank 2, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc004f80
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64004f80
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600004f80
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00004f80
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy recv connection 1 from local rank 1, transport 0
+sciml2302:111921:112418 [3] NCCL INFO New proxy recv connection 1 from local rank 3, transport 0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88004f80
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690004f80
+sciml2302:111918:112405 [0] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90004f80
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64004f80
+sciml2302:111918:112419 [0] NCCL INFO New proxy send connection 2 from local rank 0, transport 0
+sciml2302:111919:112421 [1] NCCL INFO New proxy send connection 2 from local rank 1, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy send connection 2 from local rank 2, transport 0
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy send connection 2 from local rank 3, transport 2
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc004fd0
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy send connection 2 from local rank 2, transport 0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64004fd0
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00004fd0
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600004fd0
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy send connection 2 from local rank 0, transport 0
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690004fd0
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy send connection 2 from local rank 1, transport 0
+sciml2302:111921:112418 [3] NCCL INFO New proxy send connection 2 from local rank 3, transport 2
+sciml2301:2409461:2409542 [3] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2301:2409461:2409542 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112419 [0] NCCL INFO New proxy send connection 3 from local rank 0, transport 0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88004fd0
+sciml2302:111919:112421 [1] NCCL INFO New proxy send connection 3 from local rank 1, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy send connection 3 from local rank 2, transport 0
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy send connection 3 from local rank 3, transport 2
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90004fd0
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64004fd0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005020
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy send connection 3 from local rank 2, transport 0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64005020
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00005020
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600005020
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy send connection 3 from local rank 0, transport 0
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690005020
+sciml2302:111921:112406 [3] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2302:111921:112406 [3] NCCL INFO GPU Direct RDMA Disabled for GPU c4000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409542 [3] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy send connection 3 from local rank 1, transport 0
+sciml2302:111921:112418 [3] NCCL INFO New proxy send connection 3 from local rank 3, transport 2
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005020
+sciml2302:111919:112421 [1] NCCL INFO New proxy recv connection 4 from local rank 1, transport 0
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90005020
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64005020
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64005070
+sciml2301:2409461:2409554 [3] NCCL INFO NET/IB: Dev 0 Port 1 qpn 47827 mtu 5 LID 152
+sciml2301:2409461:2409554 [3] NCCL INFO NET/IB: Dev 0 Port 1 qpn 47828 mtu 5 LID 152
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 4 from local rank 0, transport 2
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy send connection 4 from local rank 3, transport 0
+sciml2302:111921:112406 [3] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy recv connection 4 from local rank 1, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy recv connection 4 from local rank 2, transport 0
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00005070
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy recv connection 4 from local rank 2, transport 0
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690005070
+sciml2302:111921:112418 [3] NCCL INFO NET/IB: Dev 0 Port 1 qpn 719 mtu 5 LID 149
+sciml2302:111921:112418 [3] NCCL INFO NET/IB: Dev 0 Port 1 qpn 720 mtu 5 LID 149
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005070
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 4 from local rank 0, transport 2
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600005070
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90005070
+sciml2302:111919:112421 [1] NCCL INFO New proxy recv connection 5 from local rank 1, transport 0
+sciml2302:111921:112418 [3] NCCL INFO New proxy send connection 4 from local rank 3, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy recv connection 5 from local rank 2, transport 0
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy recv connection 5 from local rank 2, transport 0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005070
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy send connection 5 from local rank 3, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy recv connection 5 from local rank 1, transport 0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd640050c0
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 5 from local rank 0, transport 2
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64005070
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec000050c0
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f46900050c0
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f86000050c0
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d900050c0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc0050c0
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy send connection 6 from local rank 1, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy send connection 6 from local rank 2, transport 0
+sciml2302:111921:112418 [3] NCCL INFO New proxy send connection 5 from local rank 3, transport 0
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 5 from local rank 0, transport 2
+sciml2302:111919:112421 [1] NCCL INFO New proxy send connection 6 from local rank 1, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy send connection 6 from local rank 2, transport 0
+sciml2302:111918:112419 [0] NCCL INFO New proxy send connection 6 from local rank 0, transport 2
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90005110
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00005110
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e880050c0
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d640050c0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64005110
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690005110
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005110
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy send connection 7 from local rank 1, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2302:111918:112405 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d90005160
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2302:111919:112421 [1] NCCL INFO New proxy send connection 7 from local rank 1, transport 0
+sciml2302:111920:112420 [2] NCCL INFO New proxy send connection 7 from local rank 2, transport 0
+sciml2302:111918:112419 [0] NCCL INFO New proxy send connection 7 from local rank 0, transport 2
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy send connection 6 from local rank 0, transport 2
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy send connection 7 from local rank 2, transport 0
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd64005160
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec00005160
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005160
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005110
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f4690005160
+sciml2302:111918:112405 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2302:111921:112418 [3] NCCL INFO New proxy send connection 6 from local rank 3, transport 2
+sciml2302:111921:112406 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8d64005110
+sciml2302:111920:112420 [2] NCCL INFO New proxy send connection 8 from local rank 2, transport 2
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2301:2409458:2409541 [0] NCCL INFO GPU Direct RDMA Disabled for GPU 83000 / HCA 0 (distance 7 > 4)
+sciml2301:2409461:2409554 [3] NCCL INFO New proxy send connection 6 from local rank 3, transport 2
+sciml2301:2409461:2409542 [3] NCCL INFO Connection to proxy localRank 3 -> connection 0x7f8600005110
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy send connection 7 from local rank 0, transport 2
+sciml2301:2409460:2409552 [2] NCCL INFO New proxy send connection 8 from local rank 2, transport 2
+sciml2302:111920:112404 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7fec000051b0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005160
+sciml2301:2409460:2409543 [2] NCCL INFO Connection to proxy localRank 2 -> connection 0x7f46900051b0
+sciml2301:2409458:2409541 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 8 from local rank 0, transport 0
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 8 from local rank 0, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc0051b0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e880051b0
+sciml2302:111918:112419 [0] NCCL INFO New proxy recv connection 9 from local rank 0, transport 0
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005200
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy recv connection 9 from local rank 0, transport 0
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005200
+sciml2302:111919:112421 [1] NCCL INFO New proxy send connection 8 from local rank 1, transport 2
+sciml2302:111919:112403 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7efd640051b0
+sciml2302:111918:112419 [0] NCCL INFO NET/IB: Dev 0 Port 1 qpn 721 mtu 5 LID 149
+sciml2302:111918:112419 [0] NCCL INFO NET/IB: Dev 0 Port 1 qpn 722 mtu 5 LID 149
+sciml2301:2409459:2409555 [1] NCCL INFO New proxy send connection 8 from local rank 1, transport 2
+sciml2301:2409459:2409544 [1] NCCL INFO Connection to proxy localRank 1 -> connection 0x7f4d900051b0
+sciml2301:2409458:2409553 [0] NCCL INFO NET/IB: Dev 0 Port 1 qpn 47831 mtu 5 LID 152
+sciml2301:2409458:2409553 [0] NCCL INFO NET/IB: Dev 0 Port 1 qpn 47833 mtu 5 LID 152
+sciml2301:2409458:2409553 [0] NCCL INFO New proxy send connection 10 from local rank 0, transport 2
+sciml2302:111918:112419 [0] NCCL INFO New proxy send connection 10 from local rank 0, transport 2
+sciml2301:2409458:2409541 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7f6e88005250
+sciml2302:111918:112405 [0] NCCL INFO Connection to proxy localRank 0 -> connection 0x7fcbfc005250
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2107.77587890625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2097.55029296875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2098.483154296875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2108.254150390625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2108.46826171875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2108.26953125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2108.190673828125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2108.0390625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2089.767822265625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2090.429443359375[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2089.7392578125
+
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2090.6015625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2091.30810546875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2089.724853515625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2089.841552734375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2091.567138671875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2133.5224609375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2133.895263671875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2133.885986328125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2133.878662109375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2134.826904296875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2135.055419921875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2135.126953125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2135.068603515625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2093.148193359375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2094.130126953125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2093.763671875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2095.552490234375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2096.03076171875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2095.92724609375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2096.0849609375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2099.832763671875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2113.164306640625[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2113.461181640625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2113.163330078125
+
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2106.99169921875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2112.8212890625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2113.206298828125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2113.2626953125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2113.240966796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2095.32421875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2095.2626953125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2095.12451171875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2095.731689453125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2094.50390625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2095.667236328125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2084.71337890625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2094.591064453125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2159.656005859375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2160.3994140625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2160.591796875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2161.00146484375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2161.542236328125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2161.673095703125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2161.524658203125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2161.56884765625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2115.80615234375[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2114.649169921875
+
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2116.4677734375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2115.51123046875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2120.775634765625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2120.471435546875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2120.52490234375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2120.637451171875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2108.662841796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2103.623779296875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2109.40625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2103.5068359375[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2109.30078125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2109.234130859375
+
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2103.803955078125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2103.83984375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 2093.716552734375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 2094.298095703125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 2093.96630859375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 2092.2275390625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 2094.1259765625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 2094.22021484375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 2094.411865234375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 2096.8447265625
+STAGE:2024-11-01 13:18:33 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:33 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:33 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:33 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:33 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-11-01 13:18:33 111921:111921 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-11-01 13:18:33 111918:111918 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-11-01 13:18:33 111920:111920 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+
+
+STAGE:2024-11-01 13:18:35 2409458:2409458 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 2409459:2409459 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 2409461:2409461 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 2409460:2409460 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 2409458:2409458 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 2409459:2409459 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 2409460:2409460 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 2409461:2409461 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 111919:111919 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-01 13:18:35 111920:111920 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-01 13:18:35 111918:111918 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 111921:111921 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:35 111920:111920 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 111918:111918 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 111921:111921 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:35 111919:111919 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1987.751708984375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1996.749755859375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 2015.9549560546875
+STAGE:2024-11-01 13:18:36 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:36 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:36 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1997.9495849609375
+STAGE:2024-11-01 13:18:36 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1818.973388671875
+STAGE:2024-11-01 13:18:36 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1819.0155029296875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1818.91162109375
+STAGE:2024-11-01 13:18:36 111920:111920 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:36 111921:111921 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1819.79443359375
+STAGE:2024-11-01 13:18:36 111918:111918 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:38 111919:111919 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 111918:111918 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 2409461:2409461 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 2409459:2409459 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 2409458:2409458 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 2409460:2409460 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 111920:111920 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 111921:111921 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:38 111919:111919 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 111918:111918 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 2409458:2409458 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 2409459:2409459 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 2409461:2409461 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 111920:111920 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 2409460:2409460 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:38 111921:111921 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1736.3472900390625
+STAGE:2024-11-01 13:18:38 111918:111918 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1894.3646240234375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1893.929443359375
+STAGE:2024-11-01 13:18:38 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:38 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1894.41845703125
+STAGE:2024-11-01 13:18:39 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1738.1085205078125
+STAGE:2024-11-01 13:18:39 111920:111920 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1737.75830078125[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1757.3482666015625
+
+STAGE:2024-11-01 13:18:39 111921:111921 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:39 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1826.199951171875
+STAGE:2024-11-01 13:18:39 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:40 111918:111918 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 111921:111921 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 2409460:2409460 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 2409461:2409461 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-01 13:18:40 2409459:2409459 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-01 13:18:40 111920:111920 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 2409458:2409458 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 111921:111921 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 2409461:2409461 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 2409459:2409459 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 111918:111918 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 2409458:2409458 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 2409460:2409460 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 111919:111919 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:40 111920:111920 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:40 111919:111919 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1848.6912841796875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1738.3275146484375
+STAGE:2024-11-01 13:18:41 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:41 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1768.273193359375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1864.944580078125
+STAGE:2024-11-01 13:18:41 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1827.9232177734375
+STAGE:2024-11-01 13:18:41 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:41 111921:111921 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1774.9200439453125
+STAGE:2024-11-01 13:18:41 111920:111920 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1754.9388427734375
+STAGE:2024-11-01 13:18:41 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1918.7164306640625
+STAGE:2024-11-01 13:18:41 111918:111918 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:43 2409461:2409461 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 111920:111920 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-01 13:18:43 111921:111921 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-01 13:18:43 111920:111920 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 111921:111921 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 2409461:2409461 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 2409460:2409460 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 111919:111919 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 2409459:2409459 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 2409458:2409458 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 2409460:2409460 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 111918:111918 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:43 111919:111919 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 2409459:2409459 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 111918:111918 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:43 2409458:2409458 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1802.9949951171875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1814.52587890625
+STAGE:2024-11-01 13:18:44 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:44 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 1746.4715576171875
+STAGE:2024-11-01 13:18:44 111918:111918 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1748.3245849609375
+STAGE:2024-11-01 13:18:44 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 1772.17236328125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 1789.7728271484375
+STAGE:2024-11-01 13:18:44 111920:111920 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:44 111921:111921 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1960.07861328125
+STAGE:2024-11-01 13:18:44 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1969.19677734375
+STAGE:2024-11-01 13:18:44 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:18:46 2409461:2409461 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:46 2409458:2409458 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:46 2409460:2409460 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:46 2409459:2409459 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:46 2409458:2409458 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:46 2409461:2409461 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:46 2409460:2409460 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:46 111919:111919 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-01 13:18:46 2409459:2409459 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-01 13:18:46 111919:111919 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+---first error
+[sciml2302.jlab.org] Rank 6, Local Rank 2
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: bert-base-uncased
+---first error
+[sciml2302.jlab.org] Rank 7, Local Rank 3
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: bert-base-uncased
+---first error
+[sciml2302.jlab.org] Rank 4, Local Rank 0
+ stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+training model now: bert-base-uncased
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 1732.1790771484375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 1891.9903076171875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 2109.64716796875
+training model now: bert-base-uncased
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 1876.4014892578125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 1791.197314453125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 2111.503466796875
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+training model now: bert-base-uncased
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 1973.27294921875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 1908.7715576171875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 2110.546337890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 1817.3701171875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 1867.98515625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 2111.5110107421874
+training model now: bert-base-uncased
+training model now: bert-base-uncased
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 1974.093994140625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 1897.436474609375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 2111.494970703125
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+training model now: bert-base-uncased
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:11, 3180.95 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:09, 3815.37 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:08, 4279.02 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:06, 5911.41 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4550.96 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:08, 4116.05 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4739.02 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:06, 5596.58 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5163.52 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 4848.23 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5258.50 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:05,Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4912.64 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4924.06 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4906.04 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4895.79 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:06, 5150.89 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:06, 5102.19 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:10, 3465.89 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5505.24 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 5422.20 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:10, 3268.92 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:07, 4275.42 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5789.19 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5456.48 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 5208.74 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5483.39 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5915.26 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5943.68 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5671.11 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5862.54 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 6193.80 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5924.72 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 6032.10 examples/s]Map:  16%|█▋        | 6000/36718 [00:00<00:04, 6227.89 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:06, 4793.16 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5705.92 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5747.19 examples/s]Map:  19%|█▉  5608.23 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:05, 5538.14 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:08, 4094.99 examples/s]Map:  14%|█▎        | 5000/36718 [00:00<00:05, 5842.28 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 4704.28 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:07, 4567.00 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 4566.59 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 5185.50 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 5047.08 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:06, 5046.13 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:06, 4479.71 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5470.51 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5324.56 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5158.01 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:06, 4650.98 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5903.60 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5011.89 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5710.20 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5693.70 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:04, 5848.35 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5262.81 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 5787.20 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 5726.98 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 5866.76 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:04, 5557.29 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5864.93 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5790.87 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5896.80 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5704.76 examples/s]Map:  30%|██▉       | 7000/36718 [00:01<00:05, 5355.90 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:05, 5240.29 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5285.96 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5394.06 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 4885.05 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:05, 5294.42 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 5463.62 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 5481.26 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 5095.15 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 5395.26 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5618.81 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5572.77 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:05, 5268.89 examples/s]Map:  27%|██▋       | 10000/36718 [00:01<00:04, 5482.21 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:04, 5895.08 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:04, 5771.23 examples/s]Map:  30%|██▉       | 11000/36718 [00:01<00:04, 5848.01 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:04, 5797.82 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5816.08 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5873.43 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5898.63 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:05, 4838.24 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5746.26 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5793.59 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5886.88 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5092.25 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 5858.76 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 5897.89       | 11000/36718 [00:02<00:04, 5654.08 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:04, 5564.13 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:04, 5334.20 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:04, 5478.92 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5735.22 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5606.49 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5414.01 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:04, 5512.20 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5701.19 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5563.05 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5391.99 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:04, 5463.90 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 5837.51 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 5688.38 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:03, 6020.08 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:04, 5408.97 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5926.23 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5998.92 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 6107.34 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5679.05 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5780.54 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5780.76 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5973.09 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5588.70 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:03, 5780.92 examples/s]Map:  46%|████▋     | 17000/36718 [00:02<00:03, 5797.30 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:03, 5915.66 examples/s]Map:  46% examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:04, 5563.42 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:04, 5572.82 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5913.12 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5719.97 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5646.91 examples/s]Map:  41%|████      | 15000/36718 [00:02<00:03, 5610.01 examples/s]Map:  44%|████▎     | 16000/36718 [00:02<00:03, 5745.07 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:03, 5574.62 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:03, 5509.13 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:03, 5761.93 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:03, 5455.83 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:03, 5472.96 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5833.37 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:03, 5692.03 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5846.59 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5822.56 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5988.01 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5782.80 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 5944.77 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 5965.82 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 6167.42 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 5937.98 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 5969.85 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 5892.37 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 6162.91 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 6017.70 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5862.03 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 6067.30 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5807.04 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5939.56 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 6002.61 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 5796.91 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 5866.96 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:03, 4731.11 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 6103.28 examples/s]Map:  63%|██████▎   | 23000/36718 [00:03<00:02, 5899.47 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5963.58 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5135.99 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:0|████▋     | 17000/36718 [00:03<00:03, 5466.16 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:04, 4859.24 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5534.17 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:02, 5908.82 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5508.71 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 5109.67 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:03, 5647.35 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 5959.43 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:03, 5626.74 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:03, 5353.39 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:02, 5669.79 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5867.63 examples/s]Map:  54%|█████▍    | 20000/36718 [00:03<00:03, 5496.82 examples/s]Map2, 6276.69 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 6169.46 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 5405.32 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 4875.90 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 6374.17 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 6269.70 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:02, 5663.08 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:02, 5244.68 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6295.13 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6225.04 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5436.43 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5798.51 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 6059.44 examples/s]Map:  74%|█�:  54%|█████▍    | 20000/36718 [00:03<00:03, 4950.12 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5557.60 examples/s]Map:  60%|█████▉    | 22000/36718 [00:03<00:02, 5751.31 examples/s]Map:  57%|█████▋    | 21000/36718 [00:03<00:02, 5489.21 examples/s]Map:  57%|█████▋    | 21000/36718 [00:04<00:03, 5093.76 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5905.41 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:02, 5501.20 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:03, 4787.10 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:02, 5160.05 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 6017.21 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5640.98 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5092.32 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 6175.83 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 5358.96 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 5863.83 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 5423.66 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 5618.83 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 6061.32 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:01, 5963.96 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:02, 5581.73 examples/s]Map:  68%|██████▊   | 25000/36718 [00:04<00:02, 5767.90 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 5806.99 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5901.80 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5592.54 examples/s]Map:  71%|███████   | 26000/36718 [00:04<00:01, 5728.14 examples/s]Map:  76%|███████▎  | 27000/36718 [00:04<00:01, 6019.85 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 5429.18 examples/s]Map:  74%|███████▎  | 27000/36718 [00:04<00:01, 5594.61 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5941.65 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5893.80 examples/s]Map:  79%|███████▉  | 29000/36718 [00:04<00:01, 6075.13 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5447.87 examples/s]Map:  76%|███████▋  | 28000/36718 [00:04<00:01, 5554.97 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 6046.37 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5667.11 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5729.41 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 6023.74 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 4913.76 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5760.83 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5737.48 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:00, 5778.40 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5055.51 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5527.56 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5564.23 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5771.93 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5264.39 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5556.39 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5584.04 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5737.81 examples/s]Map:  90%|█████████▋  | 28000/36718 [00:04<00:01, 5737.45 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 5688.10 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 5498.96 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 5531.20 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 5536.97 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 4698.66 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 5379.29 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 5420.09 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5735.99 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5020.20 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5529.81 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5631.82 examples/s]Map:  82%|██████�████▉ | 33000/36718 [00:05<00:00, 5415.94 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5567.85 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5620.66 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 5748.27 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 5568.63 examples/s]Map:  93%|█████████▎| 34000/36718 [00:05<00:00, 5586.46 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5576.93 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5761.27 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5760.65 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5695.15 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5713.99 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5733.45 example��█▏ | 30000/36718 [00:05<00:01, 5747.53 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5588.19 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5079.71 examples/s]Map:  82%|████████▏ | 30000/36718 [00:05<00:01, 5648.99 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5551.07 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5245.83 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5379.79 examples/s]Map:  84%|████████▍ | 31000/36718 [00:05<00:01, 5461.22 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5578.04 examples/s]Map:  90%|████████▉ | 33000/36718 [00:05<00:00, 5333.21 examples/s]Map:  87%|████████▋ | 32000/36718 [00:05<00:00, 5411.41 examples/s]Map:  87%|████████▋ | 32000/36718 [00:06<00:00, 5479.92 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 5535.94 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5436.40 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 5382.02 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 5395.89 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5523.18 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5582.32 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5374.46 examples/s]Map:  93%|█████████▎| 34000/36718 [00:06<00:00, 5384.61 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5554.61 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 4836.49 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5510.76 examples/s]Map:  95%|█████████▌| 35000/36718 [00:06<00:00, 5472.37 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 4784.50 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5622.28 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5655.85 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5783.35 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5006.20 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5664.60 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5681.02 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5305.40 examples/s]
+Map: 100%|██████████| 36718/36718 [00:06<00:00, 5257.09 examples/s]
+Map: 100%|██████████| 36718/36718 [00:06<00:00, 5385.04 examples/s]
+Map: 100%|██████████| 36718/36718 [00:06<00:00, 5310.56 examples/s]
+s/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5625.63 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 4966.29 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 5392.15 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 5422.33 examples/s]
+Map: 100%|██████████| 36718/36718 [00:06<00:00, 5105.06 examples/s]Map:  98%|█████████▊| 36000/36718 [00:06<00:00, 4739.32 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 4684.28 examples/s]Map: 100%|██████████| 36718/36718 [00:06<00:00, 4916.23 examples/s]Map: 100%|██████████| 36718/36718 [00:07<00:00, 5083.63 examples/s]
+Map: 100%|██████████| 36718/36718 [00:07<00:00, 5082.84 examples/s]
+Map: 100%|██████████| 36718/36718 [00:07<00:00, 5070.99 examples/s]
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1402.46923828125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1409.8067626953125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1411.2501220703125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1411.3189697265625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1414.6031494140625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1405.63037109375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1417.81884765625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1418.2545166015625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1405.75
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1399.7872314453125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1395.795654296875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1398.915283203125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1394.4385986328125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1399.1767578125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1397.7960205078125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1397.2772216796875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1322.7713623046875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1334.69140625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1338.947265625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1337.4000244140625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1349.9361572265625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1348.0008544921875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1347.8021240234375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1347.67138671875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 2184.3583984375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 2186.42724609375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 2196.99462890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 2185.6826171875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 2186.561767578125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 2202.369384765625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 2202.302978515625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 2204.7734375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1431.1973876953125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1431.4849853515625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1432.102783203125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1438.0625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1438.4080810546875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1438.6668701171875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1438.7342529296875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1438.9464111328125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1386.6376953125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1388.447265625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1388.1112060546875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1388.411376953125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1392.35888671875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1392.9095458984375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1388.2479248046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1388.001708984375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1400.5572509765625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1394.338623046875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1398.748291015625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1395.188720703125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1399.323486328125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1399.0352783203125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1399.1561279296875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1398.930908203125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1400.9920654296875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1399.447021484375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1401.48876953125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1400.727294921875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1400.7340087890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1400.79833984375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1401.2076416015625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1406.922119140625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1297.3172607421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1306.213134765625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1306.968505859375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1307.5611572265625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1307.161376953125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1314.842041015625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1313.0001220703125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1310.6943359375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 1339.7279052734375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 1338.1741943359375
+STAGE:2024-11-01 13:19:56 2409460:2409460 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 1337.046875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 1337.0072021484375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 1345.3955078125
+STAGE:2024-11-01 13:19:56 2409461:2409461 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 1353.0343017578125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 1355.169189453125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 1345.3392333984375
+STAGE:2024-11-01 13:19:56 2409459:2409459 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:19:56 2409458:2409458 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-01 13:19:56 111919:111919 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+---first error
+[sciml2302.jlab.org] Rank 4, Local Rank 0
+ Can't disable Kineto profiler when it's not running
+training model now: google-t5/t5-small
+---first error
+[sciml2302.jlab.org] Rank 7, Local Rank 3
+ Can't disable Kineto profiler when it's not running
+training model now: google-t5/t5-small
+---first error
+[sciml2302.jlab.org] Rank 6, Local Rank 2
+ Can't disable Kineto profiler when it's not running
+training model now: google-t5/t5-small
+Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   0%|          | 0/36718 [00:00<?, ? examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4889.40 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4835.45 examples/s]Map:   3%|▎         | 1000/36718 [00:00<00:07, 4771.49 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4582.27 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4555.57 examples/s]Map:   5%|▌         | 2000/36718 [00:00<00:07, 4487.10 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:06, 4819.09 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:07, 4794.60 examples/s]Map:   8%|▊         | 3000/36718 [00:00<00:07, 4755.88 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 4781.96 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 4764.57 examples/s]Map:  11%|█         | 4000/36718 [00:00<00:06, 4771.39 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 5058.70 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 5036.89 examples/s]Map:  14%|█▎        | 5000/36718 [00:01<00:06, 5038.94 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:06, 5108.12 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5122.54 examples/s]Map:  16%|█▋        | 6000/36718 [00:01<00:05, 5122.55 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:06, 4734.32 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:06, 4748.83 examples/s]Map:  19%|█▉        | 7000/36718 [00:01<00:06, 4741.64 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:06, 4731.20 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:06, 4702.90 examples/s]Map:  22%|██▏       | 8000/36718 [00:01<00:06, 4717.73 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 4730.69 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 4729.89 examples/s]Map:  25%|██▍       | 9000/36718 [00:01<00:05, 4726.76 examples/s]Map:  27%|██▋       | 10000/36718 [00:02<00:05, 4769.63 examples/s]Map:  27%|██▋       | 10000/36718 [00:02<00:05, 4753.96 examples/s]Map:  27%|██▋       | 10000/36718 [00:02<00:06, 4181.04 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:05, 4746.94 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:05, 4710.46 examples/s]Map:  30%|██▉       | 11000/36718 [00:02<00:05, 4313.15 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:05, 4734.48 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:05, 4755.65 examples/s]Map:  33%|███▎      | 12000/36718 [00:02<00:05, 4473.64 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:05, 4743.57 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:05, 4529.24 examples/s]Map:  35%|███▌      | 13000/36718 [00:02<00:05, 4138.20 examples/s]Map:  38%|███▊      | 14000/36718 [00:02<00:04, 4861.48 examples/s]Map:  38%|███▊      | 14000/36718 [00:03<00:05, 4409.22 examples/s]Map:  38%|███▊      | 14000/36718 [00:03<00:04, 4691.44 examples/s]Map:  41%|████      | 15000/36718 [00:03<00:04, 4952.49 examples/s]Map:  41%|████      | 15000/36718 [00:03<00:04, 4591.59 examples/s]Map:  41%|████      | 15000/36718 [00:03<00:04, 4800.27 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:04, 4799.81 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:04, 4552.47 examples/s]Map:  44%|████▎     | 16000/36718 [00:03<00:04, 4653.68 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:04, 4835.20 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:04, 4574.08 examples/s]Map:  46%|████▋     | 17000/36718 [00:03<00:04, 4696.65 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 4921.40 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 4697.91 examples/s]Map:  49%|████▉     | 18000/36718 [00:03<00:03, 4775.54 examples/s]Map:  52%|█████▏    | 19000/36718 [00:03<00:03, 5004.54 examples/s]Map:  52%|█████▏    | 19000/36718 [00:04<00:03, 4872.40 examples/s]Map:  52%|█████▏    | 19000/36718 [00:04<00:03, 4905.24 examples/s]Map:  54%|█████▍    | 20000/36718 [00:04<00:03, 5044.47 examples/s]Map:  54%|█████▍    | 20000/36718 [00:04<00:03, 4946.35 examples/s]Map:  54%|█████▍    | 20000/36718 [00:04<00:03, 4933.46 examples/s]Map:  57%|█████▋    | 21000/36718 [00:04<00:03, 4955.12 examples/s]Map:  57%|█████▋    | 21000/36718 [00:04<00:03, 4880.77 examples/s]Map:  57%|█████▋    | 21000/36718 [00:04<00:03, 4866.31 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:03, 4345.30 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:03, 4839.30 examples/s]Map:  60%|█████▉    | 22000/36718 [00:04<00:03, 4820.00 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 4608.52 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 4989.00 examples/s]Map:  63%|██████▎   | 23000/36718 [00:04<00:02, 4927.89 examples/s]Map:  65%|██████▌   | 24000/36718 [00:04<00:02, 4907.85 examples/s]Map:  65%|██████▌   | 24000/36718 [00:05<00:02, 5198.77 examples/s]Map:  65%|██████▌   | 24000/36718 [00:05<00:02, 5149.01 examples/s]Map:  68%|██████▊   | 25000/36718 [00:05<00:02, 5120.61 examples/s]Map:  68%|██████▊   | 25000/36718 [00:05<00:02, 5322.23 examples/s]Map:  68%|██████▊   | 25000/36718 [00:05<00:02, 5273.38 examples/s]Map:  71%|███████   | 26000/36718 [00:05<00:02, 5126.11 examples/s]Map:  71%|███████   | 26000/36718 [00:05<00:02, 5249.83 examples/s]Map:  71%|███████   | 26000/36718 [00:05<00:02, 5207.16 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 4996.89 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 5061.57 examples/s]Map:  74%|███████▎  | 27000/36718 [00:05<00:01, 5020.52 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 4936.22 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 4962.22 examples/s]Map:  76%|███████▋  | 28000/36718 [00:05<00:01, 4927.90 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5135.52 examples/s]Map:  79%|███████▉  | 29000/36718 [00:05<00:01, 5138.93 examples/s]Map:  79%|███████▉  | 29000/36718 [00:06<00:01, 5099.65 examples/s]Map:  82%|████████▏ | 30000/36718 [00:06<00:01, 5145.16 examples/s]Map:  82%|████████▏ | 30000/36718 [00:06<00:01, 5139.78 examples/s]Map:  82%|████████▏ | 30000/36718 [00:06<00:01, 5085.89 examples/s]Map:  84%|████████▍ | 31000/36718 [00:06<00:01, 4939.46 examples/s]Map:  84%|████████▍ | 31000/36718 [00:06<00:01, 4887.88 examples/s]Map:  84%|████████▍ | 31000/36718 [00:06<00:01, 4309.01 examples/s]Map:  87%|████████▋ | 32000/36718 [00:06<00:00, 4775.96 examples/s]Map:  87%|████████▋ | 32000/36718 [00:06<00:00, 4854.27 examples/s]Map:  87%|████████▋ | 32000/36718 [00:06<00:01, 4441.42 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 4732.87 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 4813.55 examples/s]Map:  90%|████████▉ | 33000/36718 [00:06<00:00, 4513.66 examples/s]Map:  93%|█████████▎| 34000/36718 [00:07<00:00, 4766.78 examples/s]Map:  93%|█████████▎| 34000/36718 [00:07<00:00, 4870.31 examples/s]Map:  93%|█████████▎| 34000/36718 [00:07<00:00, 4625.87 examples/s]Map:  95%|█████████▌| 35000/36718 [00:07<00:00, 4913.68 examples/s]Map:  95%|█████████▌| 35000/36718 [00:07<00:00, 4414.08 examples/s]Map:  95%|█████████▌| 35000/36718 [00:07<00:00, 4806.35 examples/s]Map:  98%|█████████▊| 36000/36718 [00:07<00:00, 4825.74 examples/s]Map:  98%|█████████▊| 36000/36718 [00:07<00:00, 4507.37 examples/s]Map: 100%|██████████| 36718/36718 [00:07<00:00, 4878.24 examples/s]Map:  98%|█████████▊| 36000/36718 [00:07<00:00, 4714.39 examples/s]Map: 100%|██████████| 36718/36718 [00:07<00:00, 4634.21 examples/s]Map: 100%|██████████| 36718/36718 [00:07<00:00, 4779.24 examples/s]Map: 100%|██████████| 36718/36718 [00:07<00:00, 4675.96 examples/s]
+Map: 100%|██████████| 36718/36718 [00:07<00:00, 4659.62 examples/s]
+Map: 100%|██████████| 36718/36718 [00:07<00:00, 4650.02 examples/s]
+
+sciml2301:2409461:2409557 [3] transport/net_ib.cc:1081 NCCL WARN NET/IB : req 0/1 tag 3 peer 172.17.1.13<48895> collective mismatch error, local size 78848 remote size 65536
+sciml2301:2409461:2409557 [3] NCCL INFO transport/net.cc:990 -> 5
+sciml2301:2409461:2409557 [3] NCCL INFO proxy.cc:679 -> 5
+sciml2301:2409461:2409557 [3] NCCL INFO proxy.cc:858 -> 5 [Proxy Thread]
+[E ProcessGroupNCCL.cpp:474] [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800149 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:474] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800129 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:474] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800724 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:474] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800970 milliseconds before timing out.
+sciml2301:2409460:2409552 [2] NCCL INFO [Service thread] Connection closed by localRank 2
+sciml2301:2409459:2409555 [1] NCCL INFO [Service thread] Connection closed by localRank 1
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:915] [Rank 2] NCCL watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800724 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 2] NCCL watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800724 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:915] [Rank 1] NCCL watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800970 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 1] NCCL watchdog thread terminated with exception: [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1296, OpType=ALLREDUCE, NumelIn=622650, NumelOut=622650, Timeout(ms)=1800000) ran for 1800970 milliseconds before timing out.
+[2024-11-01 13:50:06,282] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 2409458 closing signal SIGTERM
+[2024-11-01 13:50:06,283] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 2409461 closing signal SIGTERM
+[2024-11-01 13:50:06,286] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: -6) local_rank: 1 (pid: 2409459) of binary: /w/epsci-sciwork18/xmei/projects/pyvenv/bin/python3.10
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+========================================================
+transformer_ddp.py FAILED
+--------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-11-01_13:50:06
+  host      : sciml2301.jlab.org
+  rank      : 2 (local_rank: 2)
+  exitcode  : -6 (pid: 2409460)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 2409460
+--------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-11-01_13:50:06
+  host      : sciml2301.jlab.org
+  rank      : 1 (local_rank: 1)
+  exitcode  : -6 (pid: 2409459)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 2409459
+========================================================
+srun: error: sciml2301: task 0: Exited with exit code 1
+[E ProcessGroupNCCL.cpp:474] [Rank 6] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800262 milliseconds before timing out.
+sciml2302:111920:112420 [2] NCCL INFO [Service thread] Connection closed by localRank 2
+---first error
+[sciml2302.jlab.org] Rank 7, Local Rank 3
+ DDP expects same model across all ranks, but Rank 7 has 131 params, while rank 0 has inconsistent 202 params.
+training model now:---first error
+[sciml2302.jlab.org] Rank 6, Local Rank 2
+ DDP expects same model across all ranks, but Rank 6 has 131 params, while rank 0 has inconsistent 202 params.
+ google/flan-t5-small
+training model now: google/flan-t5-small
+[E ProcessGroupNCCL.cpp:474] [Rank 7] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800661 milliseconds before timing out.
+sciml2302:111921:112418 [3] NCCL INFO [Service thread] Connection closed by localRank 3
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:474] [Rank 4] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800872 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:915] [Rank 6] NCCL watchdog thread terminated with exception: [Rank 6] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800262 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 6] NCCL watchdog thread terminated with exception: [Rank 6] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800262 milliseconds before timing out.
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:915] [Rank 7] NCCL watchdog thread terminated with exception: [Rank 7] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800661 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 7] NCCL watchdog thread terminated with exception: [Rank 7] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800661 milliseconds before timing out.
+sciml2302:111918:112419 [0] NCCL INFO [Service thread] Connection closed by localRank 0
+---first error
+[sciml2302.jlab.org] Rank 4, Local Rank 0
+ DDP expects same model across all ranks, but Rank 4 has 131 params, while rank 0 has inconsistent 0 params.
+training model now: google/flan-t5-small
+[E ProcessGroupNCCL.cpp:488] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[E ProcessGroupNCCL.cpp:494] To avoid data inconsistency, we are taking the entire process down.
+[E ProcessGroupNCCL.cpp:915] [Rank 4] NCCL watchdog thread terminated with exception: [Rank 4] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800872 milliseconds before timing out.
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  [Rank 4] NCCL watchdog thread terminated with exception: [Rank 4] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=1295, OpType=ALLGATHER, NumelIn=1, NumelOut=8, Timeout(ms)=1800000) ran for 1800872 milliseconds before timing out.
+[2024-11-01 13:50:11,170] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_111911_0' has failed to send a keep-alive heartbeat to the rendezvous '8988' due to an error of type RendezvousConnectionError.
+[2024-11-01 13:50:11,286] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 111919 closing signal SIGTERM
+[2024-11-01 13:50:11,287] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: -6) local_rank: 0 (pid: 111918) of binary: /w/epsci-sciwork18/xmei/projects/pyvenv/bin/python3.10
+[2024-11-01 13:50:11,326] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_111911_0' has failed to shutdown the rendezvous '8988' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=======================================================
+transformer_ddp.py FAILED
+-------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-11-01_13:50:11
+  host      : sciml2302.jlab.org
+  rank      : 6 (local_rank: 2)
+  exitcode  : -6 (pid: 111920)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 111920
+[2]:
+  time      : 2024-11-01_13:50:11
+  host      : sciml2302.jlab.org
+  rank      : 7 (local_rank: 3)
+  exitcode  : -6 (pid: 111921)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 111921
+-------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-11-01_13:50:11
+  host      : sciml2302.jlab.org
+  rank      : 4 (local_rank: 0)
+  exitcode  : -6 (pid: 111918)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 111918
+=======================================================
+srun: error: sciml2302: task 1: Exited with exit code 1
