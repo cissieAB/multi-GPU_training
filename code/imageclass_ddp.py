@@ -183,8 +183,8 @@ for model, name in zip(listmodel, namelist):
                         loss = loss_fn(preds, labels)
                         loss.backward()
                         optimizer.step()
-                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")
-                    print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/10)
+                print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")
+                print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/10)
 
     except Exception as e:
         print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}, ",e)
