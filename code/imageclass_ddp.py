@@ -1,10 +1,10 @@
 import os
 import socket
 import time
+import numpy as np
 import torch
 import torchvision
 import sys
-import numpy as np
 import torchvision.models as models
 from torchvision import transforms
 from tqdm import tqdm
@@ -19,9 +19,9 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.profiler import profile, record_function, ProfilerActivity
 from torch.profiler import ExecutionTraceObserver
 
-bsinput=int(sys.argv[1])
-listmodel=[]
+
 num_iters = 46
+
 # load model
 vgg11 = models.vgg11(weights=None)
 vgg13 = models.vgg13(weights=None)
@@ -55,7 +55,6 @@ densenet201 = models.densenet201(weights=None)
 # mnasnet1_0 = models.mnasnet1_0(weights=None)
 # mnasnet0_5 = models.mnasnet0_5(weights=None)
 
-bslist=[bsinput]
 dist.init_process_group("nccl")
 
 local_rank = int(os.environ["LOCAL_RANK"])
@@ -64,17 +63,21 @@ rank = dist.get_rank()
 world_size = dist.get_world_size()
 hostname = socket.gethostname()
 
-# Check GPU availability and set device
+# Check GPU availability and set device. Eearly detect CUDA/node problem.
 try:
     num_gpus = torch.cuda.device_count()
-    print(f"Hostname: {hostname}, Rank: {rank}, Local Rank: {local_rank}, Global Rank: {global_rank}, NUM_GPS: {num_gpus}")
+    print(f"Hostname: {hostname}, Local Rank: {local_rank}, Global Rank: {global_rank}, NUM_GPUS: {num_gpus}")
     torch.cuda.set_device(local_rank)
     print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: CUDA device set to {local_rank}")
+    if local_rank == 0:
+        print(f"[{hostname}] NumPy version: , {np.__version__}")
+        print(f"[{hostname}] Torch version:, {torch.__version__}")
     torch.cuda.empty_cache()
 except Exception as e:
     print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: Error setting CUDA device: {e}")
     sys.exit(1)  # Exit if there's a critical failure in setting the device
-    
+
+
 data_transforms = {
     'predict': transforms.Compose([
     transforms.Resize(256),
@@ -82,106 +85,112 @@ data_transforms = {
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
 ])}
-    
-for bs in bslist:
-    
-    BATCH_SIZE = bs
-    EPOCHS = 1
-    WORKERS = 8
-    IMG_DIMS = (336, 336)
-    CLASSES = 10
+
+BATCH_SIZE = int(sys.argv[1])
+EPOCHS = 1
+WORKERS = 4
+IMG_DIMS = (336, 336)
+CLASSES = 10
+
+listmodel=[vgg11,vgg13,vgg16,vgg19,resnet18,resnet34,resnet50,resnet101,resnet152,
+          densenet161,densenet169,densenet121,densenet201]
+namelist = ['vgg11','vgg13','vgg16','vgg19','resnet18','resnet34','resnet50','resnet101','resnet152',
+          'densenet161','densenet169','densenet121','densenet201']
+
+
+for model, name in zip(listmodel, namelist):
     dataset = {'predict' : torchvision.datasets.ImageFolder("./ILSVRC2012_img_val", data_transforms['predict'])}
     dataset_subset=dataset['predict']
     dataset_subset = torch.utils.data.Subset(dataset['predict'],range(BATCH_SIZE))
-    # sampler = DistributedSampler(dataset_subset, num_replicas=world_size, rank=rank)
     sampler = DistributedSampler(dataset_subset, shuffle=False)
     data_loader = {'predict': torch.utils.data.DataLoader(dataset_subset,
                                             batch_size=BATCH_SIZE,
                                             shuffle=False,
                                             sampler=sampler,
                                             num_workers=WORKERS)}
-
     torch.cuda.set_device(local_rank)
     torch.cuda.empty_cache()
-    listmodel=[vgg11,vgg13,vgg16,vgg19,resnet18,resnet34,resnet50,resnet101,resnet152,
-              densenet161,densenet169,densenet121,densenet201]
-    namelist = ['vgg11','vgg13','vgg16','vgg19','resnet18','resnet34','resnet50','resnet101','resnet152',
-              'densenet161','densenet169','densenet121','densenet201']
-    j = 0
-    for model in listmodel:
-        name = namelist[j]
-        print(f"Batch Size: {BATCH_SIZE}, Epochs: {EPOCHS}, Workers: {WORKERS}, Network: {name}")
-        j=j+1
-        try: 
-            model = model.to('cuda:' + str(local_rank))
-            model = DDP(model, device_ids=[local_rank])
-            loss_fn = nn.CrossEntropyLoss()
-            optimizer = optim.Adam(model.parameters(), lr=0.01)
-            for epoch in range(EPOCHS): # 1 epoch
-                    model.train()
-                    sampler.set_epoch(epoch)
-                    for batch in tqdm(data_loader['predict'], total=len(data_loader['predict'])):
-                        features, labels = batch[0].to(local_rank), batch[1].to(local_rank)
-                        print( "Batchsize:", features.size())
-                        total_time1 = 0
-                        total_time2 = 0
-                        for i in range(num_iters): # 46 iterations
-                            if 40<i<=num_iters-1:
-                                eg = ExecutionTraceObserver()
-                                eg.register_callback("./imageclass_ddp_profiler/graph_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
-                                eg.start()
-                                with profile(activities=[ProfilerActivity.CPU,ProfilerActivity.CUDA],record_shapes=True,with_stack=True,profile_memory=True) as prof: #,on_trace_ready=torch.profiler.tensorboard_trace_handler('./log/resnet18')
-                                    torch.cuda.synchronize()
-                                    starter = torch.cuda.Event(enable_timing=True)
-                                    ender = torch.cuda.Event(enable_timing=True)
-                                    starter.record()
-                    
-                                    optimizer.zero_grad()
 
-                                    preds = model(features)
-                                    loss = loss_fn(preds, labels)
+    try:
+        model = model.to('cuda:' + str(local_rank))
+        model = DDP(model, device_ids=[local_rank])
+        loss_fn = nn.CrossEntropyLoss()
+        optimizer = optim.Adam(model.parameters(), lr=0.01)
+        print(f"[{hostname}, Rank {global_rank}] Batch Size: {BATCH_SIZE}, Epochs: {EPOCHS}, Workers: {WORKERS}, Network: {name}, CUDA: {hostname}:{local_rank}")
+        for epoch in range(EPOCHS): # 1 epoch
+            model.train()
+            sampler.set_epoch(epoch)
+            for features, labels in data_loader['predict']:
+                # print(f"[{hostname}], [Rank {local_rank}]: features.size: {features.size()}, labels.size: {labels.size()}")
+                features, labels = features.to(local_rank), labels.to(local_rank)
+                print("Batchsize:", features.size())
+                total_time1 = 0
+                total_time2 = 0
+                for i in range(num_iters): # 46 iterations
+                    # print(f"[{hostname}], [Rank {local_rank}]: iter {i}")
+                    if 40<i<=num_iters-1:
+                        eg = ExecutionTraceObserver()
+                        eg.register_callback("./imageclass_ddp_profiler/graph_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
+                        eg.start()
+                        with profile(activities=[ProfilerActivity.CPU,ProfilerActivity.CUDA],record_shapes=True,with_stack=True,profile_memory=True) as prof: #,on_trace_ready=torch.profiler.tensorboard_trace_handler('./log/resnet18')
+                            torch.cuda.synchronize()
+                            starter = torch.cuda.Event(enable_timing=True)
+                            ender = torch.cuda.Event(enable_timing=True)
+                            starter.record()
+            
+                            optimizer.zero_grad()
+    
+                            preds = model(features)
+                            loss = loss_fn(preds, labels)
+    
+                            loss.backward()
+                            optimizer.step()
+                            
+                            ender.record()
+                            torch.cuda.synchronize()
+                            curr_time = starter.elapsed_time(ender)
+                            total_time1 += curr_time                         
+                        prof.export_chrome_trace("./imageclass_ddp_profiler/profiler_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
+                        eg.stop()
+                        eg.unregister_callback()
+                        print("Save Exeution Trace")
+                        print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time: {curr_time}")
 
-                                    loss.backward()
-                                    optimizer.step()
-                                    
-                                    ender.record()
-                                    torch.cuda.synchronize()
-                                    curr_time = starter.elapsed_time(ender)
-                                    total_time1 += curr_time                         
-                                prof.export_chrome_trace("./imageclass_ddp_profiler/profiler_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
-                                eg.stop()
-                                eg.unregister_callback()
-                                print("Save Exeution Trace")
-                                print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time: {curr_time}")
-
-                            elif 30<i<=40:
-                                torch.cuda.synchronize()
-                                starter = torch.cuda.Event(enable_timing=True)
-                                ender = torch.cuda.Event(enable_timing=True)
-                                starter.record()
-                                
-                                optimizer.zero_grad()
-                                preds = model(features)
-                                loss = loss_fn(preds, labels)
-                                loss.backward()
-                                optimizer.step()
-                                
-                                ender.record()
-                                torch.cuda.synchronize()
-                                curr_time = starter.elapsed_time(ender)
-                                total_time2 += curr_time
-                                print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time 2: {curr_time}")
-
-                            else:
-                                optimizer.zero_grad()
-                                preds = model(features)
-                                loss = loss_fn(preds, labels)
-                                loss.backward()
-                                optimizer.step()
+                        # Clean the trace stuff
+                        prof = None  # Release profiler reference to free memory
+                        del eg  # Remove the observer to ensure no memory retention
+                    elif 30<i<=40:
+                        torch.cuda.synchronize()
+                        starter = torch.cuda.Event(enable_timing=True)
+                        ender = torch.cuda.Event(enable_timing=True)
+                        starter.record()
+                        
+                        optimizer.zero_grad()
+                        preds = model(features)
+                        loss = loss_fn(preds, labels)
+                        loss.backward()
+                        optimizer.step()
+                        
+                        ender.record()
+                        torch.cuda.synchronize()
+                        curr_time = starter.elapsed_time(ender)
+                        total_time2 += curr_time
+                        print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: {name}, gpu time 2: {curr_time}")
+    
+                    else:
+                        optimizer.zero_grad()
+                        preds = model(features)
+                        loss = loss_fn(preds, labels)
+                        loss.backward()
+                        optimizer.step()
                     print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg profiler Total time1: {total_time1/5}")
                     print(f"[{hostname}] Rank {rank}, Local Rank {local_rank}: avg Total time2:", total_time2/10)
 
-        except Exception as e:
-            print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}\n",e)
-            # pass
+    except Exception as e:
+        print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}, ",e)
+        sys.exit(1)  # stop executing when there is an error
+
+        # pass
+
+
 dist.destroy_process_group()
