@@ -1,5 +1,10 @@
+# dataset
 ILSVRC2012_img_val/
 __MACOSX
-slurm_*
 
+# Raw job logs
+slurm-*
+
+# Big files shared with Google Drive
+imageclass_ddp_trace.zip
 

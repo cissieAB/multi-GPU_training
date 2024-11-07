@@ -1,0 +1,662 @@
++ grep SLURM
++ env
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,32262133
+SLURM_TASK_PID=2755751
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/nccl-tests/sendrecv
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1730957200
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1730971600
+SLURM_CPUS_ON_NODE=1
+SLURM_JOB_CPUS_PER_NODE=1(x2)
+SLURM_GPUS_ON_NODE=4
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=32262133
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+SLURM_TOPOLOGY_ADDR=sciml2301
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=409600
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2402.jlab.org
+SLURM_JOB_ID=32262133
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=2-GPU-bw
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
++ export NCCL_HOME=/home/xmei/projects/nccl/build
++ NCCL_HOME=/home/xmei/projects/nccl/build
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ export NCCL_IB_DISABLE=0
++ NCCL_IB_DISABLE=0
++ echo -e '\nNCCL env var'
+
+NCCL env var
++ echo -e '\nMPI env var'
+
+MPI env var
++ export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/home/xmei/projects/nccl/build/lib:/usr/lib64/openmpi/lib
++ LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:/home/xmei/projects/nccl/build/lib:/usr/lib64/openmpi/lib
++ export WKDIR=/home/xmei/projects/nccl-tests
++ WKDIR=/home/xmei/projects/nccl-tests
++ mpirun -np 2 --host sciml2301,sciml2302 bash -c '
+if [[ $OMPI_COMM_WORLD_RANK -eq 0 ]]; then
+    export CUDA_VISIBLE_DEVICES=0   # Select 1st GPU on the 1st node
+elif [[ $OMPI_COMM_WORLD_RANK -eq 1 ]]; then
+    export CUDA_VISIBLE_DEVICES=3   # Select 4th GPU on the 2nd node
+fi
+
+echo "Process $OMPI_COMM_WORLD_RANK using GPU $CUDA_VISIBLE_DEVICES on $(hostname)";
+
+
+${WKDIR}/build/sendrecv_perf -b 8 -e 1G -f 1.2 -g 1;
+'
+Process 0 using GPU 0 on sciml2301.jlab.org
+Process 1 using GPU 3 on sciml2302.jlab.org
+sciml2302.jlab.org:rank1.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+sciml2302.jlab.org:rank1.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+sciml2302.jlab.org:rank1.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+sciml2301.jlab.org:rank0.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+sciml2301.jlab.org:rank0.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   sciml2302
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+sciml2301.jlab.org:rank0.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+sciml2302.jlab.org:rank1.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+--------------------------------------------------------------------------
+Open MPI failed an OFI Libfabric library call (fi_endpoint).  This is highly
+unusual; your job may behave unpredictably (and/or abort) after this.
+
+  Local host: sciml2302
+  Location: mtl_ofi_component.c:513
+  Error: Invalid argument (22)
+--------------------------------------------------------------------------
+sciml2301.jlab.org:rank0.sendrecv_perf: Failed to modify UD QP to INIT on mlx5_0: Operation not permitted
+# nThread 1 nGpus 1 minBytes 8 maxBytes 1073741824 step: 1048576(bytes) warmup iters: 5 iters: 20 agg iters: 1 validation: 1 graph: 0
+#
+# Using devices
+#  Rank  0 Group  0 Pid 2755773 on  sciml2301 device  0 [0x83] NVIDIA A100 80GB PCIe
+#  Rank  1 Group  0 Pid 458055 on  sciml2302 device  0 [0xc4] NVIDIA A100 80GB PCIe
+sciml2301:2755773:2755773 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2302:458055:458055 [0] NCCL INFO cudaDriverVersion 12060
+sciml2302:458055:458055 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:458055:458055 [0] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2301:2755773:2755773 [0] NCCL INFO cudaDriverVersion 12060
+sciml2301:2755773:2755773 [0] NCCL INFO NCCL version 2.23.4+cuda12.6
+sciml2302:458055:458065 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2302:458055:458065 [0] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2302:458055:458065 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:458055:458065 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2302:458055:458065 [0] NCCL INFO Using network IB
+sciml2301:2755773:2755796 [0] NCCL INFO NET/Plugin: Could not find: libnccl-net.so. Using internal network plugin.
+sciml2301:2755773:2755796 [0] NCCL INFO NCCL_IB_DISABLE set by environment to 0.
+sciml2301:2755773:2755796 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:2755773:2755796 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so.
+sciml2301:2755773:2755796 [0] NCCL INFO Using network IB
+sciml2302:458055:458065 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2302:458055:458065 [0] NCCL INFO ncclCommInitRank comm 0x3c6df40 rank 1 nranks 2 cudaDev 0 nvmlDev 3 busId c4000 commId 0xe689a040cb60a708 - Init START
+sciml2301:2755773:2755796 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2301:2755773:2755796 [0] NCCL INFO ncclCommInitRank comm 0x2830580 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 83000 commId 0xe689a040cb60a708 - Init START
+sciml2301:2755773:2755796 [0] NCCL INFO Bootstrap timings total 0.012418 (create 0.000075, send 0.011343, recv 0.000568, ring 0.000157, delay 0.000001)
+sciml2302:458055:458065 [0] NCCL INFO Bootstrap timings total 0.025128 (create 0.000104, send 0.000342, recv 0.023937, ring 0.000078, delay 0.000000)
+sciml2301:2755773:2755796 [0] NCCL INFO comm 0x2830580 rank 0 nRanks 2 nNodes 2 localRanks 1 localRank 0 MNNVL 0
+sciml2301:2755773:2755796 [0] NCCL INFO Channel 00/02 : 0 1
+sciml2301:2755773:2755796 [0] NCCL INFO Channel 01/02 : 0 1
+sciml2301:2755773:2755796 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] -1/-1/-1->0->1
+sciml2301:2755773:2755796 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2302:458055:458065 [0] NCCL INFO comm 0x3c6df40 rank 1 nRanks 2 nNodes 2 localRanks 1 localRank 0 MNNVL 0
+sciml2302:458055:458065 [0] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] 0/-1/-1->1->-1
+sciml2302:458055:458065 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:2755773:2755796 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+sciml2301:2755773:2755796 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:458055:458065 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+sciml2302:458055:458065 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:2755773:2755796 [0] NCCL INFO CC Off, Multi-GPU CC Off, workFifoBytes 1048576
+sciml2302:458055:458065 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2302:458055:458065 [0] NCCL INFO ncclCommInitRank comm 0x3c6df40 rank 1 nranks 2 cudaDev 0 nvmlDev 3 busId c4000 commId 0xe689a040cb60a708 - Init COMPLETE
+sciml2302:458055:458065 [0] NCCL INFO Init timings - ncclCommInitRank: rank 1 nranks 2 total 0.22 (kernels 0.13, alloc 0.04, bootstrap 0.03, allgathers 0.00, topo 0.02, graphs 0.00, connections 0.00, rest 0.00)
+sciml2301:2755773:2755796 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so libnccl-net.so. Using internal tuner plugin.
+sciml2301:2755773:2755796 [0] NCCL INFO ncclCommInitRank comm 0x2830580 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 83000 commId 0xe689a040cb60a708 - Init COMPLETE
+sciml2301:2755773:2755796 [0] NCCL INFO Init timings - ncclCommInitRank: rank 0 nranks 2 total 0.21 (kernels 0.13, alloc 0.04, bootstrap 0.01, allgathers 0.00, topo 0.02, graphs 0.00, connections 0.00, rest 0.00)
+#
+#                                                              out-of-place                       in-place          
+#       size         count      type   redop    root     time   algbw   busbw #wrong     time   algbw   busbw #wrong
+#        (B)    (elements)                               (us)  (GB/s)  (GB/s)            (us)  (GB/s)  (GB/s)       
+sciml2302:458055:458070 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 0
+sciml2301:2755773:2755801 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 0
+sciml2302:458055:458069 [0] NCCL INFO [Proxy Service] Device 0 CPU core 0
+sciml2301:2755773:2755800 [0] NCCL INFO [Proxy Service] Device 0 CPU core 0
+sciml2302:458055:458071 [0] NCCL INFO Channel 00/1 : 0[0] -> 1[3] [receive] via NET/IB/0/Shared
+sciml2302:458055:458071 [0] NCCL INFO Channel 01/1 : 0[0] -> 1[3] [receive] via NET/IB/0/Shared
+sciml2302:458055:458071 [0] NCCL INFO Channel 00/1 : 1[3] -> 0[0] [send] via NET/IB/0/Shared
+sciml2302:458055:458071 [0] NCCL INFO Channel 01/1 : 1[3] -> 0[0] [send] via NET/IB/0/Shared
+sciml2302:458055:458072 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 0
+sciml2301:2755773:2755802 [0] NCCL INFO Channel 00/1 : 1[3] -> 0[0] [receive] via NET/IB/0/Shared
+sciml2301:2755773:2755802 [0] NCCL INFO Channel 01/1 : 1[3] -> 0[0] [receive] via NET/IB/0/Shared
+sciml2301:2755773:2755802 [0] NCCL INFO Channel 00/1 : 0[0] -> 1[3] [send] via NET/IB/0/Shared
+sciml2301:2755773:2755802 [0] NCCL INFO Channel 01/1 : 0[0] -> 1[3] [send] via NET/IB/0/Shared
+sciml2301:2755773:2755803 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 0
+[sciml2301.jlab.org:2755758] 1 more process has sent help message help-mpi-btl-openib.txt / error in device init
+[sciml2301.jlab.org:2755758] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+[sciml2301.jlab.org:2755758] 1 more process has sent help message help-mtl-ofi.txt / OFI call fail
+           8             2     float     sum      -1    37.95    0.00    0.00      0    37.20    0.00    0.00    N/A
+     1048584        262146     float     sum      -1   2563.9    0.41    0.41      0   2563.3    0.41    0.41    N/A
+     2097160        524290     float     sum      -1   5312.6    0.39    0.39      0   5243.0    0.40    0.40    N/A
+     3145736        786434     float     sum      -1   7854.6    0.40    0.40      0   7932.9    0.40    0.40    N/A
+     4194312       1048578     float     sum      -1    11008    0.38    0.38      0    10613    0.40    0.40    N/A
+     5242888       1310722     float     sum      -1    13397    0.39    0.39      0    13398    0.39    0.39    N/A
+     6291464       1572866     float     sum      -1    15998    0.39    0.39      0    16233    0.39    0.39    N/A
+     7340040       1835010     float     sum      -1    18580    0.40    0.40      0    19216    0.38    0.38    N/A
+     8388616       2097154     float     sum      -1    21428    0.39    0.39      0    21290    0.39    0.39    N/A
+     9437192       2359298     float     sum      -1    24453    0.39    0.39      0    24210    0.39    0.39    N/A
+    10485768       2621442     float     sum      -1    26539    0.40    0.40      0    26907    0.39    0.39    N/A
+    11534344       2883586     float     sum      -1    30393    0.38    0.38      0    29034    0.40    0.40    N/A
+    12582920       3145730     float     sum      -1    32242    0.39    0.39      0    32295    0.39    0.39    N/A
+    13631496       3407874     float     sum      -1    35167    0.39    0.39      0    35667    0.38    0.38    N/A
+    14680072       3670018     float     sum      -1    37893    0.39    0.39      0    38257    0.38    0.38    N/A
+    15728648       3932162     float     sum      -1    40593    0.39    0.39      0    40303    0.39    0.39    N/A
+    16777224       4194306     float     sum      -1    43317    0.39    0.39      0    42459    0.40    0.40    N/A
+    17825800       4456450     float     sum      -1    45702    0.39    0.39      0    45968    0.39    0.39    N/A
+    18874376       4718594     float     sum      -1    48333    0.39    0.39      0    48063    0.39    0.39    N/A
+    19922952       4980738     float     sum      -1    51489    0.39    0.39      0    51254    0.39    0.39    N/A
+    20971528       5242882     float     sum      -1    54583    0.38    0.38      0    53383    0.39    0.39    N/A
+    22020104       5505026     float     sum      -1    56078    0.39    0.39      0    56859    0.39    0.39    N/A
+    23068680       5767170     float     sum      -1    59582    0.39    0.39      0    58699    0.39    0.39    N/A
+    24117256       6029314     float     sum      -1    63631    0.38    0.38      0    62910    0.38    0.38    N/A
+    25165832       6291458     float     sum      -1    64400    0.39    0.39      0    63902    0.39    0.39    N/A
+    26214408       6553602     float     sum      -1    67810    0.39    0.39      0    67602    0.39    0.39    N/A
+    27262984       6815746     float     sum      -1    69466    0.39    0.39      0    70739    0.39    0.39    N/A
+    28311560       7077890     float     sum      -1    72303    0.39    0.39      0    72687    0.39    0.39    N/A
+    29360136       7340034     float     sum      -1    77105    0.38    0.38      0    76251    0.39    0.39    N/A
+    30408712       7602178     float     sum      -1    79216    0.38    0.38      0    77830    0.39    0.39    N/A
+    31457288       7864322     float     sum      -1    80994    0.39    0.39      0    82667    0.38    0.38    N/A
+    32505864       8126466     float     sum      -1    82113    0.40    0.40      0    82760    0.39    0.39    N/A
+    33554440       8388610     float     sum      -1    87831    0.38    0.38      0    87375    0.38    0.38    N/A
+    34603016       8650754     float     sum      -1    90738    0.38    0.38      0    88015    0.39    0.39    N/A
+    35651592       8912898     float     sum      -1    93045    0.38    0.38      0    91073    0.39    0.39    N/A
+    36700168       9175042     float     sum      -1    94349    0.39    0.39      0    94981    0.39    0.39    N/A
+    37748744       9437186     float     sum      -1    98058    0.38    0.38      0    98905    0.38    0.38    N/A
+    38797320       9699330     float     sum      -1   100756    0.39    0.39      0   101133    0.38    0.38    N/A
+    39845896       9961474     float     sum      -1   104987    0.38    0.38      0   103173    0.39    0.39    N/A
+    40894472      10223618     float     sum      -1   104065    0.39    0.39      0   105768    0.39    0.39    N/A
+    41943048      10485762     float     sum      -1   107979    0.39    0.39      0   108309    0.39    0.39    N/A
+    42991624      10747906     float     sum      -1   110613    0.39    0.39      0   111322    0.39    0.39    N/A
+    44040200      11010050     float     sum      -1   115955    0.38    0.38      0   114004    0.39    0.39    N/A
+    45088776      11272194     float     sum      -1   117724    0.38    0.38      0   114022    0.40    0.40    N/A
+    46137352      11534338     float     sum      -1   119973    0.38    0.38      0   117605    0.39    0.39    N/A
+    47185928      11796482     float     sum      -1   122563    0.38    0.38      0   120702    0.39    0.39    N/A
+    48234504      12058626     float     sum      -1   122256    0.39    0.39      0   123276    0.39    0.39    N/A
+    49283080      12320770     float     sum      -1   128551    0.38    0.38      0   126195    0.39    0.39    N/A
+    50331656      12582914     float     sum      -1   131722    0.38    0.38      0   131828    0.38    0.38    N/A
+    51380232      12845058     float     sum      -1   131554    0.39    0.39      0   133543    0.38    0.38    N/A
+    52428808      13107202     float     sum      -1   133924    0.39    0.39      0   134586    0.39    0.39    N/A
+    53477384      13369346     float     sum      -1   137517    0.39    0.39      0   140798    0.38    0.38    N/A
+    54525960      13631490     float     sum      -1   132156    0.41    0.41      0   131612    0.41    0.41    N/A
+    55574536      13893634     float     sum      -1   137260    0.40    0.40      0   137931    0.40    0.40    N/A
+    56623112      14155778     float     sum      -1   147591    0.38    0.38      0   149340    0.38    0.38    N/A
+    57671688      14417922     float     sum      -1   151634    0.38    0.38      0   152348    0.38    0.38    N/A
+    58720264      14680066     float     sum      -1   153007    0.38    0.38      0   154502    0.38    0.38    N/A
+    59768840      14942210     float     sum      -1   146893    0.41    0.41      0   147191    0.41    0.41    N/A
+    60817416      15204354     float     sum      -1   147368    0.41    0.41      0   150620    0.40    0.40    N/A
+    61865992      15466498     float     sum      -1   152271    0.41    0.41      0   152825    0.40    0.40    N/A
+    62914568      15728642     float     sum      -1   153899    0.41    0.41      0   154450    0.41    0.41    N/A
+    63963144      15990786     float     sum      -1   168653    0.38    0.38      0   168204    0.38    0.38    N/A
+    65011720      16252930     float     sum      -1   166916    0.39    0.39      0   168167    0.39    0.39    N/A
+    66060296      16515074     float     sum      -1   174417    0.38    0.38      0   172799    0.38    0.38    N/A
+    67108872      16777218     float     sum      -1   163552    0.41    0.41      0   166283    0.40    0.40    N/A
+    68157448      17039362     float     sum      -1   169615    0.40    0.40      0   169060    0.40    0.40    N/A
+    69206024      17301506     float     sum      -1   168979    0.41    0.41      0   170469    0.41    0.41    N/A
+    70254600      17563650     float     sum      -1   174474    0.40    0.40      0   173662    0.40    0.40    N/A
+    71303176      17825794     float     sum      -1   173926    0.41    0.41      0   176245    0.40    0.40    N/A
+    72351752      18087938     float     sum      -1   189523    0.38    0.38      0   188064    0.38    0.38    N/A
+    73400328      18350082     float     sum      -1   192098    0.38    0.38      0   195294    0.38    0.38    N/A
+    74448904      18612226     float     sum      -1   193709    0.38    0.38      0   194187    0.38    0.38    N/A
+    75497480      18874370     float     sum      -1   198557    0.38    0.38      0   200693    0.38    0.38    N/A
+    76546056      19136514     float     sum      -1   199381    0.38    0.38      0   204778    0.37    0.37    N/A
+    77594632      19398658     float     sum      -1   192569    0.40    0.40      0   189092    0.41    0.41    N/A
+    78643208      19660802     float     sum      -1   193512    0.41    0.41      0   193606    0.41    0.41    N/A
+    79691784      19922946     float     sum      -1   194978    0.41    0.41      0   195675    0.41    0.41    N/A
+    80740360      20185090     float     sum      -1   198748    0.41    0.41      0   198411    0.41    0.41    N/A
+    81788936      20447234     float     sum      -1   201870    0.41    0.41      0   200335    0.41    0.41    N/A
+    82837512      20709378     float     sum      -1   217683    0.38    0.38      0   219311    0.38    0.38    N/A
+    83886088      20971522     float     sum      -1   220199    0.38    0.38      0   221864    0.38    0.38    N/A
+    84934664      21233666     float     sum      -1   224059    0.38    0.38      0   224909    0.38    0.38    N/A
+    85983240      21495810     float     sum      -1   228213    0.38    0.38      0   226549    0.38    0.38    N/A
+    87031816      21757954     float     sum      -1   229189    0.38    0.38      0   225887    0.39    0.39    N/A
+    88080392      22020098     float     sum      -1   233284    0.38    0.38      0   231682    0.38    0.38    N/A
+    89128968      22282242     float     sum      -1   234529    0.38    0.38      0   233398    0.38    0.38    N/A
+    90177544      22544386     float     sum      -1   221928    0.41    0.41      0   222094    0.41    0.41    N/A
+    91226120      22806530     float     sum      -1   223354    0.41    0.41      0   224305    0.41    0.41    N/A
+    92274696      23068674     float     sum      -1   227949    0.40    0.40      0   229818    0.40    0.40    N/A
+    93323272      23330818     float     sum      -1   229617    0.41    0.41      0   230678    0.40    0.40    N/A
+    94371848      23592962     float     sum      -1   231452    0.41    0.41      0   230518    0.41    0.41    N/A
+    95420424      23855106     float     sum      -1   236183    0.40    0.40      0   237421    0.40    0.40    N/A
+    96469000      24117250     float     sum      -1   237899    0.41    0.41      0   237133    0.41    0.41    N/A
+    97517576      24379394     float     sum      -1   239181    0.41    0.41      0   241843    0.40    0.40    N/A
+    98566152      24641538     float     sum      -1   259410    0.38    0.38      0   261807    0.38    0.38    N/A
+    99614728      24903682     float     sum      -1   261197    0.38    0.38      0   262830    0.38    0.38    N/A
+   100663304      25165826     float     sum      -1   266073    0.38    0.38      0   268329    0.38    0.38    N/A
+   101711880      25427970     float     sum      -1   269095    0.38    0.38      0   268760    0.38    0.38    N/A
+   102760456      25690114     float     sum      -1   268029    0.38    0.38      0   273140    0.38    0.38    N/A
+   103809032      25952258     float     sum      -1   268655    0.39    0.39      0   270768    0.38    0.38    N/A
+   104857608      26214402     float     sum      -1   276178    0.38    0.38      0   278727    0.38    0.38    N/A
+   105906184      26476546     float     sum      -1   281401    0.38    0.38      0   275151    0.38    0.38    N/A
+   106954760      26738690     float     sum      -1   282876    0.38    0.38      0   285114    0.38    0.38    N/A
+   108003336      27000834     float     sum      -1   269143    0.40    0.40      0   266917    0.40    0.40    N/A
+   109051912      27262978     float     sum      -1   268019    0.41    0.41      0   269061    0.41    0.41    N/A
+   110100488      27525122     float     sum      -1   274022    0.40    0.40      0   274529    0.40    0.40    N/A
+   111149064      27787266     float     sum      -1   276092    0.40    0.40      0   274952    0.40    0.40    N/A
+   112197640      28049410     float     sum      -1   278427    0.40    0.40      0   276601    0.41    0.41    N/A
+   113246216      28311554     float     sum      -1   278586    0.41    0.41      0   283233    0.40    0.40    N/A
+   114294792      28573698     float     sum      -1   281650    0.41    0.41      0   283757    0.40    0.40    N/A
+   115343368      28835842     float     sum      -1   284042    0.41    0.41      0   284180    0.41    0.41    N/A
+   116391944      29097986     float     sum      -1   290204    0.40    0.40      0   289092    0.40    0.40    N/A
+   117440520      29360130     float     sum      -1   291886    0.40    0.40      0   291051    0.40    0.40    N/A
+   118489096      29622274     float     sum      -1   294380    0.40    0.40      0   295659    0.40    0.40    N/A
+   119537672      29884418     float     sum      -1   315896    0.38    0.38      0   319755    0.37    0.37    N/A
+   120586248      30146562     float     sum      -1   319892    0.38    0.38      0   321203    0.38    0.38    N/A
+   121634824      30408706     float     sum      -1   321274    0.38    0.38      0   323743    0.38    0.38    N/A
+   122683400      30670850     float     sum      -1   324453    0.38    0.38      0   325552    0.38    0.38    N/A
+   123731976      30932994     float     sum      -1   330432    0.37    0.37      0   333594    0.37    0.37    N/A
+   124780552      31195138     float     sum      -1   334194    0.37    0.37      0   336021    0.37    0.37    N/A
+   125829128      31457282     float     sum      -1   332306    0.38    0.38      0   336007    0.37    0.37    N/A
+   126877704      31719426     float     sum      -1   332059    0.38    0.38      0   338125    0.38    0.38    N/A
+   127926280      31981570     float     sum      -1   331257    0.39    0.39      0   333021    0.38    0.38    N/A
+   128974856      32243714     float     sum      -1   337705    0.38    0.38      0   343239    0.38    0.38    N/A
+   130023432      32505858     float     sum      -1   346492    0.38    0.38      0   348296    0.37    0.37    N/A
+   131072008      32768002     float     sum      -1   349360    0.38    0.38      0   349325    0.38    0.38    N/A
+   132120584      33030146     float     sum      -1   349725    0.38    0.38      0   351311    0.38    0.38    N/A
+   133169160      33292290     float     sum      -1   354321    0.38    0.38      0   357610    0.37    0.37    N/A
+   134217736      33554434     float     sum      -1   332571    0.40    0.40      0   332265    0.40    0.40    N/A
+   135266312      33816578     float     sum      -1   332025    0.41    0.41      0   340569    0.40    0.40    N/A
+   136314888      34078722     float     sum      -1   338214    0.40    0.40      0   340374    0.40    0.40    N/A
+   137363464      34340866     float     sum      -1   339370    0.40    0.40      0   344669    0.40    0.40    N/A
+   138412040      34603010     float     sum      -1   345256    0.40    0.40      0   341624    0.41    0.41    N/A
+   139460616      34865154     float     sum      -1   343904    0.41    0.41      0   348201    0.40    0.40    N/A
+   140509192      35127298     float     sum      -1   347303    0.40    0.40      0   350777    0.40    0.40    N/A
+   141557768      35389442     float     sum      -1   349714    0.40    0.40      0   353325    0.40    0.40    N/A
+   142606344      35651586     float     sum      -1   353238    0.40    0.40      0   356670    0.40    0.40    N/A
+   143654920      35913730     float     sum      -1   355872    0.40    0.40      0   355100    0.40    0.40    N/A
+   144703496      36175874     float     sum      -1   360801    0.40    0.40      0   360585    0.40    0.40    N/A
+   145752072      36438018     float     sum      -1   358710    0.41    0.41      0   367477    0.40    0.40    N/A
+   146800648      36700162     float     sum      -1   360274    0.41    0.41      0   364913    0.40    0.40    N/A
+   147849224      36962306     float     sum      -1   366281    0.40    0.40      0   368954    0.40    0.40    N/A
+   148897800      37224450     float     sum      -1   369957    0.40    0.40      0   372694    0.40    0.40    N/A
+   149946376      37486594     float     sum      -1   368264    0.41    0.41      0   374128    0.40    0.40    N/A
+   150994952      37748738     float     sum      -1   374524    0.40    0.40      0   374852    0.40    0.40    N/A
+   152043528      38010882     float     sum      -1   374784    0.41    0.41      0   377375    0.40    0.40    N/A
+   153092104      38273026     float     sum      -1   378601    0.40    0.40      0   383219    0.40    0.40    N/A
+   154140680      38535170     float     sum      -1   414484    0.37    0.37      0   406462    0.38    0.38    N/A
+   155189256      38797314     float     sum      -1   412823    0.38    0.38      0   405454    0.38    0.38    N/A
+   156237832      39059458     float     sum      -1   407634    0.38    0.38      0   417860    0.37    0.37    N/A
+   157286408      39321602     float     sum      -1   411464    0.38    0.38      0   419879    0.37    0.37    N/A
+   158334984      39583746     float     sum      -1   420336    0.38    0.38      0   426323    0.37    0.37    N/A
+   159383560      39845890     float     sum      -1   429915    0.37    0.37      0   425997    0.37    0.37    N/A
+   160432136      40108034     float     sum      -1   424538    0.38    0.38      0   427661    0.38    0.38    N/A
+   161480712      40370178     float     sum      -1   431550    0.37    0.37      0   429308    0.38    0.38    N/A
+   162529288      40632322     float     sum      -1   429377    0.38    0.38      0   435574    0.37    0.37    N/A
+   163577864      40894466     float     sum      -1   437329    0.37    0.37      0   440228    0.37    0.37    N/A
+   164626440      41156610     float     sum      -1   429982    0.38    0.38      0   442869    0.37    0.37    N/A
+   165675016      41418754     float     sum      -1   441413    0.38    0.38      0   436242    0.38    0.38    N/A
+   166723592      41680898     float     sum      -1   437465    0.38    0.38      0   435937    0.38    0.38    N/A
+   167772168      41943042     float     sum      -1   447303    0.38    0.38      0   452700    0.37    0.37    N/A
+   168820744      42205186     float     sum      -1   449577    0.38    0.38      0   450395    0.37    0.37    N/A
+   169869320      42467330     float     sum      -1   443530    0.38    0.38      0   454679    0.37    0.37    N/A
+   170917896      42729474     float     sum      -1   451790    0.38    0.38      0   460007    0.37    0.37    N/A
+   171966472      42991618     float     sum      -1   458936    0.37    0.37      0   451682    0.38    0.38    N/A
+   173015048      43253762     float     sum      -1   465847    0.37    0.37      0   466546    0.37    0.37    N/A
+   174063624      43515906     float     sum      -1   465313    0.37    0.37      0   456942    0.38    0.38    N/A
+   175112200      43778050     float     sum      -1   457111    0.38    0.38      0   459904    0.38    0.38    N/A
+   176160776      44040194     float     sum      -1   459466    0.38    0.38      0   462646    0.38    0.38    N/A
+   177209352      44302338     float     sum      -1   473889    0.37    0.37      0   468851    0.38    0.38    N/A
+   178257928      44564482     float     sum      -1   478559    0.37    0.37      0   479883    0.37    0.37    N/A
+   179306504      44826626     float     sum      -1   415849    0.43    0.43      0   420481    0.43    0.43    N/A
+   180355080      45088770     float     sum      -1   420861    0.43    0.43      0   422739    0.43    0.43    N/A
+   181403656      45350914     float     sum      -1   422460    0.43    0.43      0   424618    0.43    0.43    N/A
+   182452232      45613058     float     sum      -1   425666    0.43    0.43      0   424534    0.43    0.43    N/A
+   183500808      45875202     float     sum      -1   425575    0.43    0.43      0   428751    0.43    0.43    N/A
+   184549384      46137346     float     sum      -1   429933    0.43    0.43      0   430447    0.43    0.43    N/A
+   185597960      46399490     float     sum      -1   429537    0.43    0.43      0   434166    0.43    0.43    N/A
+   186646536      46661634     float     sum      -1   435900    0.43    0.43      0   437481    0.43    0.43    N/A
+   187695112      46923778     float     sum      -1   440153    0.43    0.43      0   440857    0.43    0.43    N/A
+   188743688      47185922     float     sum      -1   438203    0.43    0.43      0   440591    0.43    0.43    N/A
+   189792264      47448066     float     sum      -1   442713    0.43    0.43      0   444106    0.43    0.43    N/A
+   190840840      47710210     float     sum      -1   441800    0.43    0.43      0   445125    0.43    0.43    N/A
+   191889416      47972354     float     sum      -1   447565    0.43    0.43      0   452120    0.42    0.42    N/A
+   192937992      48234498     float     sum      -1   447809    0.43    0.43      0   452160    0.43    0.43    N/A
+   193986568      48496642     float     sum      -1   450107    0.43    0.43      0   453111    0.43    0.43    N/A
+   195035144      48758786     float     sum      -1   452094    0.43    0.43      0   454382    0.43    0.43    N/A
+   196083720      49020930     float     sum      -1   454183    0.43    0.43      0   456167    0.43    0.43    N/A
+   197132296      49283074     float     sum      -1   458825    0.43    0.43      0   462127    0.43    0.43    N/A
+   198180872      49545218     float     sum      -1   462931    0.43    0.43      0   467330    0.42    0.42    N/A
+   199229448      49807362     float     sum      -1   461549    0.43    0.43      0   463525    0.43    0.43    N/A
+   200278024      50069506     float     sum      -1   465415    0.43    0.43      0   469572    0.43    0.43    N/A
+   201326600      50331650     float     sum      -1   468309    0.43    0.43      0   473313    0.43    0.43    N/A
+   202375176      50593794     float     sum      -1   475036    0.43    0.43      0   474232    0.43    0.43    N/A
+   203423752      50855938     float     sum      -1   474102    0.43    0.43      0   472494    0.43    0.43    N/A
+   204472328      51118082     float     sum      -1   476522    0.43    0.43      0   479224    0.43    0.43    N/A
+   205520904      51380226     float     sum      -1   480959    0.43    0.43      0   479788    0.43    0.43    N/A
+   206569480      51642370     float     sum      -1   481535    0.43    0.43      0   484904    0.43    0.43    N/A
+   207618056      51904514     float     sum      -1   480383    0.43    0.43      0   483854    0.43    0.43    N/A
+   208666632      52166658     float     sum      -1   484460    0.43    0.43      0   489752    0.43    0.43    N/A
+   209715208      52428802     float     sum      -1   487635    0.43    0.43      0   491995    0.43    0.43    N/A
+   210763784      52690946     float     sum      -1   492850    0.43    0.43      0   490196    0.43    0.43    N/A
+   211812360      52953090     float     sum      -1   490716    0.43    0.43      0   494829    0.43    0.43    N/A
+   212860936      53215234     float     sum      -1   497273    0.43    0.43      0   497973    0.43    0.43    N/A
+   213909512      53477378     float     sum      -1   498403    0.43    0.43      0   500219    0.43    0.43    N/A
+   214958088      53739522     float     sum      -1   578978    0.37    0.37      0   566249    0.38    0.38    N/A
+   216006664      54001666     float     sum      -1   577906    0.37    0.37      0   587182    0.37    0.37    N/A
+   217055240      54263810     float     sum      -1   584380    0.37    0.37      0   589185    0.37    0.37    N/A
+   218103816      54525954     float     sum      -1   572515    0.38    0.38      0   592166    0.37    0.37    N/A
+   219152392      54788098     float     sum      -1   585778    0.37    0.37      0   594944    0.37    0.37    N/A
+   220200968      55050242     float     sum      -1   579032    0.38    0.38      0   590888    0.37    0.37    N/A
+   221249544      55312386     float     sum      -1   579606    0.38    0.38      0   595564    0.37    0.37    N/A
+   222298120      55574530     float     sum      -1   586402    0.38    0.38      0   602387    0.37    0.37    N/A
+   223346696      55836674     float     sum      -1   594206    0.38    0.38      0   600602    0.37    0.37    N/A
+   224395272      56098818     float     sum      -1   604926    0.37    0.37      0   601145    0.37    0.37    N/A
+   225443848      56360962     float     sum      -1   600896    0.38    0.38      0   607181    0.37    0.37    N/A
+   226492424      56623106     float     sum      -1   608844    0.37    0.37      0   612717    0.37    0.37    N/A
+   227541000      56885250     float     sum      -1   611884    0.37    0.37      0   604880    0.38    0.38    N/A
+   228589576      57147394     float     sum      -1   612128    0.37    0.37      0   617336    0.37    0.37    N/A
+   229638152      57409538     float     sum      -1   615319    0.37    0.37      0   621303    0.37    0.37    N/A
+   230686728      57671682     float     sum      -1   618589    0.37    0.37      0   626679    0.37    0.37    N/A
+   231735304      57933826     float     sum      -1   623094    0.37    0.37      0   614078    0.38    0.38    N/A
+   232783880      58195970     float     sum      -1   624701    0.37    0.37      0   614256    0.38    0.38    N/A
+   233832456      58458114     float     sum      -1   623937    0.37    0.37      0   633296    0.37    0.37    N/A
+   234881032      58720258     float     sum      -1   631122    0.37    0.37      0   636837    0.37    0.37    N/A
+   235929608      58982402     float     sum      -1   637182    0.37    0.37      0   635642    0.37    0.37    N/A
+   236978184      59244546     float     sum      -1   636472    0.37    0.37      0   629156    0.38    0.38    N/A
+   238026760      59506690     float     sum      -1   625520    0.38    0.38      0   632161    0.38    0.38    N/A
+   239075336      59768834     float     sum      -1   644015    0.37    0.37      0   648944    0.37    0.37    N/A
+   240123912      60030978     float     sum      -1   644952    0.37    0.37      0   650628    0.37    0.37    N/A
+   241172488      60293122     float     sum      -1   645545    0.37    0.37      0   654316    0.37    0.37    N/A
+   242221064      60555266     float     sum      -1   653650    0.37    0.37      0   661800    0.37    0.37    N/A
+   243269640      60817410     float     sum      -1   652446    0.37    0.37      0   646766    0.38    0.38    N/A
+   244318216      61079554     float     sum      -1   656915    0.37    0.37      0   661211    0.37    0.37    N/A
+   245366792      61341698     float     sum      -1   658841    0.37    0.37      0   657956    0.37    0.37    N/A
+   246415368      61603842     float     sum      -1   661181    0.37    0.37      0   654551    0.38    0.38    N/A
+   247463944      61865986     float     sum      -1   664511    0.37    0.37      0   672039    0.37    0.37    N/A
+   248512520      62128130     float     sum      -1   664378    0.37    0.37      0   669440    0.37    0.37    N/A
+   249561096      62390274     float     sum      -1   673158    0.37    0.37      0   657919    0.38    0.38    N/A
+   250609672      62652418     float     sum      -1   674245    0.37    0.37      0   679680    0.37    0.37    N/A
+   251658248      62914562     float     sum      -1   673309    0.37    0.37      0   670716    0.38    0.38    N/A
+   252706824      63176706     float     sum      -1   676311    0.37    0.37      0   682446    0.37    0.37    N/A
+   253755400      63438850     float     sum      -1   686627    0.37    0.37      0   691689    0.37    0.37    N/A
+   254803976      63700994     float     sum      -1   687624    0.37    0.37      0   673834    0.38    0.38    N/A
+   255852552      63963138     float     sum      -1   686685    0.37    0.37      0   690992    0.37    0.37    N/A
+   256901128      64225282     float     sum      -1   684226    0.38    0.38      0   687546    0.37    0.37    N/A
+   257949704      64487426     float     sum      -1   681999    0.38    0.38      0   688814    0.37    0.37    N/A
+   258998280      64749570     float     sum      -1   699268    0.37    0.37      0   700754    0.37    0.37    N/A
+   260046856      65011714     float     sum      -1   704319    0.37    0.37      0   698889    0.37    0.37    N/A
+   261095432      65273858     float     sum      -1   684980    0.38    0.38      0   708844    0.37    0.37    N/A
+   262144008      65536002     float     sum      -1   703234    0.37    0.37      0   701385    0.37    0.37    N/A
+   263192584      65798146     float     sum      -1   711283    0.37    0.37      0   717163    0.37    0.37    N/A
+   264241160      66060290     float     sum      -1   713439    0.37    0.37      0   711211    0.37    0.37    N/A
+   265289736      66322434     float     sum      -1   713561    0.37    0.37      0   714377    0.37    0.37    N/A
+   266338312      66584578     float     sum      -1   713160    0.37    0.37      0   721792    0.37    0.37    N/A
+   267386888      66846722     float     sum      -1   708083    0.38    0.38      0   718783    0.37    0.37    N/A
+   268435464      67108866     float     sum      -1   589753    0.46    0.46      0   593483    0.45    0.45    N/A
+   269484040      67371010     float     sum      -1   591483    0.46    0.46      0   592558    0.45    0.45    N/A
+   270532616      67633154     float     sum      -1   598789    0.45    0.45      0   598421    0.45    0.45    N/A
+   271581192      67895298     float     sum      -1   600209    0.45    0.45      0   595102    0.46    0.46    N/A
+   272629768      68157442     float     sum      -1   597509    0.46    0.46      0   600859    0.45    0.45    N/A
+   273678344      68419586     float     sum      -1   603129    0.45    0.45      0   605032    0.45    0.45    N/A
+   274726920      68681730     float     sum      -1   604899    0.45    0.45      0   605423    0.45    0.45    N/A
+   275775496      68943874     float     sum      -1   604486    0.46    0.46      0   607312    0.45    0.45    N/A
+   276824072      69206018     float     sum      -1   610066    0.45    0.45      0   609195    0.45    0.45    N/A
+   277872648      69468162     float     sum      -1   610842    0.45    0.45      0   608490    0.46    0.46    N/A
+   278921224      69730306     float     sum      -1   615994    0.45    0.45      0   617569    0.45    0.45    N/A
+   279969800      69992450     float     sum      -1   615195    0.46    0.46      0   617381    0.45    0.45    N/A
+   281018376      70254594     float     sum      -1   620092    0.45    0.45      0   622850    0.45    0.45    N/A
+   282066952      70516738     float     sum      -1   616981    0.46    0.46      0   626682    0.45    0.45    N/A
+   283115528      70778882     float     sum      -1   624373    0.45    0.45      0   629089    0.45    0.45    N/A
+   284164104      71041026     float     sum      -1   620770    0.46    0.46      0   631982    0.45    0.45    N/A
+   285212680      71303170     float     sum      -1   622436    0.46    0.46      0   634349    0.45    0.45    N/A
+   286261256      71565314     float     sum      -1   629908    0.45    0.45      0   636773    0.45    0.45    N/A
+   287309832      71827458     float     sum      -1   635102    0.45    0.45      0   638897    0.45    0.45    N/A
+   288358408      72089602     float     sum      -1   637972    0.45    0.45      0   638000    0.45    0.45    N/A
+   289406984      72351746     float     sum      -1   635562    0.46    0.46      0   643808    0.45    0.45    N/A
+   290455560      72613890     float     sum      -1   640463    0.45    0.45      0   644128    0.45    0.45    N/A
+   291504136      72876034     float     sum      -1   639530    0.46    0.46      0   646567    0.45    0.45    N/A
+   292552712      73138178     float     sum      -1   640084    0.46    0.46      0   647828    0.45    0.45    N/A
+   293601288      73400322     float     sum      -1   646328    0.45    0.45      0   649723    0.45    0.45    N/A
+   294649864      73662466     float     sum      -1   650431    0.45    0.45      0   648109    0.45    0.45    N/A
+   295698440      73924610     float     sum      -1   653731    0.45    0.45      0   654949    0.45    0.45    N/A
+   296747016      74186754     float     sum      -1   652024    0.46    0.46      0   657025    0.45    0.45    N/A
+   297795592      74448898     float     sum      -1   658754    0.45    0.45      0   656665    0.45    0.45    N/A
+   298844168      74711042     float     sum      -1   659291    0.45    0.45      0   662019    0.45    0.45    N/A
+   299892744      74973186     float     sum      -1   658781    0.46    0.46      0   660564    0.45    0.45    N/A
+   300941320      75235330     float     sum      -1   659645    0.46    0.46      0   664614    0.45    0.45    N/A
+   301989896      75497474     float     sum      -1   659828    0.46    0.46      0   663803    0.45    0.45    N/A
+   303038472      75759618     float     sum      -1   668264    0.45    0.45      0   667957    0.45    0.45    N/A
+   304087048      76021762     float     sum      -1   670062    0.45    0.45      0   672642    0.45    0.45    N/A
+   305135624      76283906     float     sum      -1   673242    0.45    0.45      0   669172    0.46    0.46    N/A
+   306184200      76546050     float     sum      -1   671503    0.46    0.46      0   681856    0.45    0.45    N/A
+   307232776      76808194     float     sum      -1   672800    0.46    0.46      0   683526    0.45    0.45    N/A
+   308281352      77070338     float     sum      -1   677402    0.46    0.46      0   680066    0.45    0.45    N/A
+   309329928      77332482     float     sum      -1   678242    0.46    0.46      0   684107    0.45    0.45    N/A
+   310378504      77594626     float     sum      -1   688869    0.45    0.45      0   690167    0.45    0.45    N/A
+   311427080      77856770     float     sum      -1   685596    0.45    0.45      0   689197    0.45    0.45    N/A
+   312475656      78118914     float     sum      -1   684839    0.46    0.46      0   692077    0.45    0.45    N/A
+   313524232      78381058     float     sum      -1   685006    0.46    0.46      0   692768    0.45    0.45    N/A
+   314572808      78643202     float     sum      -1   693543    0.45    0.45      0   700611    0.45    0.45    N/A
+   315621384      78905346     float     sum      -1   683761    0.46    0.46      0   702446    0.45    0.45    N/A
+   316669960      79167490     float     sum      -1   695711    0.46    0.46      0   691622    0.46    0.46    N/A
+   317718536      79429634     float     sum      -1   698141    0.46    0.46      0   701547    0.45    0.45    N/A
+   318767112      79691778     float     sum      -1   685782    0.46    0.46      0   706648    0.45    0.45    N/A
+   319815688      79953922     float     sum      -1   699263    0.46    0.46      0   707091    0.45    0.45    N/A
+   320864264      80216066     float     sum      -1   705833    0.45    0.45      0   694818    0.46    0.46    N/A
+   321912840      80478210     float     sum      -1   707978    0.45    0.45      0   709432    0.45    0.45    N/A
+   322961416      80740354     float     sum      -1   707979    0.46    0.46      0   713014    0.45    0.45    N/A
+   324009992      81002498     float     sum      -1   707638    0.46    0.46      0   713207    0.45    0.45    N/A
+   325058568      81264642     float     sum      -1   717525    0.45    0.45      0   720174    0.45    0.45    N/A
+   326107144      81526786     float     sum      -1   718943    0.45    0.45      0   715432    0.46    0.46    N/A
+   327155720      81788930     float     sum      -1   721887    0.45    0.45      0   723645    0.45    0.45    N/A
+   328204296      82051074     float     sum      -1   721369    0.45    0.45      0   723093    0.45    0.45    N/A
+   329252872      82313218     float     sum      -1   722931    0.46    0.46      0   726879    0.45    0.45    N/A
+   330301448      82575362     float     sum      -1   723307    0.46    0.46      0   733529    0.45    0.45    N/A
+   331350024      82837506     float     sum      -1   726656    0.46    0.46      0   732900    0.45    0.45    N/A
+   332398600      83099650     float     sum      -1   723424    0.46    0.46      0   732289    0.45    0.45    N/A
+   333447176      83361794     float     sum      -1   724013    0.46    0.46      0   737958    0.45    0.45    N/A
+   334495752      83623938     float     sum      -1   734276    0.46    0.46      0   739419    0.45    0.45    N/A
+   335544328      83886082     float     sum      -1   736098    0.46    0.46      0   742293    0.45    0.45    N/A
+   336592904      84148226     float     sum      -1   743292    0.45    0.45      0   749713    0.45    0.45    N/A
+   337641480      84410370     float     sum      -1   742709    0.45    0.45      0   744546    0.45    0.45    N/A
+   338690056      84672514     float     sum      -1   748124    0.45    0.45      0   738075    0.46    0.46    N/A
+   339738632      84934658     float     sum      -1   737663    0.46    0.46      0   754389    0.45    0.45    N/A
+   340787208      85196802     float     sum      -1   748748    0.46    0.46      0   749666    0.45    0.45    N/A
+   341835784      85458946     float     sum      -1   743598    0.46    0.46      0   747787    0.46    0.46    N/A
+   342884360      85721090     float     sum      -1   743428    0.46    0.46      0   760682    0.45    0.45    N/A
+   343932936      85983234     float     sum      -1   752373    0.46    0.46      0   753810    0.46    0.46    N/A
+   344981512      86245378     float     sum      -1   758215    0.45    0.45      0   765096    0.45    0.45    N/A
+   346030088      86507522     float     sum      -1   760810    0.45    0.45      0   770398    0.45    0.45    N/A
+   347078664      86769666     float     sum      -1   755030    0.46    0.46      0   765293    0.45    0.45    N/A
+   348127240      87031810     float     sum      -1   756474    0.46    0.46      0   773411    0.45    0.45    N/A
+   349175816      87293954     float     sum      -1   757314    0.46    0.46      0   774606    0.45    0.45    N/A
+   350224392      87556098     float     sum      -1   763724    0.46    0.46      0   776855    0.45    0.45    N/A
+   351272968      87818242     float     sum      -1   763801    0.46    0.46      0   775571    0.45    0.45    N/A
+   352321544      88080386     float     sum      -1   776089    0.45    0.45      0   775319    0.45    0.45    N/A
+   353370120      88342530     float     sum      -1   771047    0.46    0.46      0   784758    0.45    0.45    N/A
+   354418696      88604674     float     sum      -1   779440    0.45    0.45      0   779328    0.45    0.45    N/A
+   355467272      88866818     float     sum      -1   779397    0.46    0.46      0   790481    0.45    0.45    N/A
+   356515848      89128962     float     sum      -1   783657    0.45    0.45      0   788040    0.45    0.45    N/A
+   357564424      89391106     float     sum      -1   792392    0.45    0.45      0   793543    0.45    0.45    N/A
+   358613000      89653250     float     sum      -1   966561    0.37    0.37      0   997292    0.36    0.36    N/A
+   359661576      89915394     float     sum      -1   994473    0.36    0.36      0   992547    0.36    0.36    N/A
+   360710152      90177538     float     sum      -1   988545    0.36    0.36      0   988814    0.36    0.36    N/A
+   361758728      90439682     float     sum      -1   973827    0.37    0.37      0   995512    0.36    0.36    N/A
+   362807304      90701826     float     sum      -1   994727    0.36    0.36      0   999372    0.36    0.36    N/A
+   363855880      90963970     float     sum      -1   988593    0.37    0.37      0   998008    0.36    0.36    N/A
+   364904456      91226114     float     sum      -1  1009027    0.36    0.36      0  1001098    0.36    0.36    N/A
+   365953032      91488258     float     sum      -1  1002719    0.36    0.36      0  1013483    0.36    0.36    N/A
+   367001608      91750402     float     sum      -1  1005700    0.36    0.36      0   999036    0.37    0.37    N/A
+   368050184      92012546     float     sum      -1   997058    0.37    0.37      0  1015733    0.36    0.36    N/A
+   369098760      92274690     float     sum      -1  1006762    0.37    0.37      0  1019727    0.36    0.36    N/A
+   370147336      92536834     float     sum      -1  1014962    0.36    0.36      0  1020049    0.36    0.36    N/A
+   371195912      92798978     float     sum      -1  1018067    0.36    0.36      0  1019671    0.36    0.36    N/A
+   372244488      93061122     float     sum      -1  1014213    0.37    0.37      0  1037795    0.36    0.36    N/A
+   373293064      93323266     float     sum      -1  1022510    0.37    0.37      0  1026494    0.36    0.36    N/A
+   374341640      93585410     float     sum      -1  1009610    0.37    0.37      0  1040729    0.36    0.36    N/A
+   375390216      93847554     float     sum      -1  1004068    0.37    0.37      0  1017342    0.37    0.37    N/A
+   376438792      94109698     float     sum      -1   997641    0.38    0.38      0  1020079    0.37    0.37    N/A
+   377487368      94371842     float     sum      -1  1037810    0.36    0.36      0  1032413    0.37    0.37    N/A
+   378535944      94633986     float     sum      -1  1039701    0.36    0.36      0  1042641    0.36    0.36    N/A
+   379584520      94896130     float     sum      -1  1042985    0.36    0.36      0  1052316    0.36    0.36    N/A
+   380633096      95158274     float     sum      -1  1046203    0.36    0.36      0  1057434    0.36    0.36    N/A
+   381681672      95420418     float     sum      -1  1028017    0.37    0.37      0  1054610    0.36    0.36    N/A
+   382730248      95682562     float     sum      -1  1046249    0.37    0.37      0  1037009    0.37    0.37    N/A
+   383778824      95944706     float     sum      -1  1047558    0.37    0.37      0  1047598    0.37    0.37    N/A
+   384827400      96206850     float     sum      -1  1038155    0.37    0.37      0  1059005    0.36    0.36    N/A
+   385875976      96468994     float     sum      -1  1037806    0.37    0.37      0  1062160    0.36    0.36    N/A
+   386924552      96731138     float     sum      -1  1054442    0.37    0.37      0  1060375    0.36    0.36    N/A
+   387973128      96993282     float     sum      -1  1057634    0.37    0.37      0  1077595    0.36    0.36    N/A
+   389021704      97255426     float     sum      -1  1074590    0.36    0.36      0  1078391    0.36    0.36    N/A
+   390070280      97517570     float     sum      -1  1064149    0.37    0.37      0  1080117    0.36    0.36    N/A
+   391118856      97779714     float     sum      -1  1051729    0.37    0.37      0  1079200    0.36    0.36    N/A
+   392167432      98041858     float     sum      -1  1077930    0.36    0.36      0  1063212    0.37    0.37    N/A
+   393216008      98304002     float     sum      -1  1080919    0.36    0.36      0  1080845    0.36    0.36    N/A
+   394264584      98566146     float     sum      -1  1058545    0.37    0.37      0  1081188    0.36    0.36    N/A
+   395313160      98828290     float     sum      -1  1085737    0.36    0.36      0  1071978    0.37    0.37    N/A
+   396361736      99090434     float     sum      -1  1084944    0.37    0.37      0  1099530    0.36    0.36    N/A
+   397410312      99352578     float     sum      -1  1091675    0.36    0.36      0  1096550    0.36    0.36    N/A
+   398458888      99614722     float     sum      -1  1074958    0.37    0.37      0  1100948    0.36    0.36    N/A
+   399507464      99876866     float     sum      -1  1096303    0.36    0.36      0  1088754    0.37    0.37    N/A
+   400556040     100139010     float     sum      -1  1097964    0.36    0.36      0  1101418    0.36    0.36    N/A
+   401604616     100401154     float     sum      -1  1099527    0.37    0.37      0  1079332    0.37    0.37    N/A
+   402653192     100663298     float     sum      -1  1105650    0.36    0.36      0  1106952    0.36    0.36    N/A
+   403701768     100925442     float     sum      -1  1103888    0.37    0.37      0  1091337    0.37    0.37    N/A
+   404750344     101187586     float     sum      -1  1081659    0.37    0.37      0  1118669    0.36    0.36    N/A
+   405798920     101449730     float     sum      -1  1109230    0.37    0.37      0  1126116    0.36    0.36    N/A
+   406847496     101711874     float     sum      -1  1123212    0.36    0.36      0  1125226    0.36    0.36    N/A
+   407896072     101974018     float     sum      -1  1097108    0.37    0.37      0  1132446    0.36    0.36    N/A
+   408944648     102236162     float     sum      -1  1127879    0.36    0.36      0  1134221    0.36    0.36    N/A
+   409993224     102498306     float     sum      -1  1125496    0.36    0.36      0  1132929    0.36    0.36    N/A
+   411041800     102760450     float     sum      -1  1135474    0.36    0.36      0  1133277    0.36    0.36    N/A
+   412090376     103022594     float     sum      -1  1131371    0.36    0.36      0  1136285    0.36    0.36    N/A
+   413138952     103284738     float     sum      -1  1134378    0.36    0.36      0  1133724    0.36    0.36    N/A
+   414187528     103546882     float     sum      -1  1118494    0.37    0.37      0  1119295    0.37    0.37    N/A
+   415236104     103809026     float     sum      -1  1141408    0.36    0.36      0  1143254    0.36    0.36    N/A
+   416284680     104071170     float     sum      -1  1116599    0.37    0.37      0  1152113    0.36    0.36    N/A
+   417333256     104333314     float     sum      -1  1122538    0.37    0.37      0  1142004    0.37    0.37    N/A
+   418381832     104595458     float     sum      -1  1142185    0.37    0.37      0  1157508    0.36    0.36    N/A
+   419430408     104857602     float     sum      -1  1149200    0.36    0.36      0  1163866    0.36    0.36    N/A
+   420478984     105119746     float     sum      -1  1150944    0.37    0.37      0  1160816    0.36    0.36    N/A
+   421527560     105381890     float     sum      -1  1164562    0.36    0.36      0  1166700    0.36    0.36    N/A
+   422576136     105644034     float     sum      -1  1132537    0.37    0.37      0  1179104    0.36    0.36    N/A
+   423624712     105906178     float     sum      -1  1135663    0.37    0.37      0  1171380    0.36    0.36    N/A
+   424673288     106168322     float     sum      -1  1177112    0.36    0.36      0  1148145    0.37    0.37    N/A
+   425721864     106430466     float     sum      -1  1165533    0.37    0.37      0  1171955    0.36    0.36    N/A
+   426770440     106692610     float     sum      -1  1160106    0.37    0.37      0  1170875    0.36    0.36    N/A
+   427819016     106954754     float     sum      -1  1151293    0.37    0.37      0  1174181    0.36    0.36    N/A
+   428867592     107216898     float     sum      -1  1172854    0.37    0.37      0  1174490    0.37    0.37    N/A
+   429916168     107479042     float     sum      -1  1181512    0.36    0.36      0  1188919    0.36    0.36    N/A
+   430964744     107741186     float     sum      -1  1172640    0.37    0.37      0  1192539    0.36    0.36    N/A
+   432013320     108003330     float     sum      -1  1197996    0.36    0.36      0  1193990    0.36    0.36    N/A
+   433061896     108265474     float     sum      -1  1184526    0.37    0.37      0  1182630    0.37    0.37    N/A
+   434110472     108527618     float     sum      -1  1183216    0.37    0.37      0  1205570    0.36    0.36    N/A
+   435159048     108789762     float     sum      -1  1197213    0.36    0.36      0  1199271    0.36    0.36    N/A
+   436207624     109051906     float     sum      -1  1199869    0.36    0.36      0  1183230    0.37    0.37    N/A
+   437256200     109314050     float     sum      -1  1195451    0.37    0.37      0  1188713    0.37    0.37    N/A
+   438304776     109576194     float     sum      -1  1201650    0.36    0.36      0  1184258    0.37    0.37    N/A
+   439353352     109838338     float     sum      -1  1205643    0.36    0.36      0  1210928    0.36    0.36    N/A
+   440401928     110100482     float     sum      -1  1203510    0.37    0.37      0  1194852    0.37    0.37    N/A
+   441450504     110362626     float     sum      -1  1214754    0.36    0.36      0  1218787    0.36    0.36    N/A
+   442499080     110624770     float     sum      -1  1213755    0.36    0.36      0  1216647    0.36    0.36    N/A
+   443547656     110886914     float     sum      -1  1188436    0.37    0.37      0  1228929    0.36    0.36    N/A
+   444596232     111149058     float     sum      -1  1220617    0.36    0.36      0  1226265    0.36    0.36    N/A
+   445644808     111411202     float     sum      -1  1217514    0.37    0.37      0  1226726    0.36    0.36    N/A
+   446693384     111673346     float     sum      -1  1227838    0.36    0.36      0  1216444    0.37    0.37    N/A
+   447741960     111935490     float     sum      -1  1230581    0.36    0.36      0  1221540    0.37    0.37    N/A
+   448790536     112197634     float     sum      -1  1228839    0.37    0.37      0  1238627    0.36    0.36    N/A
+   449839112     112459778     float     sum      -1  1228368    0.37    0.37      0  1250791    0.36    0.36    N/A
+   450887688     112721922     float     sum      -1  1236886    0.36    0.36      0  1252958    0.36    0.36    N/A
+   451936264     112984066     float     sum      -1  1243396    0.36    0.36      0  1256475    0.36    0.36    N/A
+   452984840     113246210     float     sum      -1  1242981    0.36    0.36      0  1253192    0.36    0.36    N/A
+   454033416     113508354     float     sum      -1  1244195    0.36    0.36      0  1225526    0.37    0.37    N/A
+   455081992     113770498     float     sum      -1  1259488    0.36    0.36      0  1239763    0.37    0.37    N/A
+   456130568     114032642     float     sum      -1  1253477    0.36    0.36      0  1259504    0.36    0.36    N/A
+   457179144     114294786     float     sum      -1  1245196    0.37    0.37      0  1241882    0.37    0.37    N/A
+   458227720     114556930     float     sum      -1  1257675    0.36    0.36      0  1261211    0.36    0.36    N/A
+   459276296     114819074     float     sum      -1  1234903    0.37    0.37      0  1244718    0.37    0.37    N/A
+   460324872     115081218     float     sum      -1  1278605    0.36    0.36      0  1289394    0.36    0.36    N/A
+   461373448     115343362     float     sum      -1  1240064    0.37    0.37      0  1251968    0.37    0.37    N/A
+   462422024     115605506     float     sum      -1  1268513    0.36    0.36      0  1278851    0.36    0.36    N/A
+   463470600     115867650     float     sum      -1  1272485    0.36    0.36      0  1289821    0.36    0.36    N/A
+   464519176     116129794     float     sum      -1  1278377    0.36    0.36      0  1289504    0.36    0.36    N/A
+   465567752     116391938     float     sum      -1  1289143    0.36    0.36      0  1273806    0.37    0.37    N/A
+   466616328     116654082     float     sum      -1  1266728    0.37    0.37      0  1281291    0.36    0.36    N/A
+   467664904     116916226     float     sum      -1  1283604    0.36    0.36      0  1295033    0.36    0.36    N/A
+   468713480     117178370     float     sum      -1  1279871    0.37    0.37      0  1288185    0.36    0.36    N/A
+   469762056     117440514     float     sum      -1  1289046    0.36    0.36      0  1296342    0.36    0.36    N/A
+   470810632     117702658     float     sum      -1  1297977    0.36    0.36      0  1280798    0.37    0.37    N/A
+   471859208     117964802     float     sum      -1  1291552    0.37    0.37      0  1307281    0.36    0.36    N/A
+   472907784     118226946     float     sum      -1  1297543    0.36    0.36      0  1290074    0.37    0.37    N/A
+   473956360     118489090     float     sum      -1  1303037    0.36    0.36      0  1315715    0.36    0.36    N/A
+   475004936     118751234     float     sum      -1  1287807    0.37    0.37      0  1324308    0.36    0.36    N/A
+   476053512     119013378     float     sum      -1  1304630    0.36    0.36      0  1320619    0.36    0.36    N/A
+   477102088     119275522     float     sum      -1  1300842    0.37    0.37      0  1328901    0.36    0.36    N/A
+   478150664     119537666     float     sum      -1  1294167    0.37    0.37      0  1300742    0.37    0.37    N/A
+   479199240     119799810     float     sum      -1  1320160    0.36    0.36      0  1319068    0.36    0.36    N/A
+   480247816     120061954     float     sum      -1  1330405    0.36    0.36      0  1330536    0.36    0.36    N/A
+   481296392     120324098     float     sum      -1  1332435    0.36    0.36      0  1327771    0.36    0.36    N/A
+   482344968     120586242     float     sum      -1  1326060    0.36    0.36      0  1342438    0.36    0.36    N/A
+   483393544     120848386     float     sum      -1  1319018    0.37    0.37      0  1332223    0.36    0.36    N/A
+   484442120     121110530     float     sum      -1  1332159    0.36    0.36      0  1340778    0.36    0.36    N/A
+   485490696     121372674     float     sum      -1  1336887    0.36    0.36      0  1324434    0.37    0.37    N/A
+   486539272     121634818     float     sum      -1  1327701    0.37    0.37      0  1354535    0.36    0.36    N/A
+   487587848     121896962     float     sum      -1  1340482    0.36    0.36      0  1354445    0.36    0.36    N/A
+   488636424     122159106     float     sum      -1  1339012    0.36    0.36      0  1354767    0.36    0.36    N/A
+   489685000     122421250     float     sum      -1  1344758    0.36    0.36      0  1349062    0.36    0.36    N/A
+   490733576     122683394     float     sum      -1  1355089    0.36    0.36      0  1344516    0.36    0.36    N/A
+   491782152     122945538     float     sum      -1  1348326    0.36    0.36      0  1330500    0.37    0.37    N/A
+   492830728     123207682     float     sum      -1  1352516    0.36    0.36      0  1357278    0.36    0.36    N/A
+   493879304     123469826     float     sum      -1  1356962    0.36    0.36      0  1374937    0.36    0.36    N/A
+   494927880     123731970     float     sum      -1  1360742    0.36    0.36      0  1347371    0.37    0.37    N/A
+   495976456     123994114     float     sum      -1  1334505    0.37    0.37      0  1367849    0.36    0.36    N/A
+   497025032     124256258     float     sum      -1  1365978    0.36    0.36      0  1362839    0.36    0.36    N/A
+   498073608     124518402     float     sum      -1  1375967    0.36    0.36      0  1372420    0.36    0.36    N/A
+   499122184     124780546     float     sum      -1  1370453    0.36    0.36      0  1374981    0.36    0.36    N/A
+   500170760     125042690     float     sum      -1  1342986    0.37    0.37      0  1345569    0.37    0.37    N/A
+   501219336     125304834     float     sum      -1  1350133    0.37    0.37      0  1386345    0.36    0.36    N/A
+   502267912     125566978     float     sum      -1  1381903    0.36    0.36      0  1393033    0.36    0.36    N/A
+   503316488     125829122     float     sum      -1  1372041    0.37    0.37      0  1391184    0.36    0.36    N/A
+   504365064     126091266     float     sum      -1  1360978    0.37    0.37      0  1403104    0.36    0.36    N/A
+   505413640     126353410     float     sum      -1  1389738    0.36    0.36      0  1402191    0.36    0.36    N/A
+   506462216     126615554     float     sum      -1  1394786    0.36    0.36      0  1396831    0.36    0.36    N/A
+   507510792     126877698     float     sum      -1  1362974    0.37    0.37      0  1407386    0.36    0.36    N/A
+   508559368     127139842     float     sum      -1  1401199    0.36    0.36      0  1397637    0.36    0.36    N/A
+   509607944     127401986     float     sum      -1  1379337    0.37    0.37      0  1401329    0.36    0.36    N/A
+   510656520     127664130     float     sum      -1  1392771    0.37    0.37      0  1412371    0.36    0.36    N/A
+   511705096     127926274     float     sum      -1  1405746    0.36    0.36      0  1411202    0.36    0.36    N/A
+   512753672     128188418     float     sum      -1  1400515    0.37    0.37      0  1421911    0.36    0.36    N/A
+   513802248     128450562     float     sum      -1  1409663    0.36    0.36      0  1388317    0.37    0.37    N/A
+   514850824     128712706     float     sum      -1  1409498    0.37    0.37      0  1380319    0.37    0.37    N/A
+   515899400     128974850     float     sum      -1  1411705    0.37    0.37      0  1435630    0.36    0.36    N/A
+   516947976     129236994     float     sum      -1  1415915    0.37    0.37      0  1418798    0.36    0.36    N/A
+   517996552     129499138     float     sum      -1  1388960    0.37    0.37      0  1414900    0.37    0.37    N/A
+   519045128     129761282     float     sum      -1  1435208    0.36    0.36      0  1439432    0.36    0.36    N/A
+   520093704     130023426     float     sum      -1  1422833    0.37    0.37      0  1442543    0.36    0.36    N/A
+   521142280     130285570     float     sum      -1  1400884    0.37    0.37      0  1445462    0.36    0.36    N/A
+   522190856     130547714     float     sum      -1  1428711    0.37    0.37      0  1407303    0.37    0.37    N/A
+   523239432     130809858     float     sum      -1  1432786    0.37    0.37      0  1443565    0.36    0.36    N/A
+   524288008     131072002     float     sum      -1  1419767    0.37    0.37      0  1458975    0.36    0.36    N/A
+   525336584     131334146     float     sum      -1  1437082    0.37    0.37      0  1445166    0.36    0.36    N/A
+   526385160     131596290     float     sum      -1  1413424    0.37    0.37      0  1430122    0.37    0.37    N/A
+slurmstepd: error: *** JOB 32262133 ON sciml2301 CANCELLED AT 2024-11-07T04:26:50 DUE TO TIME LIMIT ***
+mpirun: Forwarding signal 18 to job
