@@ -90,7 +90,7 @@ for batch_size in bslist:
                     for i in range(num_iters):
                         if 40<i<=num_iters-1:
                             eg = ExecutionTraceObserver()
-                            eg.register_callback("./tp_graph_"+name.replace("/","-")+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")  # <==== TODO: add host+rank name to guarentee each process has its own trace
+                            eg.register_callback("./tp_"+str(distcase)+"_graph_"+name.replace("/","-")+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")  # <==== TODO: add host+rank name to guarentee each process has its own trace
                             eg.start()
                             with profile(activities=[ProfilerActivity.CPU,ProfilerActivity.CUDA],record_shapes=True,with_stack=True,profile_memory=True) as prof:
                                 torch.cuda.synchronize()
@@ -108,7 +108,7 @@ for batch_size in bslist:
                                 torch.cuda.synchronize()
                                 curr_time = starter.elapsed_time(ender)
                                 total_time1 +=curr_time
-                            prof.export_chrome_trace("./transformer_tp_profiler/profiler_"+name.replace("/","-")+"-iter"+str(i)+".json")
+                            prof.export_chrome_trace("./transformer_tp_profiler/"+str(distcase)+"_profiler_"+name.replace("/","-")+"-iter"+str(i)+".json")
                             eg.stop()
                             eg.unregister_callback()
                             print("Save Exeution Trace")
