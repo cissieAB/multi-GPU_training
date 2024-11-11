@@ -119,7 +119,7 @@ for bs in bslist:
                         for i in range(num_iters): # 30 iterations
                             if 40<i<=num_iters-1:
                                 eg = ExecutionTraceObserver()
-                                eg.register_callback("./imageclass_tp_profiler/graph_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
+                                eg.register_callback("./imageclass_tp_profiler/"+str(distcase)+"_graph_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
                                 eg.start()
                                 with profile(activities=[ProfilerActivity.CPU,ProfilerActivity.CUDA],record_shapes=True,with_stack=True,profile_memory=True) as prof:
                                     torch.cuda.synchronize()
@@ -139,7 +139,7 @@ for bs in bslist:
                                     curr_time = starter.elapsed_time(ender)
                                     total_time1 +=curr_time                    
                             
-                                prof.export_chrome_trace("./imageclass_tp_profiler/profiler_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
+                                prof.export_chrome_trace("./imageclass_tp_profiler/"+str(distcase)+"_profiler_"+name+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
                                 eg.stop()
                                 eg.unregister_callback()
                                 print("Save Exeution Trace")
