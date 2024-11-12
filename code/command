@@ -29,3 +29,23 @@ note that: it needs two parameters, the 1st parameter is the batch size, and the
 for example on a single node: torchrun --standalone --nproc_per_node=2 transformer_tp.py 1024 1
 
 
+---------------------------------------------
+for llama, we'd like to collect traces of llama model for the previous two cases, data parallel and tensor parallel. 
+so the codes are similar to the previous _tp.py and _ddp.py codes.
+
+
+when running the code, if the line, "AutoModelForCausalLM.from_pretrained(name)" returns the error:
+ValueError: rope_scaling must be a dictionary with two fields, type and factor, got {'factor': 32.0, 'high_freq_factor': 4.0, 'low_freq_factor': 1.0, 'original_max_position_embeddings': 8192, 'rope_type': 'llama3'}
+we can check the transformers version (pip show transformers)
+and make sure transformers >= 4.43.0 (pip install --upgrade transformers)
+
+mkdir llama_profiler
+
+for llama_trainex_ddp.py, we only have one parameter, batch size:
+torchrun --standalone --nproc_per_node=2 llama_trainex_ddp.py 1024
+
+for llama_trainex_tp.py, we have two parameters, batch size and distributed case(set it to 1 and 2, separately ):
+torchrun --standalone --nproc_per_node=2 llama_trainex_ddp.py 1024 1
+torchrun --standalone --nproc_per_node=2 llama_trainex_ddp.py 1024 2
+
+
