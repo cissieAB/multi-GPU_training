@@ -1,0 +1,1377 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,32776957
+SLURM_TASK_PID=3348945
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1731614669
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1731629069
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=32776957
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/32776957/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=512000
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/32776957/.cache/run
+SLURM_JOB_ID=32776957
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=g8_tp
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
+++ head -n 1
+++ scontrol show hostnames 'sciml[2301-2302]'
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name print-cudevice --nodes 2 --ntasks-per-node 1 bash -c 'hostname; echo "CUDA_DEV: ${CUDA_VISIBLE_DEVICES}"'
+sciml2301.jlab.org
+CUDA_DEV: 0,1,2,3
+sciml2302.jlab.org
+CUDA_DEV: 0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ grep -i nccl
++ env
+NCCL_HOME=/home/xmei/projects/nccl/build
+NCCL_DEBUG=INFO
++ PY_SCRIPTNAME=transformer_tp.py
++ srun torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=sciml2301.jlab.org:32800 --nnodes=2 --rdzv-id 15212 transformer_tp.py 128 2
+[2024-11-14 15:04:31,857] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-14 15:04:31,859] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-14 15:04:31,857] torch.distributed.run: [WARNING] 
+[2024-11-14 15:04:31,857] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 15:04:31,857] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-14 15:04:31,857] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 15:04:31,859] torch.distributed.run: [WARNING] 
+[2024-11-14 15:04:31,859] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 15:04:31,859] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-14 15:04:31,859] torch.distributed.run: [WARNING] *****************************************
+Hostname: sciml2301.jlab.org, Rank: 2, Local Rank: 2, Global Rank: 2, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 3, Local Rank: 3, Global Rank: 3, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 1, Local Rank: 1, Global Rank: 1, NUM_GPS: 4
+Hostname: sciml2301.jlab.org, Rank: 0, Local Rank: 0, Global Rank: 0, NUM_GPS: 4
+[sciml2301.jlab.org] Rank 0, Local Rank 0: CUDA device set to 0
+[sciml2301.jlab.org] Rank 1, Local Rank 1: CUDA device set to 1
+[sciml2301.jlab.org] Rank 2, Local Rank 2: CUDA device set to 2
+[sciml2301.jlab.org] Rank 3, Local Rank 3: CUDA device set to 3
+Hostname: sciml2302.jlab.org, Rank: 4, Local Rank: 0, Global Rank: 4, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 5, Local Rank: 1, Global Rank: 5, NUM_GPS: 4
+[sciml2302.jlab.org] Rank 4, Local Rank 0: CUDA device set to 0
+Hostname: sciml2302.jlab.org, Rank: 7, Local Rank: 3, Global Rank: 7, NUM_GPS: 4
+Hostname: sciml2302.jlab.org, Rank: 6, Local Rank: 2, Global Rank: 6, NUM_GPS: 4
+[sciml2302.jlab.org] Rank 5, Local Rank 1: CUDA device set to 1
+[sciml2302.jlab.org] Rank 7, Local Rank 3: CUDA device set to 3
+[sciml2302.jlab.org] Rank 6, Local Rank 2: CUDA device set to 2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+Dataset loaded.
+training model now: gpt2
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+TensorParallelPreTrainedModel has generative capabilities, as `prepare_inputs_for_generation` is explicitly overwritten. However, it doesn't directly inherit from `GenerationMixin`. From 👉v4.50👈 onwards, `PreTrainedModel` will NOT inherit from `GenerationMixin`, and this model will lose the ability to call `generate` and other related functions.
+  - If you're using `trust_remote_code=True`, you can get rid of this warning by loading the model with an auto class. See https://huggingface.co/docs/transformers/en/model_doc/auto#auto-classes
+  - If you are the owner of the model architecture code, please modify your model class such that it inherits from `GenerationMixin` (after `PreTrainedModel`, otherwise you'll get an exception).
+  - If you are not the owner of the model architecture class, please contact the model code owner to update it.
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 867.1447143554688
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 867.1221923828125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 873.617431640625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 882.113525390625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 868.1594848632812
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 871.9779663085938
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 869.3186645507812
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 867.240966796875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 877.928466796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 874.3495483398438
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 878.99853515625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 881.7858276367188
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 868.2362670898438
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 868.9264526367188
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 868.7789916992188
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 867.9270629882812
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 876.199951171875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 873.4996337890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 878.85107421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 881.2728271484375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 866.9685668945312
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.1276245117188
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 870.0139770507812
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 867.968017578125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 877.2034301757812
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 871.0840454101562
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 881.82373046875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 884.3519897460938
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 868.3560791015625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 869.190673828125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 871.2714233398438
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 868.1574096679688
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 878.5551147460938
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 871.7998046875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 879.0189819335938
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 882.0848388671875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 867.9219360351562
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.0149536132812
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 868.9080200195312
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 867.5286865234375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 876.9986572265625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 871.1239624023438
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 878.78759765625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 882.0326538085938
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 870.4901123046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.4461059570312
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 868.8885498046875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 870.2996215820312
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 879.909912109375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 874.8861694335938
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 879.857666015625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 887.6820678710938
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 868.9551391601562
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.8915405273438
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 868.4820556640625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 869.6668090820312
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 876.9423217773438
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 873.6737060546875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 878.4639892578125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 870.5228881835938
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 883.7672729492188
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.16552734375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 868.4820556640625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 868.4277954101562
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 879.3446655273438
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 872.5401611328125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 879.23095703125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 868.6130981445312
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 884.5997924804688
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 873.4689331054688
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time 2: 869.6258544921875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time 2: 868.8056030273438
+STAGE:2024-11-14 15:05:17 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-11-14 15:05:17 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time 2: 878.9052734375
+STAGE:2024-11-14 15:05:17 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 875.7626953125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time 2: 878.7493286132812
+STAGE:2024-11-14 15:05:17 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time 2: 870.4901123046875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 883.5880737304688
+STAGE:2024-11-14 15:05:18 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time 2: 870.5656127929688
+STAGE:2024-11-14 15:05:18 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:18 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:18 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:18 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:18 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:18 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:18 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time 2: 879.2904663085938
+STAGE:2024-11-14 15:05:18 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:18 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:18 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time 2: 883.5698852539062
+Save Exeution Trace
+STAGE:2024-11-14 15:05:18 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 870.9093627929688
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 871.9207763671875
+STAGE:2024-11-14 15:05:18 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:18 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:18 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:18 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:19 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:19 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 878.7161254882812
+STAGE:2024-11-14 15:05:19 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 880.6796875
+STAGE:2024-11-14 15:05:19 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:19 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:19 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 877.7581787109375
+STAGE:2024-11-14 15:05:19 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 871.4519653320312
+STAGE:2024-11-14 15:05:19 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:19 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:19 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:19 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:19 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:19 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:19 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:20 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:20 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 880.79638671875
+STAGE:2024-11-14 15:05:20 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:20 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:20 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:20 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:20 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 884.9468994140625
+STAGE:2024-11-14 15:05:20 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:20 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:20 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 868.9678344726562
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 869.0798950195312
+STAGE:2024-11-14 15:05:20 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:20 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 879.1016235351562
+STAGE:2024-11-14 15:05:20 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 878.645263671875
+STAGE:2024-11-14 15:05:20 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:20 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 872.3584594726562
+STAGE:2024-11-14 15:05:21 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 869.6123046875
+STAGE:2024-11-14 15:05:21 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:21 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:21 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:21 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:21 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 874.736572265625
+STAGE:2024-11-14 15:05:21 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:21 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:21 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:22 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:22 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 884.8336181640625
+STAGE:2024-11-14 15:05:22 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:22 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:22 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 867.9379272460938
+STAGE:2024-11-14 15:05:22 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 871.4223022460938
+STAGE:2024-11-14 15:05:22 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 879.955322265625
+STAGE:2024-11-14 15:05:22 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 880.2529296875
+STAGE:2024-11-14 15:05:22 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:22 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:22 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 872.506103515625
+STAGE:2024-11-14 15:05:22 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 872.5928344726562
+STAGE:2024-11-14 15:05:22 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:23 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:23 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:23 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 875.031982421875
+STAGE:2024-11-14 15:05:23 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:23 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:23 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:23 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 888.1698608398438
+STAGE:2024-11-14 15:05:23 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:23 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:23 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 870.4122924804688
+STAGE:2024-11-14 15:05:23 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 871.2830810546875
+STAGE:2024-11-14 15:05:23 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 878.7315063476562
+STAGE:2024-11-14 15:05:24 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 879.8706665039062
+STAGE:2024-11-14 15:05:24 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:24 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:24 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 872.853759765625
+STAGE:2024-11-14 15:05:24 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 870.741455078125
+STAGE:2024-11-14 15:05:24 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:24 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:24 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:24 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:24 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:24 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:24 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 881.4521484375
+STAGE:2024-11-14 15:05:24 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:25 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:25 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:25 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:25 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 884.0181884765625
+STAGE:2024-11-14 15:05:25 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:25 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:25 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:25 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:25 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: gpt2, gpu time: 870.7386474609375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 870.490087890625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 869.2635620117187
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: gpt2, gpu time: 868.4801025390625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 869.7403564453125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 868.14228515625
+training model now: bert-base-uncased
+training model now: bert-base-uncased
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: gpt2, gpu time: 879.4325561523438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 879.1874267578125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 877.5605224609375
+training model now: bert-base-uncased
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: gpt2, gpu time: 880.3287353515625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 879.9554565429687
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 879.5895385742188
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+training model now: bert-base-uncased
+STAGE:2024-11-14 15:05:25 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:25 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: gpt2, gpu time: 872.7092895507812
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg profiler Total time1: 873.637158203125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg Total time2: 868.8713684082031
+training model now: bert-base-uncased
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: gpt2, gpu time: 872.1073608398438
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg profiler Total time1: 871.3011840820312
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg Total time2: 870.5775390625
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+training model now: bert-base-uncased
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+STAGE:2024-11-14 15:05:26 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:26 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: gpt2, gpu time: 881.6971435546875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 878.7428466796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 873.8010192871094
+training model now: bert-base-uncased
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: gpt2, gpu time: 885.3690185546875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg profiler Total time1: 885.4675170898438
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg Total time2: 883.4735229492187
+training model now: bert-base-uncased
+If you want to use `BertLMHeadModel` as a standalone, add `is_decoder=True.`
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 729.4408569335938
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 726.1787109375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 727.8739013671875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.0090942382812
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.4324340820312
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.3388671875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 726.4142456054688
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.02978515625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.404052734375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 725.3265380859375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 730.7421875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.9107055664062
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.9408569335938
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 725.8438110351562
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 727.2315063476562
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 735.9640502929688
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 725.4862060546875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 731.55029296875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.7435302734375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 739.2718505859375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.1324462890625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 726.6019897460938
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 729.004638671875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.8411865234375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.27783203125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 731.3573608398438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.5732421875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 737.8554077148438
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 725.5637817382812
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.0343627929688
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.7316284179688
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.1324462890625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.0482177734375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 729.7587280273438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.376953125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 737.514404296875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 725.6823120117188
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.9585571289062
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.7183837890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 735.9397583007812
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 727.053466796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 731.0352783203125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.8298950195312
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 737.5158081054688
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 726.1959838867188
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.073486328125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 727.9480590820312
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.361572265625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 727.0801391601562
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 730.8313598632812
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.8136596679688
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 739.2981567382812
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 727.5005493164062
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.6144409179688
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.8658447265625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.4176025390625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.1150512695312
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 730.4052124023438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 734.4859008789062
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 738.5635375976562
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 727.2538452148438
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 732.61376953125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.383056640625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.1987915039062
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.0489501953125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 731.507568359375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 735.4777221679688
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 738.69921875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time 2: 728.6458740234375
+STAGE:2024-11-14 15:05:56 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time 2: 731.4035034179688
+STAGE:2024-11-14 15:05:56 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time 2: 728.3458862304688
+STAGE:2024-11-14 15:05:56 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.5250244140625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time 2: 726.9540405273438
+STAGE:2024-11-14 15:05:57 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 731.4570922851562
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time 2: 735.484130859375
+STAGE:2024-11-14 15:05:57 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 739.4716186523438
+STAGE:2024-11-14 15:05:57 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:57 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:57 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:57 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:57 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:57 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time 2: 736.336669921875
+STAGE:2024-11-14 15:05:57 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:57 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:57 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time 2: 730.3384399414062
+STAGE:2024-11-14 15:05:57 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:58 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:58 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 739.85595703125
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time: 736.0090942382812
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time: 730.7784423828125
+STAGE:2024-11-14 15:05:58 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:58 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:58 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:58 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time: 734.4368286132812
+STAGE:2024-11-14 15:05:58 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:58 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:58 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time: 730.8807983398438
+STAGE:2024-11-14 15:05:58 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time 2: 739.5270385742188
+STAGE:2024-11-14 15:05:58 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time: 739.5078735351562
+STAGE:2024-11-14 15:05:58 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:59 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:59 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:59 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time: 742.0601806640625
+STAGE:2024-11-14 15:05:59 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:59 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time: 734.940185546875
+STAGE:2024-11-14 15:05:59 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:05:59 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:05:59 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:05:59 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time: 729.6046752929688
+STAGE:2024-11-14 15:05:59 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time: 727.1712646484375
+STAGE:2024-11-14 15:05:59 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time: 729.1878051757812
+STAGE:2024-11-14 15:05:59 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:00 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:00 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:00 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:00 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time: 728.3726196289062
+STAGE:2024-11-14 15:06:00 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time: 731.5841674804688
+STAGE:2024-11-14 15:06:00 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time: 742.5436401367188
+STAGE:2024-11-14 15:06:00 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:00 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:00 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:00 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:00 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:00 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:00 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time: 738.5726928710938
+STAGE:2024-11-14 15:06:00 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time: 731.4297485351562
+STAGE:2024-11-14 15:06:00 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:01 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:01 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:01 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:01 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:01 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:01 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time: 730.3777465820312
+STAGE:2024-11-14 15:06:01 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time: 730.0985107421875
+STAGE:2024-11-14 15:06:01 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:01 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:01 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time: 726.611572265625
+STAGE:2024-11-14 15:06:01 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:01 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:01 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time: 725.6348266601562
+STAGE:2024-11-14 15:06:01 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time: 734.614990234375
+STAGE:2024-11-14 15:06:02 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time: 734.4346313476562
+STAGE:2024-11-14 15:06:02 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:02 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:02 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:02 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time: 734.9677124023438
+STAGE:2024-11-14 15:06:02 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time: 730.9502563476562
+STAGE:2024-11-14 15:06:02 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:02 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:02 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:02 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:02 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time: 725.6822509765625
+STAGE:2024-11-14 15:06:03 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time: 730.55859375
+STAGE:2024-11-14 15:06:03 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time: 723.918701171875
+STAGE:2024-11-14 15:06:03 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:03 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:03 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:03 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:03 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time: 726.92578125
+STAGE:2024-11-14 15:06:03 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time: 734.8840942382812
+STAGE:2024-11-14 15:06:03 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time: 740.3515014648438
+STAGE:2024-11-14 15:06:03 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:03 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:03 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:03 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:03 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:03 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:03 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time: 735.6886596679688
+STAGE:2024-11-14 15:06:03 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time: 730.4697265625
+STAGE:2024-11-14 15:06:04 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:04 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:04 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:04 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:04 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:04 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:04 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:04 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:04 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: bert-base-uncased, gpu time: 728.3138427734375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg profiler Total time1: 729.54384765625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg Total time2: 728.3506958007813
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: bert-base-uncased, gpu time: 727.9159545898438
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 730.893212890625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 731.3551147460937
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: bert-base-uncased, gpu time: 724.939697265625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 726.683935546875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 726.5881103515625
+training model now: google-t5/t5-small
+STAGE:2024-11-14 15:06:04 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:04 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: bert-base-uncased, gpu time: 727.093994140625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg profiler Total time1: 727.7816040039063
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg Total time2: 726.2399536132813
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time: 737.4417114257812
+STAGE:2024-11-14 15:06:05 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: bert-base-uncased, gpu time: 734.3995971679688
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 734.9620727539062
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 734.8128173828125
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: bert-base-uncased, gpu time: 730.8438110351562
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 731.7267456054688
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 730.8983520507812
+STAGE:2024-11-14 15:06:06 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:06 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: bert-base-uncased, gpu time: 736.8690185546875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 737.6316528320312
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 736.2746887207031
+training model now: google-t5/t5-small
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: bert-base-uncased, gpu time: 740.9178466796875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg profiler Total time1: 739.1739379882813
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg Total time2: 738.7572998046875
+training model now: google-t5/t5-small
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.78460693359375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.5608825683594
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 451.3431396484375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.2940673828125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.4610290527344
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 448.70599365234375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 451.84466552734375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 449.6004943847656
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.1810607910156
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 452.762451171875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 450.1356201171875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 453.2709045410156
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.199951171875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.9671936035156
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.0666809082031
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 454.00335693359375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.2379455566406
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 451.71722412109375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 452.17401123046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 449.96356201171875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.447265625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 454.1422424316406
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 454.1698303222656
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.98162841796875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.39971923828125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.5547180175781
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 449.8778381347656
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.6017150878906
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 452.86553955078125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 454.0767822265625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 448.9658508300781
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.69281005859375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.4552001953125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.2594909667969
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 457.3915100097656
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 450.9864196777344
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 453.2859191894531
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 453.9369201660156
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.7774658203125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.7286682128906
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.1700744628906
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 449.180908203125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 456.73358154296875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.8578186035156
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 453.1377868652344
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 454.82061767578125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.2038269042969
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.1697692871094
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.3499755859375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.6734313964844
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 456.23944091796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.3918151855469
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 456.25537109375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 454.2088623046875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 449.423828125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.5278015136719
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time 2: 450.6190185546875
+STAGE:2024-11-14 15:06:24 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 449.3665771484375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 455.8334655761719
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 452.169189453125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 455.14605712890625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 456.136474609375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time 2: 451.1027526855469
+STAGE:2024-11-14 15:06:24 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time 2: 452.57452392578125
+STAGE:2024-11-14 15:06:24 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time 2: 448.89453125
+STAGE:2024-11-14 15:06:24 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:24 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:24 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 455.5657958984375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 451.6610107421875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 453.33648681640625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 455.3501892089844
+STAGE:2024-11-14 15:06:24 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:24 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:25 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:25 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:25 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:25 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 454.3651123046875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 453.489990234375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time 2: 453.0344543457031
+STAGE:2024-11-14 15:06:25 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 455.7176818847656
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 457.47076416015625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time 2: 451.6437072753906
+STAGE:2024-11-14 15:06:25 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 454.2244567871094
+STAGE:2024-11-14 15:06:25 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:25 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time: 454.6380615234375
+STAGE:2024-11-14 15:06:25 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time: 454.099609375
+STAGE:2024-11-14 15:06:26 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 455.8033752441406
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time: 458.054931640625
+STAGE:2024-11-14 15:06:26 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:26 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time 2: 456.7832946777344
+STAGE:2024-11-14 15:06:26 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time: 455.20025634765625
+STAGE:2024-11-14 15:06:26 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:26 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:26 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 456.8238220214844
+STAGE:2024-11-14 15:06:26 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:26 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:26 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:26 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time: 458.9841613769531
+STAGE:2024-11-14 15:06:26 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time 2: 457.17181396484375
+STAGE:2024-11-14 15:06:27 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time: 457.2626647949219
+STAGE:2024-11-14 15:06:27 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:27 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:27 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time: 453.0981140136719
+STAGE:2024-11-14 15:06:27 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:27 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:27 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time: 453.2060241699219
+STAGE:2024-11-14 15:06:27 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:27 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:27 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time: 453.94232177734375
+STAGE:2024-11-14 15:06:27 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time: 461.5486145019531
+STAGE:2024-11-14 15:06:27 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time: 451.4885559082031
+STAGE:2024-11-14 15:06:27 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:27 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:27 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:28 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:28 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:28 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:28 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:28 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:28 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:28 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:28 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time: 456.2339172363281
+STAGE:2024-11-14 15:06:28 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time: 463.75341796875
+STAGE:2024-11-14 15:06:28 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time: 454.79754638671875
+STAGE:2024-11-14 15:06:28 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:28 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:28 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time: 451.53204345703125
+STAGE:2024-11-14 15:06:29 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:29 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:29 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:29 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:29 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time: 451.99932861328125
+STAGE:2024-11-14 15:06:29 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time: 452.6950988769531
+STAGE:2024-11-14 15:06:29 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:29 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:29 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time: 455.6861877441406
+STAGE:2024-11-14 15:06:29 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time: 453.6700134277344
+STAGE:2024-11-14 15:06:29 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:29 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:29 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:29 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:29 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time: 456.10382080078125
+STAGE:2024-11-14 15:06:30 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:30 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:30 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:30 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:30 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time: 458.3169860839844
+STAGE:2024-11-14 15:06:30 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:30 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:30 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time: 455.2619323730469
+STAGE:2024-11-14 15:06:30 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time: 451.5537109375
+STAGE:2024-11-14 15:06:30 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:30 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:30 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time: 451.0667419433594
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time: 452.7250671386719
+STAGE:2024-11-14 15:06:30 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:30 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:31 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:31 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time: 452.4618835449219
+STAGE:2024-11-14 15:06:31 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time: 470.6068420410156
+STAGE:2024-11-14 15:06:31 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:31 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:31 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time: 454.7503356933594
+STAGE:2024-11-14 15:06:31 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:31 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:31 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time: 458.8988037109375
+STAGE:2024-11-14 15:06:31 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:31 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:31 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time: 454.41094970703125
+STAGE:2024-11-14 15:06:32 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google-t5/t5-small, gpu time: 450.955322265625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg profiler Total time1: 452.35545043945314
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg Total time2: 450.5202117919922
+training model now: google/flan-t5-small
+STAGE:2024-11-14 15:06:32 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:32 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google-t5/t5-small, gpu time: 451.45135498046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg profiler Total time1: 452.3804016113281
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg Total time2: 448.98256225585936
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google-t5/t5-small, gpu time: 450.0888977050781
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 452.4237854003906
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 449.6095794677734
+training model now: google/flan-t5-small
+STAGE:2024-11-14 15:06:32 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:32 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+training model now: google/flan-t5-small
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google-t5/t5-small, gpu time: 452.7120361328125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 454.1682373046875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 452.32692260742186
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time: 458.1308288574219
+STAGE:2024-11-14 15:06:32 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+training model now: google/flan-t5-small
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google-t5/t5-small, gpu time: 454.1922302246094
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 456.0528930664062
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 453.7969665527344
+training model now: google/flan-t5-small
+STAGE:2024-11-14 15:06:33 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:33 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time: 459.9866943359375
+STAGE:2024-11-14 15:06:33 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google-t5/t5-small, gpu time: 452.85284423828125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 454.9171875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 452.2315612792969
+training model now: google/flan-t5-small
+STAGE:2024-11-14 15:06:34 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:34 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google-t5/t5-small, gpu time: 458.6607971191406
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 460.92665405273436
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 454.9425109863281
+training model now: google/flan-t5-small
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google-t5/t5-small, gpu time: 580.5145874023438
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg profiler Total time1: 484.2940979003906
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg Total time2: 456.3398681640625
+training model now: google/flan-t5-small
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 501.74420166015625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.9327392578125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 500.82830810546875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 501.5035705566406
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 504.0368347167969
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.2612609863281
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 502.84197998046875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 499.0464782714844
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 503.9276123046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.6723937988281
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 504.171630859375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 502.4631652832031
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 500.99493408203125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 503.0497741699219
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.2276611328125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 506.5710144042969
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 504.1553039550781
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.7366638183594
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 500.8180236816406
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 504.71954345703125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.4701843261719
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 504.2536926269531
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 501.00079345703125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.669921875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 501.2120666503906
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 503.5419921875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 498.4587097167969
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 506.17694091796875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 506.25665283203125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 501.85791015625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.5140075683594
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 501.2221374511719
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 504.5763854980469
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.4120788574219
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 504.1255798339844
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 506.2449645996094
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 501.9909362792969
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 509.24591064453125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.2640686035156
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 499.4045104980469
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 503.9849853515625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.8811950683594
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 506.0652160644531
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 505.55889892578125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 502.5729675292969
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 507.18865966796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.4797058105469
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 499.9935302734375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 503.6117858886719
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.288818359375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 505.9825744628906
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 507.6522521972656
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time 2: 501.36883544921875
+STAGE:2024-11-14 15:06:54 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 508.9850769042969
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.7769470214844
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 500.2741394042969
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 502.4158020019531
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time 2: 499.2438659667969
+STAGE:2024-11-14 15:06:54 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 504.9468994140625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 505.5392761230469
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 507.7127380371094
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 503.17242431640625
+STAGE:2024-11-14 15:06:54 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:54 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time 2: 500.28863525390625
+STAGE:2024-11-14 15:06:54 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time 2: 504.28460693359375
+STAGE:2024-11-14 15:06:54 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:55 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 504.6998596191406
+STAGE:2024-11-14 15:06:55 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 507.7155456542969
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 510.12158203125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 504.060302734375
+STAGE:2024-11-14 15:06:55 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:55 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:55 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:55 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time 2: 506.20928955078125
+STAGE:2024-11-14 15:06:55 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 506.62994384765625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 508.3963928222656
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 504.5854187011719
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 508.7033996582031
+STAGE:2024-11-14 15:06:56 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:56 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time 2: 502.7341003417969
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 509.6020202636719
+STAGE:2024-11-14 15:06:56 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time: 507.42083740234375
+STAGE:2024-11-14 15:06:56 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time: 507.295654296875
+STAGE:2024-11-14 15:06:56 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 506.0531311035156
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 507.8565979003906
+STAGE:2024-11-14 15:06:56 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:56 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:56 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:56 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time: 506.1765441894531
+STAGE:2024-11-14 15:06:57 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time: 510.44195556640625
+STAGE:2024-11-14 15:06:57 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:57 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:57 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time 2: 507.7077331542969
+STAGE:2024-11-14 15:06:57 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 509.40960693359375
+STAGE:2024-11-14 15:06:57 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:57 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:57 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:57 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time: 511.8746032714844
+STAGE:2024-11-14 15:06:57 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time 2: 509.84918212890625
+STAGE:2024-11-14 15:06:57 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:57 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:57 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:58 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:58 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:58 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:58 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time: 509.19244384765625
+STAGE:2024-11-14 15:06:58 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time: 504.1338195800781
+STAGE:2024-11-14 15:06:58 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time: 502.5106201171875
+STAGE:2024-11-14 15:06:58 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:58 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:58 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:06:59 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:59 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time: 512.4537963867188
+STAGE:2024-11-14 15:06:59 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time: 504.0627746582031
+STAGE:2024-11-14 15:06:59 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:59 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:59 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time: 505.52691650390625
+STAGE:2024-11-14 15:06:59 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:59 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:59 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time: 513.6893920898438
+STAGE:2024-11-14 15:06:59 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:06:59 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:06:59 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time: 508.4692077636719
+STAGE:2024-11-14 15:06:59 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:00 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:00 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:00 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:00 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:00 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:00 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time: 508.0379943847656
+STAGE:2024-11-14 15:07:00 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time: 502.75994873046875
+STAGE:2024-11-14 15:07:00 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:01 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:01 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time: 502.7434387207031
+STAGE:2024-11-14 15:07:01 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:01 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:01 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time: 510.4575500488281
+STAGE:2024-11-14 15:07:01 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time: 504.1168518066406
+STAGE:2024-11-14 15:07:01 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:01 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:01 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time: 505.1938781738281
+STAGE:2024-11-14 15:07:01 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:02 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:02 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time: 509.1416320800781
+STAGE:2024-11-14 15:07:02 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:02 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:02 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time: 508.975341796875
+STAGE:2024-11-14 15:07:02 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:02 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:02 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:02 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:02 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:02 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:02 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time: 505.4403991699219
+STAGE:2024-11-14 15:07:03 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time: 503.1858825683594
+STAGE:2024-11-14 15:07:03 988560:988560 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time: 504.0361022949219
+STAGE:2024-11-14 15:07:03 988558:988558 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:03 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:03 988560:988560 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:03 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:03 988560:988560 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time: 508.8427734375
+STAGE:2024-11-14 15:07:03 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:03 988558:988558 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:03 988558:988558 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time: 502.7030944824219
+STAGE:2024-11-14 15:07:04 3349002:3349002 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time: 502.7005310058594
+STAGE:2024-11-14 15:07:04 3349003:3349003 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:04 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:04 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time: 512.3099365234375
+STAGE:2024-11-14 15:07:04 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time: 507.2949523925781
+STAGE:2024-11-14 15:07:04 3349004:3349004 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 15:07:04 3349002:3349002 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:04 3349002:3349002 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:04 3349003:3349003 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:04 3349003:3349003 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:05 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:05 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 15:07:05 3349004:3349004 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:05 3349004:3349004 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time: 506.1258544921875
+STAGE:2024-11-14 15:07:05 988559:988559 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: google/flan-t5-small, gpu time: 504.08123779296875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg profiler Total time1: 504.31634521484375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg Total time2: 502.0824401855469
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: google/flan-t5-small, gpu time: 501.4311828613281
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg profiler Total time1: 503.6033996582031
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg Total time2: 499.3848907470703
+STAGE:2024-11-14 15:07:05 988559:988559 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:05 988559:988559 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time: 510.4817810058594
+STAGE:2024-11-14 15:07:06 3349005:3349005 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: google/flan-t5-small, gpu time: 500.8717956542969
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 503.5862121582031
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 500.4758026123047
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: google/flan-t5-small, gpu time: 506.584228515625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 506.089501953125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 503.81493225097654
+STAGE:2024-11-14 15:07:06 3349005:3349005 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:06 3349005:3349005 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time: 508.1864929199219
+STAGE:2024-11-14 15:07:06 988561:988561 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: google/flan-t5-small, gpu time: 507.9617004394531
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 508.9151611328125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 505.3202697753906
+STAGE:2024-11-14 15:07:07 988561:988561 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 15:07:07 988561:988561 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: google/flan-t5-small, gpu time: 506.1676940917969
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 506.9928771972656
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 503.59935607910154
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: google/flan-t5-small, gpu time: 508.21728515625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 510.09063720703125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 506.8061798095703
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: google/flan-t5-small, gpu time: 509.3760681152344
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg profiler Total time1: 510.54070434570315
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg Total time2: 508.83677673339844
+[2024-11-14 15:07:13,109] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_988551_0' has failed to shutdown the rendezvous '15212' due to an error of type RendezvousConnectionError.

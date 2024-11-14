@@ -8,4 +8,5 @@ slurm-*
 # Big files shared with Google Drive
 imageclass_ddp_trace.zip
 imageclass_tp_bs128_d2-trace.zip
+transformer_tp_bs128_d2-trace.zip
 
