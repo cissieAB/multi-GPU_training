@@ -9,4 +9,5 @@ slurm-*
 imageclass_ddp_trace.zip
 imageclass_tp_bs128_d2-trace.zip
 transformer_tp_bs128_d2-trace.zip
+llama_tp_g8_bs8_d1-trace.zip
 

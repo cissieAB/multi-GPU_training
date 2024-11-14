@@ -1,0 +1,630 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,32791985
+SLURM_TASK_PID=3360898
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1731621511
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1731635911
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=32791985
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/32791985/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=491520
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2401.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/32791985/.cache/run
+SLURM_JOB_ID=32791985
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=llama_g8_tp
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
+++ head -n 1
+++ scontrol show hostnames 'sciml[2301-2302]'
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name print-cudevice --nodes 2 --ntasks-per-node 1 bash -c 'hostname; echo "CUDA_DEV: ${CUDA_VISIBLE_DEVICES}"'
+sciml2301.jlab.org
+CUDA_DEV: 0,1,2,3
+sciml2302.jlab.org
+CUDA_DEV: 0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ grep -i nccl
++ env
+NCCL_HOME=/home/xmei/projects/nccl/build
+NCCL_DEBUG=INFO
++ PY_SCRIPTNAME=llama_trainex_tp.py
++ srun torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=sciml2301.jlab.org:32800 --nnodes=2 --rdzv-id 17696 llama_trainex_tp.py 8 1
+[2024-11-14 16:58:33,230] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-14 16:58:33,260] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-14 16:58:33,230] torch.distributed.run: [WARNING] 
+[2024-11-14 16:58:33,230] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 16:58:33,230] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-14 16:58:33,230] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 16:58:33,261] torch.distributed.run: [WARNING] 
+[2024-11-14 16:58:33,261] torch.distributed.run: [WARNING] *****************************************
+[2024-11-14 16:58:33,261] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-14 16:58:33,261] torch.distributed.run: [WARNING] *****************************************
+Hostname: sciml2301.jlab.org, Local Rank: 3, Global Rank: 3, NUM_GPUS: 4
+Hostname: sciml2301.jlab.org, Local Rank: 1, Global Rank: 1, NUM_GPUS: 4
+Hostname: sciml2301.jlab.org, Local Rank: 0, Global Rank: 0, NUM_GPUS: 4
+Hostname: sciml2301.jlab.org, Local Rank: 2, Global Rank: 2, NUM_GPUS: 4
+[sciml2301.jlab.org] Rank 0, Local Rank 0: CUDA device set to 0
+[sciml2301.jlab.org] NumPy version: , 1.24.4
+[sciml2301.jlab.org] Torch version:, 2.1.0+cu121
+[sciml2301.jlab.org] Rank 3, Local Rank 3: CUDA device set to 3
+[sciml2301.jlab.org] Rank 1, Local Rank 1: CUDA device set to 1
+[sciml2301.jlab.org] Rank 2, Local Rank 2: CUDA device set to 2
+Hostname: sciml2302.jlab.org, Local Rank: 3, Global Rank: 7, NUM_GPUS: 4
+Hostname: sciml2302.jlab.org, Local Rank: 2, Global Rank: 6, NUM_GPUS: 4
+Hostname: sciml2302.jlab.org, Local Rank: 0, Global Rank: 4, NUM_GPUS: 4
+Hostname: sciml2302.jlab.org, Local Rank: 1, Global Rank: 5, NUM_GPUS: 4
+[sciml2302.jlab.org] Rank 4, Local Rank 0: CUDA device set to 0
+[sciml2302.jlab.org] NumPy version: , 1.24.4
+[sciml2302.jlab.org] Torch version:, 2.1.0+cu121
+[sciml2302.jlab.org] Rank 7, Local Rank 3: CUDA device set to 3
+[sciml2302.jlab.org] Rank 6, Local Rank 2: CUDA device set to 2
+[sciml2302.jlab.org] Rank 5, Local Rank 1: CUDA device set to 1
+Dataset loaded.
+[sciml2301.jlab.org] Rank 0, Local Rank 0: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2301.jlab.org] Rank 1, Local Rank 1: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2301.jlab.org] Rank 3, Local Rank 3: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2301.jlab.org] Rank 2, Local Rank 2: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2302.jlab.org] Rank 4, Local Rank 0: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2302.jlab.org] Rank 5, Local Rank 1: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2302.jlab.org] Rank 6, Local Rank 2: training model now: NousResearch/Llama-3.2-1B
+Dataset loaded.
+[sciml2302.jlab.org] Rank 7, Local Rank 3: training model now: NousResearch/Llama-3.2-1B
+sciml2301:3360954:3360954 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:3360954:3360954 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:3360954:3360954 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:3360954:3360954 [0] NCCL INFO cudaDriverVersion 12060
+NCCL version 2.18.1+cuda12.1
+sciml2301:3360955:3360955 [1] NCCL INFO cudaDriverVersion 12060
+sciml2301:3360955:3360955 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:3360955:3360955 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:3360955:3360955 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:3360957:3360957 [3] NCCL INFO cudaDriverVersion 12060
+sciml2301:3360957:3360957 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:3360957:3360957 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:3360957:3360957 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1000211:1000211 [0] NCCL INFO cudaDriverVersion 12060
+sciml2302:1000211:1000211 [0] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1000211:1000211 [0] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1000211:1000211 [0] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:3360956:3360956 [2] NCCL INFO cudaDriverVersion 12060
+sciml2301:3360956:3360956 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.12<0>
+sciml2301:3360956:3360956 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2301:3360956:3360956 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2301:3360957:3361469 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:3360957:3361469 [3] NCCL INFO Using network IB
+sciml2301:3360957:3361469 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2301:3360955:3361470 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:3360955:3361470 [1] NCCL INFO Using network IB
+sciml2301:3360955:3361470 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2301:3360954:3361468 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:3360954:3361468 [0] NCCL INFO Using network IB
+sciml2301:3360954:3361468 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2301:3360956:3361569 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.12<0>
+sciml2301:3360956:3361569 [2] NCCL INFO Using network IB
+sciml2301:3360956:3361569 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2302:1000211:1000427 [0] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1000211:1000427 [0] NCCL INFO Using network IB
+sciml2302:1000211:1000427 [0] NCCL INFO DMA-BUF is available on GPU device 0
+sciml2302:1000212:1000212 [1] NCCL INFO cudaDriverVersion 12060
+sciml2302:1000212:1000212 [1] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1000212:1000212 [1] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1000212:1000212 [1] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1000213:1000213 [2] NCCL INFO cudaDriverVersion 12060
+sciml2302:1000213:1000213 [2] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1000213:1000213 [2] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1000213:1000213 [2] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1000212:1000560 [1] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1000212:1000560 [1] NCCL INFO Using network IB
+sciml2302:1000212:1000560 [1] NCCL INFO DMA-BUF is available on GPU device 1
+sciml2302:1000214:1000214 [3] NCCL INFO cudaDriverVersion 12060
+sciml2302:1000214:1000214 [3] NCCL INFO Bootstrap : Using ibp37s0:172.17.1.13<0>
+sciml2302:1000214:1000214 [3] NCCL INFO NET/Plugin : Plugin load (libnccl-net.so) returned 2 : libnccl-net.so: cannot open shared object file: No such file or directory
+sciml2302:1000214:1000214 [3] NCCL INFO NET/Plugin : No plugin found, using internal implementation
+sciml2302:1000213:1000692 [2] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1000213:1000692 [2] NCCL INFO Using network IB
+sciml2302:1000213:1000692 [2] NCCL INFO DMA-BUF is available on GPU device 2
+sciml2302:1000214:1000825 [3] NCCL INFO NET/IB : Using [0]mlx5_0:1/IB [RO]; OOB ibp37s0:172.17.1.13<0>
+sciml2302:1000214:1000825 [3] NCCL INFO Using network IB
+sciml2302:1000214:1000825 [3] NCCL INFO DMA-BUF is available on GPU device 3
+sciml2302:1000214:1000825 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2302:1000213:1000692 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2302:1000211:1000427 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2301:3360954:3361468 [0] NCCL INFO NVLS multicast support is not available on dev 0
+sciml2301:3360956:3361569 [2] NCCL INFO NVLS multicast support is not available on dev 2
+sciml2301:3360955:3361470 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2302:1000212:1000560 [1] NCCL INFO NVLS multicast support is not available on dev 1
+sciml2301:3360957:3361469 [3] NCCL INFO NVLS multicast support is not available on dev 3
+sciml2301:3360957:3361469 [3] NCCL INFO Trees [0] -1/-1/-1->3->2 [1] -1/-1/-1->3->2
+sciml2301:3360957:3361469 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360956:3361569 [2] NCCL INFO Trees [0] 3/-1/-1->2->1 [1] 3/-1/-1->2->1
+sciml2301:3360956:3361569 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360955:3361470 [1] NCCL INFO Trees [0] 2/-1/-1->1->0 [1] 2/-1/-1->1->0
+sciml2302:1000211:1000427 [0] NCCL INFO Trees [0] 5/-1/-1->4->0 [1] 5/0/-1->4->-1
+sciml2302:1000211:1000427 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360955:3361470 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 00/02 :    0   1   2   3   4   5   6   7
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 01/02 :    0   1   2   3   4   5   6   7
+sciml2302:1000214:1000825 [3] NCCL INFO Trees [0] -1/-1/-1->7->6 [1] -1/-1/-1->7->6
+sciml2302:1000213:1000692 [2] NCCL INFO Trees [0] 7/-1/-1->6->5 [1] 7/-1/-1->6->5
+sciml2302:1000213:1000692 [2] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1000212:1000560 [1] NCCL INFO Trees [0] 6/-1/-1->5->4 [1] 6/-1/-1->5->4
+sciml2302:1000212:1000560 [1] NCCL INFO P2P Chunksize set to 131072
+sciml2302:1000214:1000825 [3] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360954:3361468 [0] NCCL INFO Trees [0] 1/4/-1->0->-1 [1] 1/-1/-1->0->4
+sciml2301:3360954:3361468 [0] NCCL INFO P2P Chunksize set to 131072
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:1000212:1000560 [1] NCCL INFO Channel 00/0 : 5[84000] -> 6[c3000] via P2P/IPC
+sciml2301:3360955:3361470 [1] NCCL INFO Channel 00/0 : 1[84000] -> 2[c3000] via P2P/IPC
+sciml2301:3360956:3361569 [2] NCCL INFO Channel 00/0 : 2[c3000] -> 3[c4000] via P2P/IPC/read
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 00/0 : 0[83000] -> 1[84000] via P2P/IPC/read
+sciml2302:1000213:1000692 [2] NCCL INFO Channel 00/0 : 6[c3000] -> 7[c4000] via P2P/IPC/read
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 00/0 : 4[83000] -> 5[84000] via P2P/IPC/read
+sciml2302:1000212:1000560 [1] NCCL INFO Channel 01/0 : 5[84000] -> 6[c3000] via P2P/IPC
+sciml2301:3360955:3361470 [1] NCCL INFO Channel 01/0 : 1[84000] -> 2[c3000] via P2P/IPC
+sciml2301:3360956:3361569 [2] NCCL INFO Channel 01/0 : 2[c3000] -> 3[c4000] via P2P/IPC/read
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 01/0 : 0[83000] -> 1[84000] via P2P/IPC/read
+sciml2301:3360957:3361469 [3] NCCL INFO Channel 00/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 01/0 : 4[83000] -> 5[84000] via P2P/IPC/read
+sciml2302:1000213:1000692 [2] NCCL INFO Channel 01/0 : 6[c3000] -> 7[c4000] via P2P/IPC/read
+sciml2302:1000214:1000825 [3] NCCL INFO Channel 00/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2301:3360955:3361470 [1] NCCL INFO Connected all rings
+sciml2301:3360957:3361469 [3] NCCL INFO Channel 01/0 : 3[c4000] -> 4[83000] [send] via NET/IB/0
+sciml2301:3360956:3361569 [2] NCCL INFO Connected all rings
+sciml2302:1000212:1000560 [1] NCCL INFO Connected all rings
+sciml2302:1000214:1000825 [3] NCCL INFO Channel 01/0 : 7[c4000] -> 0[83000] [send] via NET/IB/0
+sciml2302:1000213:1000692 [2] NCCL INFO Connected all rings
+sciml2301:3360957:3361469 [3] NCCL INFO Connected all rings
+sciml2301:3360957:3361469 [3] NCCL INFO Channel 00/0 : 3[c4000] -> 2[c3000] via P2P/IPC/read
+sciml2302:1000211:1000427 [0] NCCL INFO Connected all rings
+sciml2302:1000214:1000825 [3] NCCL INFO Connected all rings
+sciml2302:1000214:1000825 [3] NCCL INFO Channel 00/0 : 7[c4000] -> 6[c3000] via P2P/IPC/read
+sciml2301:3360954:3361468 [0] NCCL INFO Connected all rings
+sciml2301:3360955:3361470 [1] NCCL INFO Channel 00/0 : 1[84000] -> 0[83000] via P2P/IPC/read
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:3360956:3361569 [2] NCCL INFO Channel 00/0 : 2[c3000] -> 1[84000] via P2P/IPC
+sciml2302:1000214:1000825 [3] NCCL INFO Channel 01/0 : 7[c4000] -> 6[c3000] via P2P/IPC/read
+sciml2302:1000212:1000560 [1] NCCL INFO Channel 00/0 : 5[84000] -> 4[83000] via P2P/IPC/read
+sciml2301:3360957:3361469 [3] NCCL INFO Channel 01/0 : 3[c4000] -> 2[c3000] via P2P/IPC/read
+sciml2301:3360955:3361470 [1] NCCL INFO Channel 01/0 : 1[84000] -> 0[83000] via P2P/IPC/read
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [receive] via NET/IB/0
+sciml2301:3360956:3361569 [2] NCCL INFO Channel 01/0 : 2[c3000] -> 1[84000] via P2P/IPC
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [receive] via NET/IB/0
+sciml2302:1000212:1000560 [1] NCCL INFO Channel 01/0 : 5[84000] -> 4[83000] via P2P/IPC/read
+sciml2302:1000213:1000692 [2] NCCL INFO Channel 00/0 : 6[c3000] -> 5[84000] via P2P/IPC
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 00/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2301:3360957:3361469 [3] NCCL INFO Connected all trees
+sciml2301:3360957:3361469 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:3360957:3361469 [3] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:3360956:3361569 [2] NCCL INFO Connected all trees
+sciml2301:3360956:3361569 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:3360956:3361569 [2] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 00/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2302:1000213:1000692 [2] NCCL INFO Channel 01/0 : 6[c3000] -> 5[84000] via P2P/IPC
+sciml2301:3360954:3361468 [0] NCCL INFO Channel 01/0 : 0[83000] -> 4[83000] [send] via NET/IB/0
+sciml2302:1000214:1000825 [3] NCCL INFO Connected all trees
+sciml2302:1000214:1000825 [3] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1000214:1000825 [3] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000213:1000692 [2] NCCL INFO Connected all trees
+sciml2302:1000213:1000692 [2] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1000213:1000692 [2] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000211:1000427 [0] NCCL INFO Channel 01/0 : 4[83000] -> 0[83000] [send] via NET/IB/0
+sciml2301:3360955:3361470 [1] NCCL INFO Connected all trees
+sciml2301:3360955:3361470 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:3360955:3361470 [1] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000212:1000560 [1] NCCL INFO Connected all trees
+sciml2302:1000212:1000560 [1] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1000212:1000560 [1] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2301:3360954:3361468 [0] NCCL INFO Connected all trees
+sciml2301:3360954:3361468 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2301:3360954:3361468 [0] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000211:1000427 [0] NCCL INFO Connected all trees
+sciml2302:1000211:1000427 [0] NCCL INFO threadThresholds 8/8/64 | 64/8/64 | 512 | 512
+sciml2302:1000211:1000427 [0] NCCL INFO 2 coll channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+sciml2302:1000212:1000560 [1] NCCL INFO comm 0xe6c85f0 rank 5 nranks 8 cudaDev 1 busId 84000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2302:1000214:1000825 [3] NCCL INFO comm 0xdda3940 rank 7 nranks 8 cudaDev 3 busId c4000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2302:1000213:1000692 [2] NCCL INFO comm 0xf0a7360 rank 6 nranks 8 cudaDev 2 busId c3000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2302:1000211:1000427 [0] NCCL INFO comm 0x163d9770 rank 4 nranks 8 cudaDev 0 busId 83000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2301:3360954:3361468 [0] NCCL INFO comm 0xd2f3ff0 rank 0 nranks 8 cudaDev 0 busId 83000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2301:3360956:3361569 [2] NCCL INFO comm 0xaa69b60 rank 2 nranks 8 cudaDev 2 busId c3000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2301:3360955:3361470 [1] NCCL INFO comm 0xea99510 rank 1 nranks 8 cudaDev 1 busId 84000 commId 0x6156021bc4b4d00c - Init COMPLETE
+sciml2301:3360957:3361469 [3] NCCL INFO comm 0xf9ab8c0 rank 3 nranks 8 cudaDev 3 busId c4000 commId 0x6156021bc4b4d00c - Init COMPLETE
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3921.354736328125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3926.52392578125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3921.29736328125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3926.193115234375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3914.54931640625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3926.762451171875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3926.80029296875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3926.834228515625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4256.05859375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4269.75048828125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4276.359375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4271.25146484375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4278.67431640625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4280.40380859375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4280.1396484375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4277.68310546875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3790.572509765625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3790.7783203125
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3792.888916015625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3790.128173828125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3790.21826171875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3793.514404296875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3795.02392578125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3790.8427734375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3840.277587890625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3839.56591796875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3839.71728515625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3840.489501953125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3840.1494140625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3835.5537109375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3843.252197265625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3842.323486328125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4268.50732421875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4271.2822265625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4272.357421875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4273.2001953125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4271.86083984375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4272.0009765625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4271.8505859375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4280.1181640625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4224.20361328125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4222.65673828125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4227.28173828125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4230.20556640625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4220.8212890625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4233.7568359375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4232.73974609375
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4233.95849609375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4193.27099609375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4193.5361328125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4203.22900390625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4193.00244140625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4205.259765625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4193.46435546875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4193.53076171875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4205.4951171875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4187.87841796875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4185.26318359375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4185.1748046875
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4188.8974609375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 4185.28564453125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 4185.01416015625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 4179.623046875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 4185.36328125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3920.66162109375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3924.18408203125
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3929.87451171875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3931.947998046875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3932.87060546875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3934.507080078125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3934.454833984375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3934.47119140625
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3809.648681640625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3809.291259765625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3818.9404296875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3820.900390625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time 2: 3813.1650390625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time 2: 3812.221923828125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time 2: 3811.57373046875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time 2: 3811.814453125
+STAGE:2024-11-14 17:01:18 3360957:3360957 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 1000214:1000214 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 1000213:1000213 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 1000211:1000211 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 1000212:1000212 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 3360956:3360956 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 3360954:3360954 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:18 3360955:3360955 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:21 3360957:3360957 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-14 17:01:21 3360956:3360956 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:21 3360955:3360955 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-14 17:01:21 1000213:1000213 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-14 17:01:21 1000212:1000212 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:21 3360954:3360954 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:21 1000211:1000211 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-14 17:01:21 1000214:1000214 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:21 3360957:3360957 ActivityProfilerController.cpp:322] Completed Stage: Post ProcessingSTAGE:2024-11-14 17:01:21 3360956:3360956 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+
+STAGE:2024-11-14 17:01:21 1000213:1000213 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:21 3360955:3360955 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:21 1000212:1000212 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:21 3360954:3360954 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:21 1000214:1000214 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:21 1000211:1000211 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3514.834228515625
+STAGE:2024-11-14 17:01:24 1000213:1000213 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3516.596435546875
+STAGE:2024-11-14 17:01:24 1000214:1000214 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 3513.809326171875
+STAGE:2024-11-14 17:01:24 1000211:1000211 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 3512.26171875
+STAGE:2024-11-14 17:01:24 1000212:1000212 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 3512.52783203125
+STAGE:2024-11-14 17:01:24 3360954:3360954 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3524.05029296875
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3511.60009765625
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 3511.57470703125
+STAGE:2024-11-14 17:01:24 3360957:3360957 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:24 3360955:3360955 ActivityProfilerController.cpp:312] Completed Stage: Warm UpSTAGE:2024-11-14 17:01:24 3360956:3360956 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+
+STAGE:2024-11-14 17:01:28 1000211:1000211 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 1000212:1000212 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 3360957:3360957 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 3360956:3360956 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 3360955:3360955 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 1000214:1000214 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 1000213:1000213 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 3360954:3360954 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:28 1000211:1000211 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 1000212:1000212 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 3360957:3360957 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 3360955:3360955 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 1000214:1000214 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 3360954:3360954 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 1000213:1000213 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:28 3360956:3360956 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3237.803955078125
+STAGE:2024-11-14 17:01:31 3360957:3360957 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3327.96142578125
+STAGE:2024-11-14 17:01:31 1000213:1000213 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 3238.690673828125
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 3260.6513671875
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3272.155517578125
+STAGE:2024-11-14 17:01:32 1000211:1000211 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:32 3360955:3360955 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3237.114013671875
+STAGE:2024-11-14 17:01:32 3360956:3360956 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 3242.8662109375
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 3259.0458984375
+STAGE:2024-11-14 17:01:32 1000214:1000214 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:32 3360954:3360954 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:32 1000212:1000212 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:34 1000214:1000214 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 3360955:3360955 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 1000213:1000213 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 3360954:3360954 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 3360956:3360956 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 1000212:1000212 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 3360957:3360957 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 1000211:1000211 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:34 1000214:1000214 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:34 3360954:3360954 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:34 1000212:1000212 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:34 1000213:1000213 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:34 3360955:3360955 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:35 3360956:3360956 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:35 3360957:3360957 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:35 1000211:1000211 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 2860.16064453125
+STAGE:2024-11-14 17:01:38 1000212:1000212 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 2870.69287109375
+STAGE:2024-11-14 17:01:38 1000214:1000214 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 2862.130615234375
+Save Exeution Trace
+STAGE:2024-11-14 17:01:38 3360954:3360954 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 2886.530517578125
+STAGE:2024-11-14 17:01:38 3360955:3360955 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 2885.771484375
+STAGE:2024-11-14 17:01:38 3360956:3360956 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3441.419921875
+STAGE:2024-11-14 17:01:38 3360957:3360957 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 2894.4482421875
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3288.542236328125
+STAGE:2024-11-14 17:01:38 1000211:1000211 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:38 1000213:1000213 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:41 1000214:1000214 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:41 1000212:1000212 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:41 1000211:1000211 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:41 3360956:3360956 ActivityProfilerController.cpp:318] Completed Stage: CollectionSTAGE:2024-11-14 17:01:41 3360957:3360957 ActivityProfilerController.cpp:318] Completed Stage: Collection
+
+STAGE:2024-11-14 17:01:41 1000213:1000213 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-14 17:01:41 1000214:1000214 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:41 1000211:1000211 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:41 1000213:1000213 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:41 3360957:3360957 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:41 1000212:1000212 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-14 17:01:41 3360956:3360956 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+---first error
+[sciml2301.jlab.org] Rank 1, Local Rank 1, stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+---first error
+[sciml2301.jlab.org] Rank 0, Local Rank 0, stack.size() INTERNAL ASSERT FAILED at "../torch/csrc/autograd/profiler_python.cpp":964, please report a bug to PyTorch. Python replay stack is empty.
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7f2357144e50>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+Exception ignored in: <function ExecutionTraceObserver.__del__ at 0x7f47ddac0e50>
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 680, in __del__
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 696, in unregister_callback
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/profiler/profiler.py", line 726, in stop
+TypeError: 'NoneType' object is not callable
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: NousResearch/Llama-3.2-1B, gpu time: 3363.490234375
+STAGE:2024-11-14 17:01:45 1000211:1000211 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3429.359619140625
+STAGE:2024-11-14 17:01:45 3360956:3360956 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: NousResearch/Llama-3.2-1B, gpu time: 3354.309814453125
+STAGE:2024-11-14 17:01:45 1000213:1000213 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3428.9482421875
+STAGE:2024-11-14 17:01:45 3360957:3360957 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[2024-11-14 17:01:45,528] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 3360956 closing signal SIGTERM
+[2024-11-14 17:01:45,528] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 3360957 closing signal SIGTERM
+[2024-11-14 17:01:45,559] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 3360954) of binary: /w/epsci-sciwork18/xmei/projects/pyvenv/bin/python3.10
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+llama_trainex_tp.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-11-14_17:01:45
+  host      : sciml2301.jlab.org
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3360955)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-11-14_17:01:45
+  host      : sciml2301.jlab.org
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3360954)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: NousResearch/Llama-3.2-1B, gpu time: 3719.48388671875
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: NousResearch/Llama-3.2-1B, gpu time: 3723.510986328125
+STAGE:2024-11-14 17:01:45 1000214:1000214 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-14 17:01:45 1000212:1000212 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+srun: error: sciml2301: task 0: Exited with exit code 1
+[2024-11-14 17:01:49,493] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_1000204_0' has failed to send a keep-alive heartbeat to the rendezvous '17696' due to an error of type RendezvousConnectionError.
+[2024-11-14 17:01:50,539] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 1000211 closing signal SIGTERM
+[2024-11-14 17:01:50,539] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 1000212 closing signal SIGTERM
+[2024-11-14 17:01:50,539] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 1000213 closing signal SIGTERM
+[2024-11-14 17:01:50,539] torch.distributed.elastic.multiprocessing.api: [WARNING] Sending process 1000214 closing signal SIGTERM
+[2024-11-14 17:01:50,674] torch.distributed.elastic.rendezvous.dynamic_rendezvous: [WARNING] The node 'sciml2302.jlab.org_1000204_0' has failed to shutdown the rendezvous '17696' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 113, in _call_store
+    return getattr(self._store, store_op)(*args, **kwargs)
+RuntimeError: Broken pipe
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 255, in launch_agent
+    result = agent.run()
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 124, in wrapper
+    result = f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 736, in run
+    result = self._invoke_run(role)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 909, in _invoke_run
+    num_nodes_waiting = rdzv_handler.num_nodes_waiting()
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 1083, in num_nodes_waiting
+    self._state_holder.sync()
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 409, in sync
+    get_response = self._backend.get_state()
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 73, in get_state
+    base64_state: bytes = self._call_store("get", self._key)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 115, in _call_store
+    raise RendezvousConnectionError(
+torch.distributed.elastic.rendezvous.api.RendezvousConnectionError: The connection to the C10d store has failed. See inner exception for details.
+srun: error: sciml2302: task 1: Exited with exit code 1
