@@ -1,0 +1,562 @@
++ env
++ grep -i slurm
+SLURM_JOB_USER=xmei
+SLURM_TASKS_PER_NODE=1(x2)
+SLURM_JOB_UID=11066
+SLURM_LUSTRE_JOB_ID=sciml2301,xmei,32692646
+SLURM_TASK_PID=3283529
+SLURM_JOB_GPUS=0,1,2,3
+SLURM_LOCALID=0
+SLURM_SUBMIT_DIR=/w/epsci-sciwork18/xmei/projects/multi-GPU_training/code
+SLURMD_NODENAME=sciml2301
+SLURM_JOB_START_TIME=1731545472
+SLURM_CLUSTER_NAME=scicomp
+SLURM_JOB_END_TIME=1731559872
+SLURM_CPUS_ON_NODE=4
+SLURM_JOB_CPUS_PER_NODE=4(x2)
+SLURM_GPUS_ON_NODE=4
+PRTE_MCA_plm_slurm_args=--external-launcher
+SLURM_GTIDS=0
+SLURM_JOB_PARTITION=gpu
+SLURM_TRES_PER_TASK=cpu:4
+SLURM_JOB_NUM_NODES=2
+SLURM_JOBID=32692646
+SLURM_JOB_QOS=normal
+SLURM_PROCID=0
+TMPDIR=/scratch/slurm/32692646/.cache/tmp
+SLURM_CPUS_PER_TASK=4
+SLURM_TOPOLOGY_ADDR=sciml2301
+HYDRA_BOOTSTRAP=slurm
+SLURM_TOPOLOGY_ADDR_PATTERN=node
+SLURM_SCRIPT_CONTEXT=prolog_task
+SLURM_MEM_PER_NODE=409600
+SLURM_NODELIST=sciml[2301-2302]
+SLURM_JOB_ACCOUNT=epsci
+SLURM_PRIO_PROCESS=0
+SLURM_NNODES=2
+SLURM_SUBMIT_HOST=ifarm2402.jlab.org
+XDG_RUNTIME_DIR=/scratch/slurm/32692646/.cache/run
+SLURM_JOB_ID=32692646
+SLURM_NODEID=0
+SLURM_CONF=/etc/slurm/slurm.conf
+SLURM_JOB_NAME=g8_tp
+OMPI_MCA_plm_slurm_args=--external-launcher
+SLURM_JOB_GID=761
+SLURM_JOB_NODELIST=sciml[2301-2302]
+I_MPI_HYDRA_BOOTSTRAP=slurm
++ env
++ grep -i rank
++ env
++ grep -i cuda
+CUDA_VISIBLE_DEVICES=0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
+++ head -n 1
+++ scontrol show hostnames 'sciml[2301-2302]'
++ export MASTER_ADDR=sciml2301
++ MASTER_ADDR=sciml2301
++ export MASTER_PORT=32800
++ MASTER_PORT=32800
++ echo Head Node: sciml2301:32800
+Head Node: sciml2301:32800
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ srun --job-name print-cudevice --nodes 2 --ntasks-per-node 1 bash -c 'hostname; echo "CUDA_DEV: ${CUDA_VISIBLE_DEVICES}"'
+sciml2301.jlab.org
+CUDA_DEV: 0,1,2,3
+sciml2302.jlab.org
+CUDA_DEV: 0,1,2,3
++ echo -e '=============================================================\n\n'
+=============================================================
+
+
++ export PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ PATH=/w/epsci-sciwork18/xmei/projects/pyvenv/bin:/usr/share/Modules/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/puppetlabs/bin:/home/xmei/projects/iperf3/bin:/home/xmei/projects/py3.10/bin:/work/epsci/xmei/projects/projects/pyvenv/bin
++ export NCCL_DEBUG=INFO
++ NCCL_DEBUG=INFO
++ grep -i nccl
++ env
+NCCL_HOME=/home/xmei/projects/nccl/build
+NCCL_DEBUG=INFO
++ PY_SCRIPTNAME=imageclass_tp.py
++ srun torchrun --nproc_per_node=4 --rdzv_backend=c10d --rdzv_endpoint=sciml2301.jlab.org:32800 --nnodes=2 --rdzv-id 16130 imageclass_tp.py 1024 2
+[2024-11-13 19:51:14,310] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-13 19:51:14,310] torch.distributed.run: [WARNING] 
+[2024-11-13 19:51:14,310] torch.distributed.run: [WARNING] *****************************************
+[2024-11-13 19:51:14,310] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-13 19:51:14,310] torch.distributed.run: [WARNING] *****************************************
+[2024-11-13 19:51:14,373] torch.distributed.run: [WARNING] master_addr is only used for static rdzv_backend and when rdzv_endpoint is not specified.
+[2024-11-13 19:51:14,374] torch.distributed.run: [WARNING] 
+[2024-11-13 19:51:14,374] torch.distributed.run: [WARNING] *****************************************
+[2024-11-13 19:51:14,374] torch.distributed.run: [WARNING] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+[2024-11-13 19:51:14,374] torch.distributed.run: [WARNING] *****************************************
+Hostname: sciml2301.jlab.org, Local Rank: 0, Global Rank: 0, NUM_GPUS: 4
+Hostname: sciml2301.jlab.org, Local Rank: 2, Global Rank: 2, NUM_GPUS: 4
+Hostname: sciml2301.jlab.org, Local Rank: 1, Global Rank: 1, NUM_GPUS: 4
+[sciml2301.jlab.org] Rank 0, Local Rank 0: CUDA device set to 0
+[sciml2301.jlab.org] NumPy version: , 1.24.4
+[sciml2301.jlab.org] Torch version:, 2.1.0+cu121
+Hostname: sciml2301.jlab.org, Local Rank: 3, Global Rank: 3, NUM_GPUS: 4
+[sciml2301.jlab.org] Rank 1, Local Rank 1: CUDA device set to 1
+[sciml2301.jlab.org] Rank 3, Local Rank 3: CUDA device set to 3
+[sciml2301.jlab.org] Rank 2, Local Rank 2: CUDA device set to 2
+Hostname: sciml2302.jlab.org, Local Rank: 0, Global Rank: 4, NUM_GPUS: 4
+Hostname: sciml2302.jlab.org, Local Rank: 3, Global Rank: 7, NUM_GPUS: 4
+Hostname: sciml2302.jlab.org, Local Rank: 1, Global Rank: 5, NUM_GPUS: 4
+[sciml2302.jlab.org] Rank 4, Local Rank 0: CUDA device set to 0
+[sciml2302.jlab.org] NumPy version: , 1.24.4
+[sciml2302.jlab.org] Torch version:, 2.1.0+cu121
+Hostname: sciml2302.jlab.org, Local Rank: 2, Global Rank: 6, NUM_GPUS: 4
+[sciml2302.jlab.org] Rank 5, Local Rank 1: CUDA device set to 1
+[sciml2302.jlab.org] Rank 7, Local Rank 3: CUDA device set to 3
+[sciml2302.jlab.org] Rank 6, Local Rank 2: CUDA device set to 2
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 931.9669799804688
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 925.4461669921875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 922.9537353515625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.5390625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 926.7763061523438
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 932.6837768554688
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 928.9205932617188
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 930.9091796875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 924.15283203125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 924.315673828125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.4622802734375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 925.5986938476562
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 932.5332641601562
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 928.30615234375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 936.50537109375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 930.0029296875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 925.5239868164062
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 923.5947265625
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.6046142578125
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 927.6713256835938
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 932.7810668945312
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 929.5994873046875
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 933.9627685546875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 932.9387817382812
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 925.6530151367188
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 923.3684692382812
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.8145141601562
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 925.465576171875
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 933.7047119140625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 928.6410522460938
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 936.4572143554688
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 933.1148681640625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 926.29296875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 925.0764770507812
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 931.2604370117188
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 927.224853515625
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 929.1253662109375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 934.656005859375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 937.4095458984375
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 932.7144775390625
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 927.2791137695312
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 924.432373046875
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.5195922851562
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 927.0804443359375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 929.1806640625
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 932.4574584960938
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 936.9794311523438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 933.4395141601562
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 925.1993408203125
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 924.36376953125
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 929.0537109375
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 928.0030517578125
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 930.6316528320312
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 935.2243041992188
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 933.8367919921875
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 934.1194458007812
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 928.7587890625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 924.2347412109375
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 931.968994140625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 929.5011596679688
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 929.78173828125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 936.5339965820312
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 939.0765991210938
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 933.339111328125
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 929.2144775390625
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 925.9202270507812
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 932.2076416015625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 927.88427734375
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 929.7879028320312
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 935.077880859375
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 936.8729858398438
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time 2: 933.1578979492188
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-11-13 19:52:25 3283586:3283586 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time 2: 926.3154907226562
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-11-13 19:52:25 925401:925401 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time 2: 924.1707763671875
+STAGE:2024-11-13 19:52:25 3283584:3283584 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time 2: 931.55029296875
+STAGE:2024-11-13 19:52:26 3283585:3283585 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time 2: 925.9913940429688
+STAGE:2024-11-13 19:52:26 925399:925399 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time 2: 931.6722412109375
+STAGE:2024-11-13 19:52:26 925400:925400 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time 2: 936.4502563476562
+STAGE:2024-11-13 19:52:26 3283587:3283587 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 936.3921508789062
+STAGE:2024-11-13 19:52:26 3283586:3283586 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:26 3283586:3283586 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time: 935.6194458007812
+STAGE:2024-11-13 19:52:26 3283586:3283586 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:26 925401:925401 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:26 925401:925401 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time: 932.9468994140625
+STAGE:2024-11-13 19:52:26 925401:925401 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:26 3283584:3283584 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:26 3283584:3283584 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time: 928.6646728515625
+STAGE:2024-11-13 19:52:27 3283584:3283584 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:27 3283585:3283585 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 3283585:3283585 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:27 925399:925399 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 925399:925399 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time: 932.9203491210938
+STAGE:2024-11-13 19:52:27 3283585:3283585 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time: 929.6073608398438
+STAGE:2024-11-13 19:52:27 925399:925399 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:27 925400:925400 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 925400:925400 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time 2: 937.6161499023438
+STAGE:2024-11-13 19:52:27 3283587:3283587 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 3283587:3283587 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:27 925402:925402 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time: 931.8397216796875
+STAGE:2024-11-13 19:52:27 925400:925400 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time: 940.9779052734375
+STAGE:2024-11-13 19:52:27 3283587:3283587 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:27 3283586:3283586 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 3283586:3283586 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time: 935.6608276367188
+STAGE:2024-11-13 19:52:27 3283586:3283586 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:27 925401:925401 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 925401:925401 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time: 933.2684936523438
+STAGE:2024-11-13 19:52:27 925401:925401 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:27 3283584:3283584 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:27 3283584:3283584 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time: 927.428955078125
+STAGE:2024-11-13 19:52:28 3283584:3283584 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 3283585:3283585 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 3283585:3283585 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:28 925399:925399 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 925399:925399 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time: 934.572265625
+STAGE:2024-11-13 19:52:28 3283585:3283585 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time: 929.8328857421875
+STAGE:2024-11-13 19:52:28 925399:925399 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 925402:925402 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 925402:925402 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:28 925400:925400 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 925400:925400 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:28 3283587:3283587 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 3283587:3283587 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time: 935.4696044921875
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time: 940.6046752929688
+STAGE:2024-11-13 19:52:28 925400:925400 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 925402:925402 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time: 938.5032348632812
+STAGE:2024-11-13 19:52:28 3283587:3283587 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 3283586:3283586 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 3283586:3283586 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time: 936.19580078125
+STAGE:2024-11-13 19:52:28 3283586:3283586 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 925401:925401 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 925401:925401 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time: 931.1710815429688
+STAGE:2024-11-13 19:52:28 925401:925401 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:28 3283584:3283584 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:28 3283584:3283584 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time: 928.1806030273438
+STAGE:2024-11-13 19:52:29 3283584:3283584 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:29 3283585:3283585 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 3283585:3283585 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:29 925399:925399 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 925399:925399 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time: 934.3621826171875
+STAGE:2024-11-13 19:52:29 3283585:3283585 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time: 931.3031616210938
+STAGE:2024-11-13 19:52:29 925399:925399 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:29 925400:925400 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 925400:925400 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:29 925402:925402 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 925402:925402 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:29 3283587:3283587 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 3283587:3283587 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time: 932.5966796875
+STAGE:2024-11-13 19:52:29 925400:925400 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time: 939.8588256835938
+STAGE:2024-11-13 19:52:29 925402:925402 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time: 936.299072265625
+STAGE:2024-11-13 19:52:29 3283587:3283587 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:29 3283586:3283586 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 3283586:3283586 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:29 925401:925401 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 925401:925401 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time: 934.8840942382812
+STAGE:2024-11-13 19:52:29 3283586:3283586 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:29 3283584:3283584 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:29 3283584:3283584 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time: 931.0556640625
+STAGE:2024-11-13 19:52:29 925401:925401 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time: 930.4567260742188
+STAGE:2024-11-13 19:52:30 3283584:3283584 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:30 3283585:3283585 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 3283585:3283585 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:30 925399:925399 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 925399:925399 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:30 925400:925400 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 925400:925400 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:30 925402:925402 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 925402:925402 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time: 936.0523071289062
+STAGE:2024-11-13 19:52:30 3283585:3283585 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:30 3283587:3283587 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 3283587:3283587 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time: 932.2745971679688
+STAGE:2024-11-13 19:52:30 925399:925399 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time: 939.26513671875
+STAGE:2024-11-13 19:52:30 925402:925402 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time: 934.3856811523438
+STAGE:2024-11-13 19:52:30 925400:925400 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time: 939.7850952148438
+STAGE:2024-11-13 19:52:30 3283587:3283587 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2024-11-13 19:52:30 3283586:3283586 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 3283586:3283586 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 2, Local Rank 2: vgg11, gpu time: 937.992431640625
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg profiler Total time1: 936.0705200195313
+[sciml2301.jlab.org] Rank 2, Local Rank 2: avg Total time2: 932.5703186035156
+STAGE:2024-11-13 19:52:30 925401:925401 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:30 925401:925401 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [01:00<00:00, 60.43s/it]100%|██████████| 1/1 [01:00<00:00, 60.52s/it]
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 6, Local Rank 2: vgg11, gpu time: 930.944091796875
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg profiler Total time1: 931.87724609375
+[sciml2302.jlab.org] Rank 6, Local Rank 2: avg Total time2: 926.3836181640625
+STAGE:2024-11-13 19:52:31 3283584:3283584 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 3283584:3283584 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [01:00<00:00, 60.57s/it]100%|██████████| 1/1 [01:00<00:00, 60.66s/it]
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 0, Local Rank 0: vgg11, gpu time: 929.4324951171875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg profiler Total time1: 928.8326904296875
+[sciml2301.jlab.org] Rank 0, Local Rank 0: avg Total time2: 924.2430969238281
+100%|██████████| 1/1 [01:00<00:00, 60.03s/it]100%|██████████| 1/1 [01:00<00:00, 60.10s/it]
+STAGE:2024-11-13 19:52:31 3283585:3283585 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 3283585:3283585 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:31 925399:925399 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 925399:925399 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2024-11-13 19:52:31 925402:925402 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 925402:925402 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 1, Local Rank 1: vgg11, gpu time: 933.3721313476562
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg profiler Total time1: 934.2558471679688
+[sciml2301.jlab.org] Rank 1, Local Rank 1: avg Total time2: 930.3981140136718
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 4, Local Rank 0: vgg11, gpu time: 931.19775390625
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg profiler Total time1: 930.8431518554687
+[sciml2302.jlab.org] Rank 4, Local Rank 0: avg Total time2: 927.1197082519532
+100%|██████████| 1/1 [01:00<00:00, 60.36s/it]STAGE:2024-11-13 19:52:31 925400:925400 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 925400:925400 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+100%|██████████| 1/1 [01:00<00:00, 60.95s/it]100%|██████████| 1/1 [01:01<00:00, 61.04s/it]
+100%|██████████| 1/1 [01:00<00:00, 60.44s/it]
+STAGE:2024-11-13 19:52:31 3283587:3283587 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:31 3283587:3283587 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 5, Local Rank 1: vgg11, gpu time: 934.0147094726562
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg profiler Total time1: 933.661279296875
+[sciml2302.jlab.org] Rank 5, Local Rank 1: avg Total time2: 929.5646850585938
+Save Exeution Trace
+[sciml2301.jlab.org] Rank 3, Local Rank 3: vgg11, gpu time: 937.236083984375
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg profiler Total time1: 938.5602783203125
+[sciml2301.jlab.org] Rank 3, Local Rank 3: avg Total time2: 934.2102722167969
+100%|██████████| 1/1 [01:01<00:00, 61.12s/it]100%|██████████| 1/1 [01:01<00:00, 61.20s/it]
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time: 938.3558349609375
+STAGE:2024-11-13 19:52:31 925402:925402 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+100%|██████████| 1/1 [01:01<00:00, 61.16s/it]  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [01:01<00:00, 61.27s/it]
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]STAGE:2024-11-13 19:52:32 925402:925402 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2024-11-13 19:52:32 925402:925402 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+Save Exeution Trace
+[sciml2302.jlab.org] Rank 7, Local Rank 3: vgg11, gpu time: 938.4697875976562
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg profiler Total time1: 939.3108520507812
+[sciml2302.jlab.org] Rank 7, Local Rank 3: avg Total time2: 936.5109008789062
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [01:02<00:00, 62.29s/it]100%|██████████| 1/1 [01:02<00:00, 62.48s/it]
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+Batchsize: torch.Size([1024, 3, 224, 224])
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s]
+  0%|          | 0/1 [00:14<?, ?it/s]  0%|          | 0/1 [00:13<?, ?it/s]
+
+  0%|          | 0/1 [00:14<?, ?it/s]
+  0%|          | 0/1 [00:14<?, ?it/s]
+  0%|          | 0/1 [00:15<?, ?it/s]
+---first error
+[sciml2302.jlab.org] Rank 6, Local Rank 2, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 2 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2301.jlab.org] Rank 1, Local Rank 1, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 1 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2301.jlab.org] Rank 3, Local Rank 3, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 3 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2301.jlab.org] Rank 0, Local Rank 0, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 0 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2302.jlab.org] Rank 4, Local Rank 0, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 0 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2302.jlab.org] Rank 5, Local Rank 1, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 1 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+---first error
+[sciml2301.jlab.org] Rank 2, Local Rank 2, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 2 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+  0%|          | 0/1 [00:14<?, ?it/s]
+---first error
+[sciml2302.jlab.org] Rank 7, Local Rank 3, CUDA out of memory. Tried to allocate 12.25 GiB. GPU 3 has a total capacty of 79.25 GiB of which 7.16 GiB is free. Including non-PyTorch memory, this process has 72.08 GiB memory in use. Of the allocated memory 40.32 GiB is allocated by PyTorch, and 31.23 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+[2024-11-13 19:52:50,611] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 3283584) of binary: /w/epsci-sciwork18/xmei/projects/pyvenv/bin/python3.10
+[2024-11-13 19:52:50,616] torch.distributed.elastic.multiprocessing.api: [ERROR] failed (exitcode: 1) local_rank: 0 (pid: 925399) of binary: /w/epsci-sciwork18/xmei/projects/pyvenv/bin/python3.10
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+imageclass_tp.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2301.jlab.org
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3283585)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2301.jlab.org
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 3283586)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2301.jlab.org
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 3283587)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2301.jlab.org
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3283584)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+Traceback (most recent call last):
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
+    return f(*args, **kwargs)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 806, in main
+    run(args)
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/run.py", line 797, in run
+    elastic_launch(
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/w/epsci-sciwork18/xmei/projects/pyvenv/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 264, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+imageclass_tp.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2302.jlab.org
+  rank      : 5 (local_rank: 1)
+  exitcode  : 1 (pid: 925400)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[2]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2302.jlab.org
+  rank      : 6 (local_rank: 2)
+  exitcode  : 1 (pid: 925401)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+[3]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2302.jlab.org
+  rank      : 7 (local_rank: 3)
+  exitcode  : 1 (pid: 925402)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-11-13_19:52:50
+  host      : sciml2302.jlab.org
+  rank      : 4 (local_rank: 0)
+  exitcode  : 1 (pid: 925399)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+srun: error: sciml2302: task 1: Exited with exit code 1
+srun: error: sciml2301: task 0: Exited with exit code 1
