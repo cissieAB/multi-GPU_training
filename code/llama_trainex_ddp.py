@@ -72,7 +72,7 @@ for batch_size in bslist:
             tokenized_datasets = train_dataset.map(tokenize_function, batched=True, remove_columns=["text"])
             tokenized_datasets.set_format(type='torch', columns=['input_ids', 'attention_mask'])
             first_batch_subset = Subset(tokenized_datasets, list(range(batch_size)))
-            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, shuffle=False,num_workers=8)
+            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, shuffle=False,num_workers=4)
             sampler = DistributedSampler(first_batch_subset, shuffle=False)
             
             optimizer = optim.AdamW(model.parameters(), lr=5e-5)

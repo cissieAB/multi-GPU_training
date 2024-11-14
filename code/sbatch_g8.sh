@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --job-name=g8_tp
+#SBATCH --job-name=llama_g8_ddp
 #SBATCH --nodes=2
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=500GB
+#SBATCH --mem=480GB
 
 ## Example command to launch this script on JLab ifarm: \
 ##     sbatch -p gpu --nodes 2 --gres gpu:A100:4 sbatch_xxx.sh <py_script>
@@ -39,10 +39,14 @@ PY_SCRIPTNAME=$1
 ### --nproc-per-node means GPUs per node
 ### For ifarm, use TCP ports 32768-60999
 # --nproc_per_node=4 means 4 ranks per node. Each node has 4 GPUs.
+
 srun torchrun --nproc_per_node=4 \
 	--rdzv_backend=c10d \
         --rdzv_endpoint=$MASTER_ADDR.jlab.org:$MASTER_PORT \
   	--nnodes=2 \
 	--rdzv-id $RANDOM \
-	$1 128 2
+	$1 64 1
+# for llama
+# ddp batch size: 64
+# tp batch size： 1/8 of the above
 
