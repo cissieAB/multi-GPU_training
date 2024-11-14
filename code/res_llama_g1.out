@@ -1,0 +1,57 @@
+Starting on rank 0.
+Dataset loaded.
+training model now: NousResearch/Llama-3.2-1B
+batches num 1
+NousResearch/Llama-3.2-1B iter 0 done
+NousResearch/Llama-3.2-1B iter 1 done
+NousResearch/Llama-3.2-1B iter 2 done
+NousResearch/Llama-3.2-1B iter 3 done
+NousResearch/Llama-3.2-1B iter 4 done
+NousResearch/Llama-3.2-1B iter 5 done
+NousResearch/Llama-3.2-1B iter 6 done
+NousResearch/Llama-3.2-1B iter 7 done
+NousResearch/Llama-3.2-1B iter 8 done
+NousResearch/Llama-3.2-1B iter 9 done
+NousResearch/Llama-3.2-1B iter 10 done
+NousResearch/Llama-3.2-1B iter 11 done
+NousResearch/Llama-3.2-1B iter 12 done
+NousResearch/Llama-3.2-1B iter 13 done
+NousResearch/Llama-3.2-1B iter 14 done
+NousResearch/Llama-3.2-1B iter 15 done
+NousResearch/Llama-3.2-1B iter 16 done
+NousResearch/Llama-3.2-1B iter 17 done
+NousResearch/Llama-3.2-1B iter 18 done
+NousResearch/Llama-3.2-1B iter 19 done
+NousResearch/Llama-3.2-1B iter 20 done
+NousResearch/Llama-3.2-1B iter 21 done
+NousResearch/Llama-3.2-1B iter 22 done
+NousResearch/Llama-3.2-1B iter 23 done
+NousResearch/Llama-3.2-1B iter 24 done
+NousResearch/Llama-3.2-1B iter 25 done
+NousResearch/Llama-3.2-1B iter 26 done
+NousResearch/Llama-3.2-1B iter 27 done
+NousResearch/Llama-3.2-1B iter 28 done
+NousResearch/Llama-3.2-1B iter 29 done
+NousResearch/Llama-3.2-1B iter 30 done
+NousResearch/Llama-3.2-1B gpu time 2 538.8328857421875
+NousResearch/Llama-3.2-1B gpu time 2 538.4324951171875
+NousResearch/Llama-3.2-1B gpu time 2 539.8763427734375
+NousResearch/Llama-3.2-1B gpu time 2 540.0166625976562
+NousResearch/Llama-3.2-1B gpu time 2 539.0704345703125
+NousResearch/Llama-3.2-1B gpu time 2 538.3915405273438
+NousResearch/Llama-3.2-1B gpu time 2 540.1436157226562
+NousResearch/Llama-3.2-1B gpu time 2 539.4769897460938
+NousResearch/Llama-3.2-1B gpu time 2 538.598388671875
+NousResearch/Llama-3.2-1B gpu time 2 540.4119262695312
+Save Exeution Trace
+NousResearch/Llama-3.2-1B gpu time 545.453369140625
+Save Exeution Trace
+NousResearch/Llama-3.2-1B gpu time 543.86376953125
+Save Exeution Trace
+NousResearch/Llama-3.2-1B gpu time 544.0995483398438
+Save Exeution Trace
+NousResearch/Llama-3.2-1B gpu time 546.537353515625
+Save Exeution Trace
+NousResearch/Llama-3.2-1B gpu time 545.1898803710938
+avg profiler Total time1: 545.0287841796875
+avg Total time2: 539.3251281738281
