@@ -85,8 +85,7 @@ for bs in bslist:
               densenet161,densenet169,densenet121,densenet201]
     namelist = ['vgg11','vgg13','vgg16','vgg19','resnet18','resnet34','resnet50','resnet101','resnet152',
               'densenet161','densenet169','densenet121','densenet201']
-    
-    j = 0
+
     for model, name in zip(listmodel, namelist):
         dataset = {'predict' : torchvision.datasets.ImageFolder("./ILSVRC2012_img_val", data_transforms['predict'])}
         dataset_subset=dataset['predict']
@@ -181,3 +180,4 @@ for bs in bslist:
             
 
 dist.destroy_process_group()
+

@@ -68,7 +68,7 @@ for batch_size in bslist:
             # tokenized_datasets.set_format(type='torch', columns=['input_ids'])
             tokenized_datasets.set_format(type='torch', columns=['input_ids', 'attention_mask'])
             first_batch_subset = Subset(tokenized_datasets, list(range(batch_size)))
-            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, shuffle=False,num_workers=8)
+            train_dataloader = DataLoader(first_batch_subset, batch_size=batch_size, shuffle=False,num_workers=4)
             # num_batches = len(first_batch_subset) // batch_size
             # print(f"Number of batches now: {num_batches}")
             torch.cuda.set_device(local_rank)
@@ -108,7 +108,7 @@ for batch_size in bslist:
                                 torch.cuda.synchronize()
                                 curr_time = starter.elapsed_time(ender)
                                 total_time1 +=curr_time
-                            prof.export_chrome_trace("./transformer_tp_profiler/"+str(distcase)+"_profiler_"+name.replace("/","-")+"-iter"+str(i)+".json")
+                            prof.export_chrome_trace("./transformer_tp_profiler/"+str(distcase)+"_profiler_"+name.replace("/","-")+"-"+hostname+"-rank"+str(rank)+"-iter"+str(i)+".json")
                             eg.stop()
                             eg.unregister_callback()
                             print("Save Exeution Trace")
@@ -142,3 +142,4 @@ for batch_size in bslist:
             print(f"---first error\n[{hostname}] Rank {rank}, Local Rank {local_rank}\n",e)
 
 dist.destroy_process_group()
+
