@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=llama_g8_ddp
+#SBATCH --job-name=llama_g8_tp    ## <== Update here!
 #SBATCH --nodes=2
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=480GB
@@ -45,7 +45,7 @@ srun torchrun --nproc_per_node=4 \
         --rdzv_endpoint=$MASTER_ADDR.jlab.org:$MASTER_PORT \
   	--nnodes=2 \
 	--rdzv-id $RANDOM \
-	$1 64 1
+	$1 8 1
 # for llama
 # ddp batch size: 64
 # tp batch size： 1/8 of the above
