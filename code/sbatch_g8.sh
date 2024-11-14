@@ -3,7 +3,7 @@
 #SBATCH --job-name=g8_tp
 #SBATCH --nodes=2
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=400GB
+#SBATCH --mem=500GB
 
 ## Example command to launch this script on JLab ifarm: \
 ##     sbatch -p gpu --nodes 2 --gres gpu:A100:4 sbatch_xxx.sh <py_script>
@@ -44,5 +44,5 @@ srun torchrun --nproc_per_node=4 \
         --rdzv_endpoint=$MASTER_ADDR.jlab.org:$MASTER_PORT \
   	--nnodes=2 \
 	--rdzv-id $RANDOM \
-	$1 1024 2
+	$1 128 2
 
