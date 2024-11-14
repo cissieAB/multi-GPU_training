@@ -48,4 +48,10 @@ for llama_trainex_tp.py, we have two parameters, batch size and distributed case
 torchrun --standalone --nproc_per_node=2 llama_trainex_ddp.py 1024 1
 torchrun --standalone --nproc_per_node=2 llama_trainex_ddp.py 1024 2
 
+-------------------------------------------
+llama_trainex.py: run on a single GPU to collect trace and print time information.
 
+mkdir llama_standard_profiler
+python llama_trainex.py 8
+
+the result should contains 5 graph_ files and 5 profiler_ files
